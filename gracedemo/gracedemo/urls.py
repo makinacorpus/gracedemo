@@ -17,7 +17,9 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
      
-    (r'^export/data_geojson/$', export_data_geojson),
+    #(r'^export/data_geojson/$', export_data_geojson),
+    (r'^export/data_geojson/(?P<table_name>[\w-]+)$', export_data_geojson),
+    
     (r'^$', view_map),
 
 )

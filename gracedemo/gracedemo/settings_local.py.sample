@@ -12,6 +12,14 @@ DATABASES = {
         'PASSWORD': 'userpassword',      
         'HOST': 'localhost',             
         'PORT': '5432',                  
+    },
+    'grace': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', 
+        'NAME': 'grace',                
+        'USER': 'gisuser',                
+        'PASSWORD': 'userpassword',      
+        'HOST': 'localhost',             
+        'PORT': '5432',                  
     }
 }
 

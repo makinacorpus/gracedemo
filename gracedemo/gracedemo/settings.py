@@ -160,4 +160,16 @@ LOGGING = {
 }
 
 
+
+TABLE_ARTERE = 'artere'
+
+GRACE_TABLE_INFOS_GEOJSON =  {
+    TABLE_ARTERE: {
+        'id_col': 'id_artere',
+        'geom_col': 'geom',
+        #'select_col': 'ST_AsText(ST_SnapToGrid(ST_Transform(poly_commune_900913,4326),0.00001)) as geom, id_com_insee_artere'
+        'select_col': 'ST_AsText(geom) as geom, id_com_insee_artere'
+    }
+}
+
 from settings_local import *
