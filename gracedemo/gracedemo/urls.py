@@ -18,7 +18,8 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
      
     (r'^export/data_geojson/$', export_data_geojson),
-    (r'^map/$', view_map),
+    (r'^$', view_map),
+
 )
 
 
