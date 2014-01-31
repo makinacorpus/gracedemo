@@ -1,5 +1,6 @@
 from __future__ import with_statement
 
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
@@ -34,8 +35,10 @@ def view_map(request):
     """
     View map
     """
-    response = HttpResponse()
-    return response
+    rdict = {'x': 45, 'y': 5}
+    template = loader.get_template('gracemap/index.html')
+    context = RequestContext(request, rdict)
+    return HttpResponse(template.render(context))      
 
 @csrf_exempt
 def export_data_geojson(request):
