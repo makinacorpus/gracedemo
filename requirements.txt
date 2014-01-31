@@ -1,0 +1,47 @@
+# forks we depend on
+hg+https://bitbucket.org/psyton/django-admin-tools
+
+git+git://github.com/django-extensions/django-extensions.git
+
+# coop deps
+psycopg2
+Pillow
+south
+
+django-forms-builder
+
+# Queues
+rq
+git+git://github.com/ui/django-rq.git
+
+django-apptemplates
+python-dateutil
+sorl-thumbnail==11.09
+shortuuid
+django-tinymce
+git+git://github.com/twidi/django-extended-choices.git
+hg+https://bitbucket.org/ubernostrum/django-profiles
+django-positions
+django-push
+mimeparse
+rdflib
+git+git://github.com/RDFLib/rdfextras.git
+git+git://github.com/RDFLib/rdflib-jsonld.git
+git+git://github.com/RDFLib/rdflib-sparqlstore.git
+git+git://github.com/credis/subhub.git
+django-appconf
+
+# coop_cms deps
+django-floppyforms==0.4.7
+feedparser
+git+git://github.com/gabrielgrant/django-html-field.git
+
+# dev debug tools
+django-debug-toolbar
+FirePython
+
+# multi-site
+django-multisite
+
+# registration
+django-registration
