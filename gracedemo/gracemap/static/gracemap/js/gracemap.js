@@ -1,7 +1,12 @@
 var map;
+var view;
 var layersArray = [];
 var num_layer = 0;
 var highlight;
+var HOST_URL = 'http://open.mapquestapi.com';
+var SAMPLE_POST = HOST_URL + '/nominatim/v1/search.php?format=json&json_callback=renderBasicSearchNarrative';
+var searchType = '';
+
 
 $(function() {
     
@@ -28,6 +33,11 @@ $(function() {
         undefinedHTML: '&nbsp;'
     });    
     
+    view = new ol.View2D({
+        center: ol.proj.transform([-0.2385, 44.9313], 'EPSG:4326', 'EPSG:3857'),
+        zoom: 12
+    });
+
     map = new ol.Map({
         controls: ol.control.defaults().extend([mousePositionControl]),
         layers: [
@@ -35,10 +45,7 @@ $(function() {
         ],
         renderer: 'canvas',
         target: 'map',
-        view: new ol.View2D({
-            center: ol.proj.transform([-0.2385, 44.9313], 'EPSG:4326', 'EPSG:3857'),
-            zoom: 12
-        })
+        view: view
     });
 
     addGeoJSON("artere");    
@@ -143,6 +150,32 @@ function displayLayer(evt) {
     layersArray[evt.value].setVisible(evt.checked);
 }
 
+
+// Geolocalisation
+function doBasicSearchClick() {
+    var newURL = SAMPLE_POST + "&q=" + $('#place-to-search').val();
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = newURL;
+    document.body.appendChild(script);
+};
+
+function renderBasicSearchNarrative(response) {
+    if(response){
+        for(var i =0; i < response.length; i++){
+            var result = response[i];
+            var new_center = ol.proj.transform([result.lon*1.0, result.lat*1.0], 'EPSG:4326', 'EPSG:3857');
+            //var new_center = ol.proj.transform([-0.12755, 51.507222], 'EPSG:4326', 'EPSG:3857');
+            var pan = ol.animation.pan({
+                duration: 2000,
+                source: (view.getCenter())
+            });
+            map.beforeRender(pan);
+            view.setCenter(new_center);            
+            break;
+        }       
+    }    
+}
 
 
 
