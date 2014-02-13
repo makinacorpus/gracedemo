@@ -8,6 +8,9 @@ var styles = {
   'Point': [new ol.style.Style({
     image: image
   })],
+  'noeud': [new ol.style.Style({
+    image: image
+  })],
   'LineString': [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'green',
@@ -23,7 +26,26 @@ var styles = {
       color: '#FF0000',
       width: 5
     })
-    
+  })],
+  'artere': [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: '#6092c4',
+      width: 5
+    }),
+    highlight: new ol.style.Stroke({
+      color: '#FF0000',
+      width: 5
+    })
+  })],
+  'fourreau': [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: '#950195',
+      width: 2
+    }),
+    highlight: new ol.style.Stroke({
+      color: '#FF0000',
+      width: 5
+    })
   })],
   'MultiPoint': [new ol.style.Style({
     image: image
@@ -75,7 +97,8 @@ var styles = {
 };
 
 var styleFunction = function(feature, resolution) {
-  return styles[feature.getGeometry().getType()];
+  //return styles[feature.getGeometry().getType()];
+  return styles[feature.get('typeobj')]
 };
 
 
