@@ -55,3 +55,7 @@ html, body {
 #layers_list {
     list-style: none;
 }
+
+#infos-content {
+    color: #d26105;
+}
