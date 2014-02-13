@@ -141,7 +141,12 @@ function addGeoJSON(table_name) {
     map.addLayer(json_layer);
     
     id = table_name;
-    $('#layers_list').append('<li><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+num_layer+'" onclick="displayLayer(this)" checked> '+id+'</li>');
+    styleObj = legendStyleFunction(table_name);
+    if(styleObj[0].getStroke())
+        colorObj = styleObj[0].getStroke().getColor();
+    else
+        colorObj= styleObj[0].getImage().getStroke().getColor();
+    $('#layers_list').append('<li><div style="width:16px;height:18px;background:'+colorObj+';margin-top:2px; float: left;"></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+num_layer+'" onclick="displayLayer(this)" checked> '+id+'</li>');
     
     layersArray.push(json_layer);
     num_layer = num_layer + 1;

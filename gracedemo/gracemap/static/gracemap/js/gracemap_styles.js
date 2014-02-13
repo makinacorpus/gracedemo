@@ -101,4 +101,7 @@ var styleFunction = function(feature, resolution) {
   return styles[feature.get('typeobj')]
 };
 
+var legendStyleFunction = function(typeObj) {
+  return styles[typeObj]
+};
 
