@@ -18,7 +18,12 @@ var styles = {
     stroke: new ol.style.Stroke({
       color: '#6092c4',
       width: 5
+    }),
+    highlight: new ol.style.Stroke({
+      color: '#FF0000',
+      width: 5
     })
+    
   })],
   'MultiPoint': [new ol.style.Style({
     image: image
@@ -72,3 +77,5 @@ var styles = {
 var styleFunction = function(feature, resolution) {
   return styles[feature.getGeometry().getType()];
 };
+
+

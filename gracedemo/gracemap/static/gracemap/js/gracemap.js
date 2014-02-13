@@ -1,11 +1,19 @@
 var map;
 var layersArray = [];
 var num_layer = 0;
+var highlight;
 
 $(function() {
     
-    osm = new ol.source.OSM('Simple OSM Map', null, {
-                eventListeners: {
+    osm = new ol.source.OSM('OSM',{
+                /*tileLoadFunction: function(imageTile, src) {
+                    window.setTimeout(function() {
+                        imageTile.getImage().src = src;
+                    }, 1);
+                },
+                url: 'http://{a-c}.tile.openstreetmap.orgr/{z}/{x}/{y}.png'
+                */
+/*                eventListeners: {
                     tileloaded: function(evt) {
                         var ctx = evt.tile.getCanvasContext();
                         if (ctx) {
@@ -19,14 +27,16 @@ $(function() {
                             evt.tile.imgDiv.src = ctx.canvas.toDataURL();
                         }
                     }
-                }
+                }*/
             });
-
+    osmLayer = new ol.layer.Tile({source: osm});
+    
     map = new ol.Map({        
         layers: [
-            new ol.layer.Tile({
+            osmLayer
+            /*new ol.layer.Tile({
                 source: osm
-            })
+            })*/
         ],
         renderer: 'canvas',
         target: 'map',
@@ -39,10 +49,83 @@ $(function() {
     addGeoJSON("artere");    
     addGeoJSON("noeud");  
     
+    // Get infos
+    $(map.getViewport()).on('mousemove', function(evt) {
+        var pixel = map.getEventPixel(evt.originalEvent);
+        displayFeatureInfo(pixel);
+    });
+
+    map.on('singleclick', function(evt) {
+        displayFeatureInfo(evt.pixel);
+    });
+    
+    var highlightStyleCache = {};
+    var featureOverlay = new ol.FeatureOverlay({
+        map: map,
+        styleFunction: function(feature, resolution) {
+            //var text = resolution < 5000 ? feature.get('id_com_insee') : '';
+            var text = feature.get('typeobj') + " : " +  feature.getId();
+            if (!highlightStyleCache[text]) {
+                highlightStyleCache[text] = [new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: '#d26105',
+                        width: 5
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgba(255,0,0,0.1)'
+                    }),
+                    text: new ol.style.Text({
+                        font: '20px Arial,sans-serif',
+                        text: text,
+                        fill: new ol.style.Fill({
+                            color: '#FFF'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#d26105',
+                            width: 3
+                        })
+                    })
+                })];
+            }
+            return highlightStyleCache[text];
+        }
+    });    
+    
+    // Get infos on features
+    var displayFeatureInfo = function(pixel) {
+        var feature = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+            return feature;
+        });
+
+        var info = document.getElementById('infos-content');
+        if (feature) {
+            info.innerHTML = feature.get('typeobj') + '<br/>ID: ' + feature.getId();
+            for (prop in feature.getProperties()) {
+                if(prop != 'geometry' && prop != 'typeobj') {
+                    info.innerHTML = info.innerHTML + '<br/>' + prop + ': ' + feature.get(prop);
+                }
+            }
+            
+        } else {
+            info.innerHTML = '&nbsp;';
+        }
+
+        if (feature !== highlight) {
+            if (highlight) {
+                featureOverlay.removeFeature(highlight);
+            }
+            if (feature) {
+                featureOverlay.addFeature(feature);
+            }
+            highlight = feature;
+        }
+    };    
+    
 });
 
 function addGeoJSON(table_name) {
     var objSource = new ol.source.GeoJSON({
+            //projection: 'EPSG:3857',
             url: '/export/data_geojson/' + table_name
         });
     var json_layer = new ol.layer.Vector({
@@ -61,4 +144,10 @@ function addGeoJSON(table_name) {
 function displayLayer(evt) {    
     layersArray[evt.value].setVisible(evt.checked);
 }
+
+
+
+
+
+
 
