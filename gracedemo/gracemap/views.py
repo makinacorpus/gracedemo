@@ -89,8 +89,8 @@ def get_data_object_geojson(response_content, table_name):
     #replace_string = "ST_AsText(ST_SnapToGrid(ST_Transform(ST_Centroid(%s),4326),0.00001))" % (geom_column)
     #select_columns = select_columns.replace(string_to_replace, replace_string)        
     
-    # TODO remove limit
-    select_string = "SELECT %s FROM %s limit 100" % (select_columns, table_name)
+    #select_string = "SELECT %s FROM %s limit 100" % (select_columns, table_name)
+    select_string = "SELECT %s FROM %s" % (select_columns, table_name)
 
     cursor = query_db(select_string)
     i = 0  # feature index

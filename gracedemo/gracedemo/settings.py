@@ -162,14 +162,20 @@ LOGGING = {
 
 
 TABLE_ARTERE = 'artere'
+TABLE_NOEUD = 'noeud'
 
 GRACE_TABLE_INFOS_GEOJSON =  {
     TABLE_ARTERE: {
         'id_col': 'id_artere',
         'geom_col': 'geom',
-        #'select_col': 'ST_AsText(ST_SnapToGrid(ST_Transform(poly_commune_900913,4326),0.00001)) as geom, id_com_insee_artere'
-        'select_col': 'ST_AsText(geom) as geom, id_com_insee_artere'
+        'select_col': 'ST_AsText(ST_Transform(geom, 3857)) as geom, id_com_insee_artere'
+    },
+    TABLE_NOEUD: {
+        'id_col': 'id_noeud',
+        'geom_col': 'geom',
+        'select_col': 'ST_AsText(ST_Transform(geom, 3857)) as geom, id_com_insee_noeud'
     }
+    
 }
 
 from settings_local import *

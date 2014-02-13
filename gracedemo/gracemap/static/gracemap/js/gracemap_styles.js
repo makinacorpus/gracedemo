@@ -1,7 +1,7 @@
 var image = new ol.style.Circle({
   radius: 5,
   fill: null,
-  stroke: new ol.style.Stroke({color: 'red', width: 1})
+  stroke: new ol.style.Stroke({color: 'rgba(250, 133, 40, 0.7)', width: 2})
 });
 
 var styles = {
@@ -16,8 +16,8 @@ var styles = {
   })],
   'MultiLineString': [new ol.style.Style({
     stroke: new ol.style.Stroke({
-      color: 'red',
-      width: 10
+      color: '#6092c4',
+      width: 5
     })
   })],
   'MultiPoint': [new ol.style.Style({
