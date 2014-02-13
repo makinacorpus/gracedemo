@@ -163,6 +163,7 @@ LOGGING = {
 
 TABLE_ARTERE = 'artere'
 TABLE_NOEUD = 'noeud'
+TABLE_FOURREAU = 'fourreau'
 
 GRACE_TABLE_INFOS_GEOJSON =  {
     TABLE_ARTERE: {
@@ -174,7 +175,13 @@ GRACE_TABLE_INFOS_GEOJSON =  {
         'id_col': 'id_noeud',
         'geom_col': 'geom',
         'select_col': '\'noeud\' as typeobj, ST_AsText(ST_Transform(geom, 3857)) as geom, id_com_insee_noeud as id_com_insee'
+    },
+    TABLE_FOURREAU: {
+        'id_col': 'id_four',
+        'geom_col': 'geom',
+        'select_col': '\'fourreau\' as typeobj, ST_AsText(ST_Transform(geom, 3857)) as geom, type_four as Type, etat_four as Etat'
     }
+    
     
 }
 

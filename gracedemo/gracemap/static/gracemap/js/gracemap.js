@@ -49,7 +49,8 @@ $(function() {
     });
 
     addGeoJSON("artere");    
-    addGeoJSON("noeud");  
+    addGeoJSON("noeud");
+    addGeoJSON("fourreau");  
     
     // Get infos
     $(map.getViewport()).on('mousemove', function(evt) {
