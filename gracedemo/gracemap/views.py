@@ -90,7 +90,7 @@ def get_data_object_geojson(response_content, table_name):
     #select_columns = select_columns.replace(string_to_replace, replace_string)        
     
     # TODO remove limit
-    select_string = "SELECT %s FROM %s limit 10" % (select_columns, table_name)
+    select_string = "SELECT %s FROM %s limit 100" % (select_columns, table_name)
 
     cursor = query_db(select_string)
     i = 0  # feature index
