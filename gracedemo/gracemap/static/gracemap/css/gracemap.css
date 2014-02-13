@@ -54,6 +54,7 @@ html, body {
 
 #layers_list {
     list-style: none;
+    padding-left: 0px;
 }
 
 #infos-content {
