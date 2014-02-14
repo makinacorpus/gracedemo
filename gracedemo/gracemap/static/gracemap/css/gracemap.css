@@ -70,3 +70,7 @@ html, body {
 input[type="checkbox"] {
     margin-top: 0px;
 }
+
+.btn-load {
+    padding: 1px;
+}

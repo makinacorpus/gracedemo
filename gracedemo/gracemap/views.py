@@ -33,7 +33,7 @@ def view_map(request):
     """
     View map
     """
-    rdict = {'x': 45, 'y': 5}
+    rdict = {'x': 45, 'y': 5, 'qgis_server_url' : settings.QGIS_SERVER_URL}
     template = loader.get_template('gracemap/index.html')
     context = RequestContext(request, rdict)
     return HttpResponse(template.render(context))      
@@ -43,7 +43,11 @@ def export_data_geojson(request, table_name):
     """
     Export data from DataBase as geojson format
     """
-    
+
+    bbox = []
+    if request.GET.get('bbox'):
+        bbox = request.GET.get('bbox').split(',')
+        
     response_content = []
     #params = request.POST
     #if params:
@@ -63,7 +67,7 @@ def export_data_geojson(request, table_name):
     response_content = {"type": "FeatureCollection", "features": []}
 
     # Get the operation on the column if necessary (percents, rounds)    
-    get_data_object_geojson(response_objects, table_name)
+    get_data_object_geojson(response_objects, table_name, bbox)
 
     response_content["features"] = response_objects
 
@@ -75,7 +79,7 @@ def export_data_geojson(request, table_name):
 
 
 
-def get_data_object_geojson(response_content, table_name):
+def get_data_object_geojson(response_content, table_name, bbox):
     """
     Perform a SELECT on the DB to retreive infos on associated object, geojson format
     Param: table_name : name of the table
@@ -90,7 +94,11 @@ def get_data_object_geojson(response_content, table_name):
     #select_columns = select_columns.replace(string_to_replace, replace_string)        
     
     #select_string = "SELECT %s FROM %s limit 100" % (select_columns, table_name)
-    select_string = "SELECT %s FROM %s" % (select_columns, table_name)
+    if bbox :
+        select_string = "SELECT %s FROM %s WHERE ST_Intersects(ST_Transform(ST_SetSRID(ST_MakeBox2D(ST_Point(%s, %s), ST_Point(%s,%s)), 4326), 2154), geom)" % \
+                    (select_columns, table_name, bbox[0], bbox[1], bbox[2], bbox[3] )
+    else :
+        select_string = "SELECT %s FROM %s limit 500" % (select_columns, table_name)
 
     cursor = query_db(select_string)
     i = 0  # feature index

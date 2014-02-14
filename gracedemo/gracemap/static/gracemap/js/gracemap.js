@@ -1,10 +1,12 @@
 var map;
 var view;
 var layersArray = [];
+var layersNameArray = [];
 var num_layer = 0;
 var highlight;
 var HOST_URL = 'http://open.mapquestapi.com';
 var SAMPLE_POST = HOST_URL + '/nominatim/v1/search.php?format=json&json_callback=renderBasicSearchNarrative';
+
 var searchType = '';
 
 
@@ -12,7 +14,7 @@ $(function() {
     
     osm = new ol.source.OSM('OSM');
     osmLayer = new ol.layer.Tile({source: osm});
-    osmLayer.on('postcompose', function(event) {
+    /*osmLayer.on('postcompose', function(event) {
         var context = event.context;
         var canvas = context.canvas;
         var image = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -21,7 +23,7 @@ $(function() {
             data[i] = data[i + 1] = data[i + 2] = (3 * data[i] + 4 * data[i + 1] + data[i + 2]) / 8;
         }
         context.putImageData(image, 0, 0);
-    });
+    });*/
 
     var mousePositionControl = new ol.control.MousePosition({
         coordinateFormat: ol.coordinate.createStringXY(4),
@@ -48,9 +50,12 @@ $(function() {
         view: view
     });
 
-    addGeoJSON("artere");    
-    addGeoJSON("noeud");
-    addGeoJSON("fourreau");  
+    addWMS("artere");
+    addWMS("noeud");
+    
+    //addGeoJSON("artere", true);    
+    //addGeoJSON("noeud", true);
+    //addGeoJSON("fourreau");  
     
     // Get infos
     $(map.getViewport()).on('mousemove', function(evt) {
@@ -61,6 +66,9 @@ $(function() {
     map.on('singleclick', function(evt) {
         displayFeatureInfo(evt.pixel);
     });
+    
+    
+    //map.on('moveend', onMoveEnd);
     
     var highlightStyleCache = {};
     var featureOverlay = new ol.FeatureOverlay({
@@ -126,10 +134,43 @@ $(function() {
     
 });
 
-function addGeoJSON(table_name) {
+function addWMS(layer) {
+    var wmsSourceArtere = new ol.source.TileWMS({
+        url: QGISSERVER_URL,
+        params: {'LAYERS': layer}
+    });
+
+    var wmsArtere = new ol.layer.Tile({
+        source: wmsSourceArtere
+    });    
+    
+    map.addLayer(wmsArtere);
+
+    colorObj = '#000';
+
+    addLayerToLegend(wmsArtere, colorObj, layer, 'wms');
+}
+
+function addGeoJSON(table_name, init, idLayer) {
+    var extent = map.getView().calculateExtent(map.getSize());
+    var bottomLeft = ol.proj.transform(ol.extent.getBottomLeft(extent), 'EPSG:3857', 'EPSG:4326');
+    var topRight = ol.proj.transform(ol.extent.getTopRight(extent), 'EPSG:3857', 'EPSG:4326');
+    currentZoom = map.getView().getZoom();
+    
+    if (!init) {
+        map.removeLayer(layersArray[idLayer]);
+    }
+    
+    if(currentZoom > 13) {
+        bbox = bottomLeft[0] + ',' + bottomLeft[1] + ',' + topRight[0] + ',' + topRight[1]
+    } else {
+        alert("Vous devez zoom réduire la vue (zoomez)");
+        return;
+    }
+    
     var objSource = new ol.source.GeoJSON({
             //projection: 'EPSG:3857',
-            url: '/export/data_geojson/' + table_name
+            url: '/export/data_geojson/' + table_name + '?bbox=' + bbox
         });
     var json_layer = new ol.layer.Vector({
         source: objSource,
@@ -140,15 +181,31 @@ function addGeoJSON(table_name) {
     //});    
     map.addLayer(json_layer);
     
-    id = table_name;
     styleObj = legendStyleFunction(table_name);
     if(styleObj[0].getStroke())
         colorObj = styleObj[0].getStroke().getColor();
     else
         colorObj= styleObj[0].getImage().getStroke().getColor();
-    $('#layers_list').append('<li><div style="width:16px;height:18px;background:'+colorObj+';margin-top:2px; float: left;"></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+num_layer+'" onclick="displayLayer(this)" checked> '+id+'</li>');
     
-    layersArray.push(json_layer);
+    if (init) {
+        addLayerToLegend(json_layer, colorObj, table_name, 'json');
+    }
+    else {
+        layersArray[idLayer] = json_layer;
+    }
+}
+
+function addLayerToLegend(layer, colorObj, id, type) {
+    reloadBtn = '';
+    if(type == 'json')
+        reloadBtn = '<input type="button" class="btn btn-default btn-load" value="Reload" id="'+num_layer+'" onclick="reloadGeoJSON(this)"/>';
+    if(type == 'wms')
+        reloadBtn = '<input type="button" class="btn btn-default btn-load" value="Load JSON" id="'+num_layer+'" onclick="loadGeoJSON(this)"/>';
+    
+    $('#layers_list').append('<li><div style="width:16px;height:18px;background:'+colorObj+';margin-top:2px; float: left;"></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+num_layer+'" onclick="displayLayer(this)" checked> '+id+' '+reloadBtn+'</li>');
+    
+    layersArray.push(layer);
+    layersNameArray.push(id);
     num_layer = num_layer + 1;
 }
 
@@ -156,6 +213,13 @@ function displayLayer(evt) {
     layersArray[evt.value].setVisible(evt.checked);
 }
 
+function loadGeoJSON(evt) {    
+    addGeoJSON(layersNameArray[evt.id],true)    
+}
+
+function reloadGeoJSON(evt) {    
+    addGeoJSON(layersNameArray[evt.id],false, evt.id)    
+}
 
 // Geolocalisation
 function doBasicSearchClick() {

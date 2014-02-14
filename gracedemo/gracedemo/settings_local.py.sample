@@ -61,3 +61,4 @@ LOGGING = {
 }
 
 MBTILES_APP_CONFIG = { 'MBTILES_ROOT' : '/path_to_mbtiles/' }
+QGIS_SERVER_URL = 'http://localhost/cgi-bin/gracedemo/qgis_mapserv.fcgi'
