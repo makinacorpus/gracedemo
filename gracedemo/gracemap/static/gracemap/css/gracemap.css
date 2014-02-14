@@ -20,7 +20,8 @@ html, body {
 
 .navbar {
     height: 53px;
-/*     background-color:rgba(20,20,20,0.5); */
+    border-left: medium none;
+    border-top: medium none;
 }
 
 .navbar h1 {
@@ -28,6 +29,11 @@ html, body {
     font-size: 70px;
     line-height: 20px;
     text-transform: uppercase;
+}
+
+.navbar-brand {
+    padding-left: 0px;
+    padding-top: 0px;
 }
 
 .ol-zoom {
