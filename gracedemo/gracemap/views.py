@@ -88,12 +88,6 @@ def get_data_object_geojson(response_content, table_name, bbox):
     select_columns = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('select_col')
     geom_column = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('geom_col')
     
-    # replace the geometry stringNone
-    #string_to_replace = "ST_AsText(ST_SnapToGrid(ST_Transform(%s,4326),0.00001))" % (geom_column)
-    #replace_string = "ST_AsText(ST_SnapToGrid(ST_Transform(ST_Centroid(%s),4326),0.00001))" % (geom_column)
-    #select_columns = select_columns.replace(string_to_replace, replace_string)        
-    
-    #select_string = "SELECT %s FROM %s limit 100" % (select_columns, table_name)
     if bbox :
         select_string = "SELECT %s FROM %s WHERE ST_Intersects(ST_Transform(ST_SetSRID(ST_MakeBox2D(ST_Point(%s, %s), ST_Point(%s,%s)), 4326), 2154), geom)" % \
                     (select_columns, table_name, bbox[0], bbox[1], bbox[2], bbox[3] )

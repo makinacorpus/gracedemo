@@ -28,8 +28,6 @@ $(function() {
     var mousePositionControl = new ol.control.MousePosition({
         coordinateFormat: ol.coordinate.createStringXY(4),
         projection: 'EPSG:4326',
-        // comment the following two lines to have the mouse position
-        // be placed within the map.
         className: 'custom-mouse-position',
         target: document.getElementById('mouse-position'),
         undefinedHTML: '&nbsp;'
@@ -37,9 +35,9 @@ $(function() {
     
     view = new ol.View2D({
         center: ol.proj.transform([-0.2385, 44.9313], 'EPSG:4326', 'EPSG:3857'),
-        zoom: 12
+        zoom: 14
     });
-
+    
     map = new ol.Map({
         controls: ol.control.defaults().extend([mousePositionControl]),
         layers: [
@@ -73,7 +71,7 @@ $(function() {
     var highlightStyleCache = {};
     var featureOverlay = new ol.FeatureOverlay({
         map: map,
-        styleFunction: function(feature, resolution) {
+        style: function(feature, resolution) {
             //var text = resolution < 5000 ? feature.get('id_com_insee') : '';
             var text = feature.get('typeobj') + " : " +  feature.getId();
             if (!highlightStyleCache[text]) {
@@ -169,15 +167,15 @@ function addGeoJSON(table_name, init, idLayer) {
     }
     
     var objSource = new ol.source.GeoJSON({
-            //projection: 'EPSG:3857',
+            projection: 'EPSG:3857',
             url: '/export/data_geojson/' + table_name + '?bbox=' + bbox
         });
     var json_layer = new ol.layer.Vector({
         source: objSource,
-        styleFunction: styleFunction
+        style: styleFunction
     }); 
     //objSource.on('addfeature', function(event) {
-    //    window.console.log('added feature');
+    //    window.console.log(event.feature.getGeometry().getCoordinates());
     //});    
     map.addLayer(json_layer);
     

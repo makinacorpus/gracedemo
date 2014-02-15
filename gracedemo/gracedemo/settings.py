@@ -169,17 +169,17 @@ GRACE_TABLE_INFOS_GEOJSON =  {
     TABLE_ARTERE: {
         'id_col': 'id_artere',
         'geom_col': 'geom',
-        'select_col': '\'artere\' as typeobj, ST_AsText(ST_Transform(geom, 3857)) as geom, id_com_insee_artere as "Insee", noeud_a as "Noeud A", noeud_b as "Noeud B"'
+        'select_col': '\'artere\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, id_com_insee_artere as "Insee", noeud_a as "Noeud A", noeud_b as "Noeud B"'
     },
     TABLE_NOEUD: {
         'id_col': 'id_noeud',
         'geom_col': 'geom',
-        'select_col': '\'noeud\' as typeobj, ST_AsText(ST_Transform(geom, 3857)) as geom, id_com_insee_noeud as "Insee"'
+        'select_col': '\'noeud\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, id_com_insee_noeud as "Insee"'
     },
     TABLE_FOURREAU: {
         'id_col': 'id_four',
         'geom_col': 'geom',
-        'select_col': '\'fourreau\' as typeobj, ST_AsText(ST_Transform(geom, 3857)) as geom, type_four as "Type", etat_four as "Etat"'
+        'select_col': '\'fourreau\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, type_four as "Type", etat_four as "Etat"'
     }
     
     
