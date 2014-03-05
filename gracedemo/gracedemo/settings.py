@@ -165,6 +165,8 @@ TABLE_ARTERE = 'artere'
 TABLE_NOEUD = 'noeud'
 TABLE_FOURREAU = 'fourreau'
 
+GRACE_TABLES = [TABLE_ARTERE, TABLE_NOEUD, TABLE_FOURREAU]
+
 GRACE_TABLE_INFOS_GEOJSON =  {
     TABLE_ARTERE: {
         'id_col': 'id_artere',
@@ -176,12 +178,16 @@ GRACE_TABLE_INFOS_GEOJSON =  {
     TABLE_NOEUD: {
         'id_col': 'id_noeud',
         'geom_col': 'geom',
-        'select_col': '\'noeud\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, id_com_insee_noeud as "Insee"'
+        'select_col': '\'noeud\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, id_com_insee_noeud as "Insee"',
+        'select_result_col': '\'noeud\' as typeobj, id_noeud as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as geom',
+        'search_col': ['id_noeud', 'voie_noeud']
     },
     TABLE_FOURREAU: {
         'id_col': 'id_four',
         'geom_col': 'geom',
-        'select_col': '\'fourreau\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, type_four as "Type", etat_four as "Etat"'
+        'select_col': '\'fourreau\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, type_four as "Type", etat_four as "Etat"',
+        'select_result_col': '\'fourreau\' as typeobj, id_four as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as geom',
+        'search_col': ['id_four', 'etat_four']        
     }
     
     
