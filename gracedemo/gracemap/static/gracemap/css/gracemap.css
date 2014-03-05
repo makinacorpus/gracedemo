@@ -81,7 +81,24 @@ input[type="checkbox"] {
     margin-right: 3px;
 }
 
+#search #search-results {
+    max-height: 150px;
+}
+
 #search #search-results ul {
-    list-style: none;
-    padding-left: 0px;
+    padding-left: 30px; 
+}
+
+#search #search-results ul li.artere {
+    list-style-image: url('../img/artere.png');
+}
+#search #search-results ul li.noeud {
+    list-style-image: url('../img/noeud.png');
+}
+#search #search-results ul li.fourreau {
+    list-style-image: url('../img/fourreau.png');
+}
+
+.mCSB_dragger {
+    background: #ccc;
 }

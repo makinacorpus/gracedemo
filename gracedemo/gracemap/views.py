@@ -161,39 +161,40 @@ def get_result_object_json(response_content, criteria):
     Param: criteria : criteria of search
     """
 
-    table_name = settings.TABLE_ARTERE;
-    select_result_columns = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('select_result_col')
-    search_columns = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('search_col')
-    geom_column = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('geom_col')
-    where_tab = []
-    
-    for search_col in search_columns:
-        where_criteria = '%s ilike \'%%%%%s%%%%\'' % (search_col, criteria)
-        where_tab.append(where_criteria)
-    
-    select_string = "SELECT %s FROM %s WHERE %s" % (select_result_columns, table_name, ' OR '.join(where_tab))
-    
-    cursor = query_db(select_string)
-    i = 0  # feature index
-    for row in cursor.fetchall():
-        data = zip([column[0] for column in cursor.description], row)
-        #feat_dict = SortedDict({"type": "Feature", "id": i})
-        feat_dict = SortedDict({})
-        properties_dict = SortedDict({})
-        for attr in data:
-            key = attr[0]
-            val = attr[1]
-            if key == "geom":
-                geom = loads(val)
-                geometry_dict = dumps(geom)
-                feat_dict["geometry"] = simplejson.loads(geometry_dict)
-            else:
-                properties_dict[key] = val
-                feat_dict[key] = val
-
-        #feat_dict["properties"] = properties_dict
+    for table_name in settings.GRACE_TABLES:
+        #table_name = settings.TABLE_ARTERE;
+        select_result_columns = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('select_result_col')
+        search_columns = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('search_col')
+        geom_column = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('geom_col')
+        where_tab = []
         
+        for search_col in search_columns:
+            where_criteria = '%s ilike \'%%%%%s%%%%\'' % (search_col, criteria)
+            where_tab.append(where_criteria)
+        
+        select_string = "SELECT %s FROM %s WHERE %s" % (select_result_columns, table_name, ' OR '.join(where_tab))
+        
+        cursor = query_db(select_string)
+        i = 0  # feature index
+        for row in cursor.fetchall():
+            data = zip([column[0] for column in cursor.description], row)
+            #feat_dict = SortedDict({"type": "Feature", "id": i})
+            feat_dict = SortedDict({})
+            properties_dict = SortedDict({})
+            for attr in data:
+                key = attr[0]
+                val = attr[1]
+                if key == "geom":
+                    geom = loads(val)
+                    geometry_dict = dumps(geom)
+                    feat_dict["geometry"] = simplejson.loads(geometry_dict)
+                else:
+                    properties_dict[key] = val
+                    feat_dict[key] = val
 
-        i = i + 1
-        response_content.append(feat_dict)
+            #feat_dict["properties"] = properties_dict
+            
+
+            i = i + 1
+            response_content.append(feat_dict)
     

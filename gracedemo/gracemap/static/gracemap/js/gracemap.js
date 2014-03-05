@@ -17,11 +17,22 @@ var gdView;
 
     var results = new Results();
     var ResultsView = Backbone.View.extend({
-        template: _.template('<li><a href="#" onclick="gdView.centerMap(<%= geometry.coordinates %>)"><%= typeobj %> (<%= id %>)</a></li>'),
+        init: true,
+        template: _.template('<li class="<%= typeobj %>"><a href="#" onclick="gdView.centerMap(<%= geometry.coordinates %>)"><%= typeobj %> (<%= id %>)</a></li>'),
         render: function(){
+            this.$el.empty();
             this.collection.each(function(model){
                 this.$el.append(this.template(model.toJSON()));
-            }, this)
+            }, this);
+            
+            if(this.init) {
+                $('#search-results').mCustomScrollbar({
+                    scrollButtons:{
+                        enable:true
+                    }
+                });        
+                this.init = false;
+            }
         }
     });
     var resultsView = new ResultsView({ el: $('#search-results ul'), collection: results });
@@ -290,30 +301,21 @@ var gdView;
         },
         
         doSearchObjHandler: function (e) {
-            Backbone.ajax({
-                dataType: "json",
-                url: '/search/' + $('#obj-to-search').val(),
-                data: "",
-                success: function(val){
-                    results = new Results(val);
+            if($('#obj-to-search').val() != '') {
+                Backbone.ajax({
+                    dataType: "json",
+                    url: '/search/' + $('#obj-to-search').val(),
+                    data: "",
+                    success: function(val){
+                        results = new Results(val);
+                        resultsView.collection = results;
+                        resultsView.render();
+                    },
+                    error: function(val){
+                    }
                     
-                    /*$('#search-resul ul').empty();
-                    for(feature in val.features) {
-                        x = val.features[feature].geometry.coordinates[0];
-                        y = val.features[feature].geometry.coordinates[1];
-                        typeobj = val.features[feature].properties.typeobj;
-                        id = val.features[feature].properties.id;
-                        
-                        $('#search-results ul').append('<li><a href="/user/messages"></a></li>');
-                    }*/
-                    //collection.add(val);
-                    resultsView.collection = results;
-                    resultsView.render();
-                },
-                error: function(val){
-                }
-                
-            });
+                });
+            }
         },        
         
         centerMap: function (x, y) {
