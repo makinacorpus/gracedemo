@@ -74,3 +74,14 @@ input[type="checkbox"] {
 .btn-load {
     padding: 1px;
 }
+
+#search #obj-to-search {
+    width: 127px;
+    float: left;
+    margin-right: 3px;
+}
+
+#search #search-results ul {
+    list-style: none;
+    padding-left: 0px;
+}

@@ -169,7 +169,9 @@ GRACE_TABLE_INFOS_GEOJSON =  {
     TABLE_ARTERE: {
         'id_col': 'id_artere',
         'geom_col': 'geom',
-        'select_col': '\'artere\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, id_com_insee_artere as "Insee", noeud_a as "Noeud A", noeud_b as "Noeud B"'
+        'select_col': '\'artere\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, id_com_insee_artere as "Insee", noeud_a as "Noeud A", noeud_b as "Noeud B"',
+        'select_result_col': '\'artere\' as typeobj, id_artere as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as geom',
+        'search_col': ['id_artere', 'voie_artere']
     },
     TABLE_NOEUD: {
         'id_col': 'id_noeud',

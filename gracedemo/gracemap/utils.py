@@ -22,20 +22,20 @@ def commit_transaction():
     Commit the transaction
     """
     transaction.commit_unless_managed(using=settings.DATABASE_ID)
-    logger.debug(_("Chalets SQL: COMMIT"))
+    logger.debug(_("Grace demo SQL: COMMIT"))
 
 
 def query_db(sqlquery):
     """
-    Executes a single query on the Chalets database defined in project settings.
+    Executes a single query on the Grace demo database defined in project settings.
     Returns a `cursor`
 
     sqlquery -- a SQL statement
     """
-    # Connect to Chalets DB
+    # Connect to Grace demo DB
     cursor = connections[settings.DATABASE_ID].cursor()
     # Execute SQL
-    logger.debug(_("Chalets SQL: %s") % sqlquery)
+    logger.debug(_("Grace demo SQL: %s") % sqlquery)
     cursor.execute(sqlquery)
     return cursor
 
@@ -79,7 +79,7 @@ def build_sync_query(datafields, table_name=None):
     datafields = dict((k.lower(), v) for k, v in datafields.iteritems())
 
     # Get column ID for the current table
-    id_col = settings.CHALETS_TABLE_INFOS_GEOJSON.get(table_name).get('id_col')
+    id_col = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('id_col')
 
     updates = []
     for field, value in datafields.items():
