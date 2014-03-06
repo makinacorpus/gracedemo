@@ -162,7 +162,6 @@ def get_result_object_json(response_content, criteria):
     """
 
     for table_name in settings.GRACE_TABLES:
-        #table_name = settings.TABLE_ARTERE;
         select_result_columns = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('select_result_col')
         search_columns = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('search_col')
         geom_column = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('geom_col')
@@ -184,10 +183,10 @@ def get_result_object_json(response_content, criteria):
             for attr in data:
                 key = attr[0]
                 val = attr[1]
-                if key == "geom":
+                if key == "center" or key == "geom":
                     geom = loads(val)
                     geometry_dict = dumps(geom)
-                    feat_dict["geometry"] = simplejson.loads(geometry_dict)
+                    feat_dict[key] = simplejson.loads(geometry_dict)
                 else:
                     properties_dict[key] = val
                     feat_dict[key] = val

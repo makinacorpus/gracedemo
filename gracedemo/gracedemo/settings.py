@@ -172,21 +172,21 @@ GRACE_TABLE_INFOS_GEOJSON =  {
         'id_col': 'id_artere',
         'geom_col': 'geom',
         'select_col': '\'artere\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, id_com_insee_artere as "Insee", noeud_a as "Noeud A", noeud_b as "Noeud B"',
-        'select_result_col': '\'artere\' as typeobj, id_artere as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as geom',
+        'select_result_col': '\'artere\' as typeobj, id_artere as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(geom, 4326)) as geom',
         'search_col': ['id_artere', 'voie_artere']
     },
     TABLE_NOEUD: {
         'id_col': 'id_noeud',
         'geom_col': 'geom',
         'select_col': '\'noeud\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, id_com_insee_noeud as "Insee"',
-        'select_result_col': '\'noeud\' as typeobj, id_noeud as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as geom',
+        'select_result_col': '\'noeud\' as typeobj, id_noeud as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(geom, 4326)) as geom',
         'search_col': ['id_noeud', 'voie_noeud']
     },
     TABLE_FOURREAU: {
         'id_col': 'id_four',
         'geom_col': 'geom',
         'select_col': '\'fourreau\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, type_four as "Type", etat_four as "Etat"',
-        'select_result_col': '\'fourreau\' as typeobj, id_four as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as geom',
+        'select_result_col': '\'fourreau\' as typeobj, id_four as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(geom, 4326)) as geom',
         'search_col': ['id_four', 'etat_four']        
     }
     

@@ -1,5 +1,24 @@
 var gdView;
 
+var stylesSearch = {
+    'point': [new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 10,
+            fill: new ol.style.Fill({
+                    color: 'rgba(255,0,0,0.7)',
+            }),
+            stroke: new ol.style.Stroke({color: '#FF0000', width: 1})
+        })
+    })],
+    'line': [new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'rgba(255,0,0,0.7)',
+            width: 10
+        })
+    })]
+};
+
+
 (function($){
     
     // Search obj model and view
@@ -7,7 +26,8 @@ var gdView;
         defaults: {
             "id": "Unknown",
             "typeobj": "Unknown",
-            "geometry": "Unknown"
+            "geom": "Unknown",
+            "center": "Unknown"
         }
     });
 
@@ -18,11 +38,32 @@ var gdView;
     var results = new Results();
     var ResultsView = Backbone.View.extend({
         init: true,
-        template: _.template('<li class="<%= typeobj %>"><a href="#" onclick="gdView.centerMap(<%= geometry.coordinates %>)"><%= typeobj %> (<%= id %>)</a></li>'),
+        template: _.template('<li class="<%= typeobj %>"><a href="#" onclick="gdView.centerMap(<%= center.coordinates %>)"><%= typeobj %> (<%= id %>)</a></li>'),
         render: function(){
             this.$el.empty();
+            gdView.vectorSource.clear();
             this.collection.each(function(model){
+                // Add result to list
                 this.$el.append(this.template(model.toJSON()));
+                
+                // Highlight on map
+                if(model.attributes.geom.type == 'Point') {
+                    gdView.vectorSource.addFeature(new ol.Feature({
+                        'geometry': new ol.geom.Point(new ol.proj.transform(model.attributes.geom.coordinates, 'EPSG:4326', 'EPSG:3857')),
+                        'type': 'point'
+                    }));
+                }
+                if(model.attributes.geom.type == 'MultiLineString') {
+                    var tabCoords = new Array();
+                    for(i = 0 ; i < model.attributes.geom.coordinates[0].length; i++)
+                        tabCoords.push(new ol.proj.transform(model.attributes.geom.coordinates[0][i], 'EPSG:4326', 'EPSG:3857'));
+                    gdView.vectorSource.addFeature(new ol.Feature({
+                        'geometry': new ol.geom.LineString(tabCoords),
+                        'type': 'line'
+                    }));
+                }
+                
+                
             }, this);
             
             if(this.init) {
@@ -51,6 +92,8 @@ var gdView;
         HOST_URL: 'http://open.mapquestapi.com',
         SAMPLE_POST: '',
         searchType: '',
+        vectorSource: '',
+        vector: '',
 
         events: {
             'click #search_obj' : 'doSearchObjHandler',
@@ -154,7 +197,18 @@ var gdView;
                     }
                     return highlightStyleCache[text];
                 }
-            });    
+            });  
+            
+            // vector layer for search results
+            this.vectorSource = new ol.source.Vector({});
+            this.vector = new ol.layer.Vector({
+                source: this.vectorSource,
+                style: function(feature, resolution) {
+                    return stylesSearch[feature.get('type')];
+                }
+            });        
+            this.map.addLayer(this.vector);
+
         },
         
         // Get infos on features
@@ -343,7 +397,13 @@ var gdView;
         
         centerMap: function (x, y) {
             var new_center = ol.proj.transform([x*1.0, y*1.0], 'EPSG:4326', 'EPSG:3857');
-            this.view.setCenter(new_center); 
+            var pan = ol.animation.pan({
+                duration: 1000,
+                source: (this.view.getCenter())
+            });
+            this.map.beforeRender(pan);
+            this.view.setCenter(new_center);            
+            
         }
 
   });
