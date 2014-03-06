@@ -67,7 +67,7 @@ var gdView;
         },
         
         init_map: function() {
-            this.SAMPLE_POST = this.HOST_URL + '/nominatim/v1/search.php?format=json&json_callback=gdView.renderSearchPlace';
+            this.SAMPLE_POST = this.HOST_URL + '/nominatim/v1/search.php?format=json&json_callback=gdView.renderSearchPlaceNominatim';
             osm = new ol.source.OSM('OSM');
             osmLayer = new ol.layer.Tile({source: osm});
             /*osmLayer.on('postcompose', function(event) {
@@ -276,19 +276,42 @@ var gdView;
 
         // Geolocalisation
         doSearchPlace: function () {
-            var newURL = this.SAMPLE_POST + "&q=" + $('#place-to-search').val();
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = newURL;
-            document.body.appendChild(script);
+            
+            geocoder_provider = $("input[name='optionsLocalisationRadios']:checked").val();
+            if(geocoder_provider == 'nominatim') {
+                var newURL = this.SAMPLE_POST + "&q=" + $('#place-to-search').val();
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = newURL;
+                document.body.appendChild(script);
+            } else {
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': $('#place-to-search').val() }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        //console.log(results[0].geometry.location);                              
+                        x = results[0].geometry.location.lng();
+                        y = results[0].geometry.location.lat();
+                        var new_center = ol.proj.transform([x*1.0, y*1.0], 'EPSG:4326', 'EPSG:3857');
+                        var pan = ol.animation.pan({
+                            duration: 2000,
+                            source: (gdView.view.getCenter())
+                        });
+                        gdView.map.beforeRender(pan);
+                        gdView.view.setCenter(new_center);            
+                        
+                    }
+                    else {
+                        console.log("Geocoding failed: " + status);                            
+                    }
+                });                
+            }
         },
 
-        renderSearchPlace: function (response) {
+        renderSearchPlaceNominatim: function (response) {
             if(response){
                 for(var i =0; i < response.length; i++){
                     var result = response[i];
                     var new_center = ol.proj.transform([result.lon*1.0, result.lat*1.0], 'EPSG:4326', 'EPSG:3857');
-                    //var new_center = ol.proj.transform([-0.12755, 51.507222], 'EPSG:4326', 'EPSG:3857');
                     var pan = ol.animation.pan({
                         duration: 2000,
                         source: (this.view.getCenter())

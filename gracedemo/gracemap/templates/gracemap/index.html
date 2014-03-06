@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}gracemap/js/jquery-ui-1.10.4/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}gracemap/js/malihu-custom-scrollbar/jquery.mCustomScrollbar.css" />
 
+    <script src="http://maps.google.com/maps?file=api&amp;v=3" type="text/javascript"></script>
     <script src='{{ STATIC_URL }}gracemap/js/jquery-ui-1.10.4/js/jquery-1.10.2.js' type="text/javascript"></script>
     <script src='{{ STATIC_URL }}gracemap/js/jquery-ui-1.10.4/js/jquery-ui-1.10.4.custom.min.js' type="text/javascript"></script>
     <script src="{{ STATIC_URL }}gracemap/js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
@@ -113,9 +114,21 @@
             </ul>
             <div class="navbar-form navbar-left" role="search">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Commune" id="place-to-search">
+                    <input type="text" class="form-control" placeholder="Tapez votre adresse..." id="place-to-search">
                 </div>
                 <button id="search_place" class="btn btn-default">Localiser</button>
+                <div class="radio">
+                <label>
+                    <input type="radio" name="optionsLocalisationRadios" id="optionsLocalisationRadios1" value="nominatim" checked>
+                    Nominatim
+                </label>
+                </div>
+                <div class="radio">
+                <label>
+                    <input type="radio" name="optionsLocalisationRadios" id="optionsLocalisationRadios2" value="google">
+                    Google
+                </label>
+                </div>                
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#" data-target="#pulldown-content" data-toggle="collapse">Widgets</a></li>
