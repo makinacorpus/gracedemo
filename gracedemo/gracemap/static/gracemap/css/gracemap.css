@@ -102,3 +102,12 @@ input[type="checkbox"] {
 .mCSB_dragger {
     background: #ccc;
 }
+
+
+.layer-item {
+    width:16px;
+    height:18px;
+    background: #999;
+    margin-top:2px;
+    float: left;
+}

@@ -20,6 +20,75 @@ var stylesSearch = {
 
 
 (function($){
+
+    // Layers model
+    LayersModel = Backbone.Model.extend({
+        defaults: {
+            "id": "Unknown",
+            "label": "Unknown",
+            "type": "Unknown",
+            "url": "Unknown",
+            "num_layer": 0,
+            "reload_btn": ''
+        }});
+
+    LayersCollection = Backbone.Collection.extend({
+        model: LayersModel
+    });
+    var layers = new LayersCollection();
+    
+    var LayersView = Backbone.View.extend({
+        init: true,
+        template: _.template( $('#layerTemplate').html()),
+        render: function(){
+            this.$el.empty();
+
+            this.collection.each(function(model){
+                // Add layer to treeview
+                model.attributes.num_layer = gdView.num_layer;
+                
+                //if(model.attributes.type == 'json')
+                //    reloadBtn = '<input type="button" class="btn btn-default btn-load" value="Reload" id="'+this.num_layer+'" onclick="gdView.reloadGeoJSON(this)"/>';
+                if(model.attributes.type == 'wms')
+                    reloadBtn = '<input type="button" class="btn btn-default btn-load" value="Load JSON" id="'+model.attributes.num_layer+'" onclick="gdView.loadGeoJSON(this)"/>';
+                
+                model.attributes.reload_btn = reloadBtn;
+                
+                this.$el.append(this.template(model.toJSON()));
+
+                // treeview for layers
+                $('#tree-layers').aciTree({
+                    ajax: {
+                        url: '/layers'
+                    },
+                    checkbox: true,
+                    radio: true,
+                    unique: true
+                });            
+                $('#tree-layers').on('acitree', function(event, api, item, eventName, options){
+                    switch (eventName){
+                        case 'checked':
+                            if (api.isItem(item)){
+                                console.log(api.getId(item));
+                                console.log(api.getLabel(item));
+                            }
+                    }
+                });
+                
+                // Add layer to map
+                layerAdded = gdView.addWMS(model.attributes.id, QGISSERVER_URL);
+                
+                gdView.layersArray.push(layerAdded);
+                gdView.layersNameArray.push(model.attributes.id);
+                gdView.num_layer = gdView.num_layer + 1;
+                
+            }, this);
+            
+        }
+    });
+    var layersView = new LayersView({ el: $('#layers_list'), collection: layers });
+
+    
     
     // Search obj model and view
     var Result = Backbone.Model.extend({
@@ -77,7 +146,6 @@ var stylesSearch = {
         }
     });
     var resultsView = new ResultsView({ el: $('#search-results ul'), collection: results });
-
 
     // Map view
     var GraceDemoView = Backbone.View.extend({
@@ -147,13 +215,50 @@ var stylesSearch = {
                 view: this.view
             });
 
-            this.addWMS("artere");
-            this.addWMS("noeud");
+            // Display layers
+            Backbone.ajax({
+                dataType: "json",
+                url: '/layersinfos',
+                data: "",
+                success: function(val){
+                    layers = new LayersCollection(val);
+                    layersView.collection = layers;
+                    layersView.render();
+                },
+                error: function(val){
+                }
+            });
             
-            //addGeoJSON("artere", true);    
-            //addGeoJSON("noeud", true);
-            //addGeoJSON("fourreau");  
             
+            
+/*
+var my_key =  " qxys8s986meeu8r1euqfnihv"; // clé de développement du site api.ign.fr
+var carteLayerConf= Geoportal.Catalogue.CONFIG["GEOGRAPHICALGRIDSYSTEMS.MAPS$GEOPORTAIL:OGC:WMTS"] ;
+    var projection = ol.proj.get('EPSG:3857');
+    var matrixIds = new Array(19);
+    for (var z = 0; z < 19; ++z) {
+      matrixIds[z] = ''+z ; //carteLayerConf.layerOptions.matrixIds[z].identifier;
+    }
+var ignLayer = 
+          new ol.layer.TileLayer({
+            source: new ol.source.WMTS({
+                url: gGEOPORTALRIGHTSMANAGEMENT[gGEOPORTALRIGHTSMANAGEMENT.apiKey].resources['GEOGRAPHICALGRIDSYSTEMS.MAPS:WMTS'].url,
+                layer: 'GEOGRAPHICALGRIDSYSTEMS.MAPS',
+                matrixSet: carteLayerConf.layerOptions.matrixSet,
+                format: carteLayerConf.serviceParams["WMTS"].format,
+                projection: carteLayerConf.layerOptions.projection,
+                tileGrid: new ol.tilegrid.WMTS({
+                    // origin: carteLayerConf.layerOptions.matrixIds[0].topLeftCorner,
+                    origin: [-20037508, 20037508],
+                    resolutions: carteLayerConf.layerOptions.nativeResolutions,
+                    matrixIds: matrixIds,
+                }),
+                style: carteLayerConf.layerOptions.style
+            })
+          });
+this.map.addLayer(ignLayer);
+*/
+
             // Get infos
             $(this.map.getViewport()).on('mousemove', function(evt) {
                 var pixel = gdView.map.getEventPixel(evt.originalEvent);
@@ -208,7 +313,7 @@ var stylesSearch = {
                 }
             });        
             this.map.addLayer(this.vector);
-
+            
         },
         
         // Get infos on features
@@ -241,21 +346,19 @@ var stylesSearch = {
             }
         },
         
-        addWMS: function (layer) {
-            var wmsSourceArtere = new ol.source.TileWMS({
-                url: QGISSERVER_URL,
+        addWMS: function (layer, url) {
+            var wmsSource = new ol.source.TileWMS({
+                url: url,
                 params: {'LAYERS': layer}
             });
 
-            var wmsArtere = new ol.layer.Tile({
-                source: wmsSourceArtere
+            var wms = new ol.layer.Tile({
+                source: wmsSource
             });    
             
-            this.map.addLayer(wmsArtere);
+            this.map.addLayer(wms);
 
-            colorObj = '#000';
-
-            this.addLayerToLegend(wmsArtere, colorObj, layer, 'wms');
+            return wms;
         },
 
         addGeoJSON: function (table_name, init, idLayer) {

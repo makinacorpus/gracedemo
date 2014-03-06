@@ -196,4 +196,40 @@ def get_result_object_json(response_content, criteria):
 
             i = i + 1
             response_content.append(feat_dict)
+
+
+@csrf_exempt
+def get_layers(request):
+
+    response_content = []
+    sub_feat_dict_1 = SortedDict({"id": 2, "label": "OSM", "inode": False, "checkbox": False, "radio": True })
+    sub_feat_dict_2 = SortedDict({"id": 3, "label": "GMaps", "inode": False, "checkbox": False, "radio": True })
+    feat_dict = SortedDict({"id": 1, "label": "Fonds de plan", "inode": True, "checkbox": False, "radio": False , "branch": [sub_feat_dict_1, sub_feat_dict_2]})
+    response_content.append(feat_dict)
+    sub_feat_dict_3 = SortedDict({"id": 11, "label": "Arteres", "inode": False, "checkbox": True, "radio": False })
+    sub_feat_dict_4 = SortedDict({"id": 12, "label": "Noeuds", "inode": False, "checkbox": True, "radio": False })
+    feat_dict = SortedDict({"id": 10, "label": "Referentiel", "inode": True, "checkbox": True, "radio": False , "branch": [sub_feat_dict_3, sub_feat_dict_4]})
+    response_content.append(feat_dict)
+
+    response = HttpResponse()
+    simplejson.dump(response_content, response,
+                ensure_ascii=False, separators=(',', ':'))
+
+    return response
+
+
+@csrf_exempt
+def get_layers_infos(request):
+
+    response_content = []
+    feat_dict = SortedDict({"id": "artere", "label": "Artere", "type": "wms", "url": settings.QGIS_SERVER_URL})
+    response_content.append(feat_dict)
+    feat_dict = SortedDict({"id": "noeud", "label": "Noeud", "type": "wms", "url": settings.QGIS_SERVER_URL})
+    response_content.append(feat_dict)
+
+    response = HttpResponse()
+    simplejson.dump(response_content, response,
+                ensure_ascii=False, separators=(',', ':'))
+
+    return response
     
