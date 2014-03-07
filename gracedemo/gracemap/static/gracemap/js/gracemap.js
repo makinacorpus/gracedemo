@@ -48,8 +48,6 @@ var stylesSearch = {
                 // Add layer to treeview
                 model.attributes.num_layer = gdView.num_layer;
                 
-                //if(model.attributes.type == 'json')
-                //    reloadBtn = '<input type="button" class="btn btn-default btn-load" value="Reload" id="'+this.num_layer+'" onclick="gdView.reloadGeoJSON(this)"/>';
                 if(model.attributes.type == 'wms')
                     reloadBtn = '<input type="button" class="btn btn-default btn-load" value="Load JSON" id="'+model.attributes.num_layer+'" onclick="gdView.loadGeoJSON(this)"/>';
                 
@@ -61,11 +59,8 @@ var stylesSearch = {
                 gdView.apiTreeView.append(gdView.root_ref_tv, {
                         uid: model.attributes.num_layer,
                         success: function(item, options) {
-                            //alert('The folder/file items where added on ROOT !');
-                            //alert(item);
                         },
                         fail: function(item, options) {
-                            //alert('Failed to add the folder/file items on ROOT !');
                         },
                         itemData: {"id": model.attributes.num_layer, "label": model.attributes.id, "inode": false, "checkbox": true, "radio": false }
                     });
@@ -83,7 +78,6 @@ var stylesSearch = {
     });
     var layersView = new LayersView({ el: $('#layers_list'), collection: layers });
 
-    
     
     // Search obj model and view
     var Result = Backbone.Model.extend({
@@ -270,69 +264,45 @@ var stylesSearch = {
                 }
             });
             
-
-            
             // Init treeview for layers
-            
-            /*$('#tree-layers').aciTree({
-                ajax: {
-                    url: '/layers'
-                },
-                checkbox: true,
-                radio: true,
-                unique: true
-            });            
-            $('#tree-layers').on('acitree', function(event, api, item, eventName, options){
-                switch (eventName){
-                    case 'checked':
-                        if (api.isItem(item)){
-                            console.log(api.getId(item));
-                            console.log(api.getLabel(item));
-                        }
-                }
-            });*/
-            
-            this.apiTreeView = $('#tree-layers').aciTree('api');
+            this.apiTreeView = $('#tree-layers').aciTree({checkbox: true, radio: true}).aciTree('api');
             this.apiTreeView.append(null, {
                     uid: '0',
                     itemData: [
-                        {"id": "root_fdp", "label": "Fonds de plan", "inode": true},
-                        {"id": "root_ref", "label": "Référentiel", "inode": true, "checkbox": true}
+                        {"id": "root_ref", "label": "Référentiel", "inode": true, "checkbox": true, "radio": false}
                               ]
                 });
-            this.root_fdp_tv = this.apiTreeView.first();
-            this.root_ref_tv = this.root_fdp_tv.next();
-
+            this.root_ref_tv = this.apiTreeView.first();
+            //this.root_other = this.root_ref_tv.next();
             
             
-            
-/*
-var my_key =  " qxys8s986meeu8r1euqfnihv"; // clé de développement du site api.ign.fr
-var carteLayerConf= Geoportal.Catalogue.CONFIG["GEOGRAPHICALGRIDSYSTEMS.MAPS$GEOPORTAIL:OGC:WMTS"] ;
-    var projection = ol.proj.get('EPSG:3857');
-    var matrixIds = new Array(19);
-    for (var z = 0; z < 19; ++z) {
-      matrixIds[z] = ''+z ; //carteLayerConf.layerOptions.matrixIds[z].identifier;
-    }
-var ignLayer = 
-          new ol.layer.TileLayer({
-            source: new ol.source.WMTS({
-                url: gGEOPORTALRIGHTSMANAGEMENT[gGEOPORTALRIGHTSMANAGEMENT.apiKey].resources['GEOGRAPHICALGRIDSYSTEMS.MAPS:WMTS'].url,
-                layer: 'GEOGRAPHICALGRIDSYSTEMS.MAPS',
-                matrixSet: carteLayerConf.layerOptions.matrixSet,
-                format: carteLayerConf.serviceParams["WMTS"].format,
-                projection: carteLayerConf.layerOptions.projection,
-                tileGrid: new ol.tilegrid.WMTS({
-                    // origin: carteLayerConf.layerOptions.matrixIds[0].topLeftCorner,
-                    origin: [-20037508, 20037508],
-                    resolutions: carteLayerConf.layerOptions.nativeResolutions,
-                    matrixIds: matrixIds,
-                }),
-                style: carteLayerConf.layerOptions.style
-            })
-          });
-this.map.addLayer(ignLayer);
-*/
+            /* Test geoportail
+            var my_key =  " qxys8s986meeu8r1euqfnihv"; // clé de développement du site api.ign.fr
+            var carteLayerConf= Geoportal.Catalogue.CONFIG["GEOGRAPHICALGRIDSYSTEMS.MAPS$GEOPORTAIL:OGC:WMTS"] ;
+                var projection = ol.proj.get('EPSG:3857');
+                var matrixIds = new Array(19);
+                for (var z = 0; z < 19; ++z) {
+                matrixIds[z] = ''+z ; //carteLayerConf.layerOptions.matrixIds[z].identifier;
+                }
+            var ignLayer = 
+                    new ol.layer.TileLayer({
+                        source: new ol.source.WMTS({
+                            url: gGEOPORTALRIGHTSMANAGEMENT[gGEOPORTALRIGHTSMANAGEMENT.apiKey].resources['GEOGRAPHICALGRIDSYSTEMS.MAPS:WMTS'].url,
+                            layer: 'GEOGRAPHICALGRIDSYSTEMS.MAPS',
+                            matrixSet: carteLayerConf.layerOptions.matrixSet,
+                            format: carteLayerConf.serviceParams["WMTS"].format,
+                            projection: carteLayerConf.layerOptions.projection,
+                            tileGrid: new ol.tilegrid.WMTS({
+                                // origin: carteLayerConf.layerOptions.matrixIds[0].topLeftCorner,
+                                origin: [-20037508, 20037508],
+                                resolutions: carteLayerConf.layerOptions.nativeResolutions,
+                                matrixIds: matrixIds,
+                            }),
+                            style: carteLayerConf.layerOptions.style
+                        })
+                    });
+            this.map.addLayer(ignLayer);
+            */
 
             // Get infos
             $(this.map.getViewport()).on('mousemove', function(evt) {
@@ -344,9 +314,8 @@ this.map.addLayer(ignLayer);
                 gdView.displayFeatureInfo(evt.pixel);
             });
             
-            
-            //map.on('moveend', onMoveEnd);
-            
+
+            // Highlight
             var highlightStyleCache = {};
             this.featureOverlay = new ol.FeatureOverlay({
                 map: this.map,
@@ -393,7 +362,7 @@ this.map.addLayer(ignLayer);
             this.viewProjection = (this.map.getView().getProjection());
             
             
-            // get feature infos
+            // Get feature infos
             this.map.on('singleclick', function(evt) {
                 // get active layer
                 var foundLayer = layers.where({active:true});
@@ -409,8 +378,6 @@ this.map.addLayer(ignLayer);
                 else
                     alert("Il n'y a pas de couche active");
             });
-            
-            
             
         },
         
@@ -525,8 +492,6 @@ this.map.addLayer(ignLayer);
             reloadBtn = '';
             if(type == 'json')
                 reloadBtn = '<input type="button" class="btn btn-default btn-load" value="Reload" id="'+this.num_layer+'" onclick="gdView.reloadGeoJSON(this)"/>';
-            if(type == 'wms')
-                reloadBtn = '<input type="button" class="btn btn-default btn-load" value="Load JSON" id="'+this.num_layer+'" onclick="gdView.loadGeoJSON(this)"/>';
             
             $('#layers_list').append('<li><div style="width:16px;height:18px;background:'+colorObj+';margin-top:2px; float: left;"></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+this.num_layer+'" onclick="gdView.displayLayer(this)" checked> '+'<span class="layername">'+id+'</span>'+' '+reloadBtn+'</li>');
             
