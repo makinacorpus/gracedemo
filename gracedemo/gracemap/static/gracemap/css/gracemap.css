@@ -98,6 +98,9 @@ input[type="checkbox"] {
 #search #search-results ul li.fourreau {
     list-style-image: url('../img/fourreau.png');
 }
+#search #search-results ul li.tranchee {
+    list-style-image: url('../img/tranchee.png');
+}
 
 .mCSB_dragger {
     background: #ccc;
