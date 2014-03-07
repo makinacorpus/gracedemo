@@ -129,3 +129,9 @@ iframe {
 .layer-active {
     color: #ff0000;
 }
+
+
+.modal-header {
+    border-bottom: none;
+    color: #428BCA;
+}
