@@ -223,11 +223,11 @@ def get_layers(request):
 def get_layers_infos(request):
 
     response_content = []
+    feat_dict = SortedDict({"id": "tranchee", "label": "Tranchee", "type": "wms", "url": settings.QGIS_SERVER_URL})
+    response_content.append(feat_dict)
     feat_dict = SortedDict({"id": "artere", "label": "Artere", "type": "wms", "url": settings.QGIS_SERVER_URL})
     response_content.append(feat_dict)
     feat_dict = SortedDict({"id": "noeud", "label": "Noeud", "type": "wms", "url": settings.QGIS_SERVER_URL})
-    response_content.append(feat_dict)
-    feat_dict = SortedDict({"id": "tranchee", "label": "Tranchee", "type": "wms", "url": settings.QGIS_SERVER_URL})
     response_content.append(feat_dict)
 
     response = HttpResponse()
