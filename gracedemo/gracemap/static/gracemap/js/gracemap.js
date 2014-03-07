@@ -62,7 +62,7 @@ var stylesSearch = {
                         },
                         fail: function(item, options) {
                         },
-                        itemData: {"id": model.attributes.num_layer, "label": model.attributes.id, "inode": false, "checkbox": true, "radio": false }
+                        itemData: {"id": model.attributes.num_layer, "label": model.attributes.id, "inode": false, "checkbox": true, "radio": false, "layerName": model.attributes.id}
                     });
                 
                 // Add layer to map
@@ -274,6 +274,26 @@ var stylesSearch = {
                 });
             this.root_ref_tv = this.apiTreeView.first();
             //this.root_other = this.root_ref_tv.next();
+
+            $('#tree-layers').on('acitree', function(event, api, item, eventName, options){
+                id_checked = api.getId(item);
+                switch (eventName){
+                    case 'checked':
+                        if (api.isItem(item)){
+                            var itemData = gdView.apiTreeView.itemData(item);
+                            gdView.layersArray[itemData.id].setVisible(true);
+                        }
+                        break;
+                    case 'unchecked':
+                        if (api.isItem(item)){
+                            var itemData = gdView.apiTreeView.itemData(item);
+                            gdView.layersArray[itemData.id].setVisible(false);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            });            
             
             
             /* Test geoportail
