@@ -56,27 +56,21 @@ var stylesSearch = {
                 
                 this.$el.append(this.template(model.toJSON()));
 
-                // treeview for layers
-                $('#tree-layers').aciTree({
-                    ajax: {
-                        url: '/layers'
-                    },
-                    checkbox: true,
-                    radio: true,
-                    unique: true
-                });            
-                $('#tree-layers').on('acitree', function(event, api, item, eventName, options){
-                    switch (eventName){
-                        case 'checked':
-                            if (api.isItem(item)){
-                                console.log(api.getId(item));
-                                console.log(api.getLabel(item));
-                            }
-                    }
-                });
+                // Add to treeview
+                gdView.apiTreeView.append(gdView.root_ref_tv, {
+                        uid: model.attributes.num_layer,
+                        success: function(item, options) {
+                            //alert('The folder/file items where added on ROOT !');
+                            //alert(item);
+                        },
+                        fail: function(item, options) {
+                            //alert('Failed to add the folder/file items on ROOT !');
+                        },
+                        itemData: {"id": model.attributes.num_layer, "label": model.attributes.id, "inode": false, "checkbox": true, "radio": false }
+                    });
                 
                 // Add layer to map
-                layerAdded = gdView.addWMS(model.attributes.id, QGISSERVER_URL);
+                layerAdded = gdView.addWMS(model.attributes.id, model.attributes.url);
                 
                 gdView.layersArray.push(layerAdded);
                 gdView.layersNameArray.push(model.attributes.id);
@@ -162,6 +156,9 @@ var stylesSearch = {
         searchType: '',
         vectorSource: '',
         vector: '',
+        apiTreeView: '',
+        root_fdp_tv: '',
+        root_ref_tv: '',
 
         events: {
             'click #search_obj' : 'doSearchObjHandler',
@@ -178,6 +175,7 @@ var stylesSearch = {
         },
         
         init_map: function() {
+            var base_layers = [];
             this.SAMPLE_POST = this.HOST_URL + '/nominatim/v1/search.php?format=json&json_callback=gdView.renderSearchPlaceNominatim';
             osm = new ol.source.OSM('OSM');
             osmLayer = new ol.layer.Tile({source: osm});
@@ -191,7 +189,44 @@ var stylesSearch = {
                 }
                 context.putImageData(image, 0, 0);
             });*/
+            base_layers.push(osmLayer);
 
+            var baseLayersList = [
+                'OSM',
+                'Aerial',
+                'AerialWithLabels',
+                'Road'
+            ];
+
+            // Bing maps
+            var bingStyles = [
+                'Aerial',
+                'AerialWithLabels',
+                'Road'
+            ];
+            
+            var i, ii;
+            for (i = 0, ii = bingStyles.length; i < ii; ++i) {
+                base_layers.push(new ol.layer.Tile({
+                    visible: false,
+                    preload: Infinity,
+                    source: new ol.source.BingMaps({
+                        key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3',
+                    imagerySet: bingStyles[i]
+                    })
+                }));
+            }
+
+            $('#layer-select').change(function() {
+                var style = $(this).find(':selected').val();
+                var i, ii;
+                for (i = 0, ii = base_layers.length; i < ii; ++i) {
+                    base_layers[i].setVisible(baseLayersList[i] == style);
+                }
+            });
+            $('#layer-select').trigger('change');            
+            
+            
             var mousePositionControl = new ol.control.MousePosition({
                 coordinateFormat: ol.coordinate.createStringXY(4),
                 projection: 'EPSG:4326',
@@ -207,9 +242,7 @@ var stylesSearch = {
             
             this.map = new ol.Map({
                 controls: ol.control.defaults().extend([mousePositionControl]),
-                layers: [
-                    osmLayer
-                ],
+                layers: base_layers,
                 renderer: 'canvas',
                 target: 'map',
                 view: this.view
@@ -228,6 +261,40 @@ var stylesSearch = {
                 error: function(val){
                 }
             });
+            
+
+            
+            // Init treeview for layers
+            
+            /*$('#tree-layers').aciTree({
+                ajax: {
+                    url: '/layers'
+                },
+                checkbox: true,
+                radio: true,
+                unique: true
+            });            
+            $('#tree-layers').on('acitree', function(event, api, item, eventName, options){
+                switch (eventName){
+                    case 'checked':
+                        if (api.isItem(item)){
+                            console.log(api.getId(item));
+                            console.log(api.getLabel(item));
+                        }
+                }
+            });*/
+            
+            this.apiTreeView = $('#tree-layers').aciTree('api');
+            this.apiTreeView.append(null, {
+                    uid: '0',
+                    itemData: [
+                        {"id": "root_fdp", "label": "Fonds de plan", "inode": true},
+                        {"id": "root_ref", "label": "Référentiel", "inode": true, "checkbox": true}
+                              ]
+                });
+            this.root_fdp_tv = this.apiTreeView.first();
+            this.root_ref_tv = this.root_fdp_tv.next();
+
             
             
             

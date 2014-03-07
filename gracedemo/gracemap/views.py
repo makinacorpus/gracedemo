@@ -202,13 +202,14 @@ def get_result_object_json(response_content, criteria):
 def get_layers(request):
 
     response_content = []
-    sub_feat_dict_1 = SortedDict({"id": 2, "label": "OSM", "inode": False, "checkbox": False, "radio": True })
-    sub_feat_dict_2 = SortedDict({"id": 3, "label": "GMaps", "inode": False, "checkbox": False, "radio": True })
-    feat_dict = SortedDict({"id": 1, "label": "Fonds de plan", "inode": True, "checkbox": False, "radio": False , "branch": [sub_feat_dict_1, sub_feat_dict_2]})
+    #sub_feat_dict_1 = SortedDict({"id": 2, "label": "OSM", "inode": False, "checkbox": False, "radio": True })
+    #sub_feat_dict_2 = SortedDict({"id": 3, "label": "GMaps", "inode": False, "checkbox": False, "radio": True })
+    #feat_dict = SortedDict({"id": "root_fdp", "label": "Fonds de plan", "inode": True, "checkbox": False, "radio": False , "branch": [sub_feat_dict_1, sub_feat_dict_2]})
+    feat_dict = SortedDict({"id": "root_fdp", "label": "Fonds de plan", "inode": True, "checkbox": False, "radio": False})
     response_content.append(feat_dict)
-    sub_feat_dict_3 = SortedDict({"id": 11, "label": "Arteres", "inode": False, "checkbox": True, "radio": False })
-    sub_feat_dict_4 = SortedDict({"id": 12, "label": "Noeuds", "inode": False, "checkbox": True, "radio": False })
-    feat_dict = SortedDict({"id": 10, "label": "Referentiel", "inode": True, "checkbox": True, "radio": False , "branch": [sub_feat_dict_3, sub_feat_dict_4]})
+    #sub_feat_dict_3 = SortedDict({"id": 11, "label": "Arteres", "inode": False, "checkbox": True, "radio": False })
+    #sub_feat_dict_4 = SortedDict({"id": 12, "label": "Noeuds", "inode": False, "checkbox": True, "radio": False })
+    feat_dict = SortedDict({"id": "root_ref", "label": "Referentiel", "inode": True, "checkbox": True, "radio": False})
     response_content.append(feat_dict)
 
     response = HttpResponse()

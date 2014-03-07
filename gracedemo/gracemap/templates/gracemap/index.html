@@ -20,7 +20,6 @@
 <!--     <script type="text/javascript" src="http://api.ign.fr/geoportail/api/js/latest/Geoportal.js"></script> -->
 
     
-<!--     <link rel="stylesheet" type="text/css" href="css/demo.css" media="all"> -->
     <script type="text/javascript" src="{{ STATIC_URL }}gracemap/js/aciTree/js/jquery.aciPlugin.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}gracemap/js/aciTree/js/jquery.aciTree.core.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}gracemap/js/aciTree/js/jquery.aciTree.selectable.js"></script>
@@ -29,9 +28,6 @@
     
     <title>Grace demo</title>
 
-    <script>
-        var QGISSERVER_URL = '{{ qgis_server_url }}';
-    </script>
   </head>
   <body>
 
@@ -46,6 +42,12 @@
                     </a>
                     <div id="layers" class="panel-collapse in" style="height: auto;">
                         <div class="panel-body ng-scope" ng-controller="">
+                            <select id="layer-select">
+                                <option value="OSM" selected>OSM</option>
+                                <option value="Aerial">Bing Aérien</option>
+                                <option value="AerialWithLabels">Bing Aérien avec labels</option>
+                                <option value="Road">Bing routes</option>
+                            </select>
                             <ul id="layers_list">
                                 <script id="layerTemplate" type="text/template">
                                     <li><div class="layer-item"></div><input type="checkbox" name="check_<%= id %>" id="check_<%= id %>" value="<%= num_layer %>" onclick="gdView.displayLayer(this)" checked><%= label %><%= reload_btn %></li>
