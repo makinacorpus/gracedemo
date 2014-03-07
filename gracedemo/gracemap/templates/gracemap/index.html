@@ -51,7 +51,7 @@
                             </select>
                             <ul id="layers_list">
                                 <script id="layerTemplate" type="text/template">
-                                    <li><div class="layer-item"></div><input type="checkbox" name="check_<%= id %>" id="check_<%= id %>" value="<%= num_layer %>" onclick="gdView.displayLayer(this)" checked><%= label %><%= reload_btn %></li>
+                                    <li><div class="layer-item"></div><input type="checkbox" name="check_<%= id %>" id="check_<%= id %>" value="<%= num_layer %>" onclick="gdView.displayLayer(this)" checked><span class="layername" onclick="gdView.activeLayer('<%= id %>', this);"><%= label %></span><%= reload_btn %></li>
                                 </script>
                             </ul>
                         </div>
@@ -160,22 +160,41 @@
 
     <!-- A propos -->
     <div class="modal fade" id="map-infos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">A propos</h4>
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">A propos</h4>
+            </div>
+            <div class="modal-body">
+                Gr@ce démo - en cours de développement.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+            </div>
         </div>
-        <div class="modal-body">
-            Gr@ce démo - en cours de développement.
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-        </div>
-        </div>
-    </div>
     </div>
 
+    <!-- GetFeatureInfos Dialog -->
+    <div class="modal fade" id="feature-infos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Infos</h4>
+            </div>
+            <div id="feature-infos-content">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    
     <!-- Map -->
     <div id="map" class="map"></div>
 

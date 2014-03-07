@@ -111,3 +111,18 @@ input[type="checkbox"] {
     margin-top:2px;
     float: left;
 }
+
+iframe {
+    border: none;
+    width: 100%;
+}
+
+.layername {
+    margin-left: 4px;
+    margin-right: 4px;
+    cursor: pointer;
+}
+
+.layer-active {
+    color: #ff0000;
+}

@@ -29,7 +29,8 @@ var stylesSearch = {
             "type": "Unknown",
             "url": "Unknown",
             "num_layer": 0,
-            "reload_btn": ''
+            "reload_btn": '',
+            "source": ''
         }});
 
     LayersCollection = Backbone.Collection.extend({
@@ -70,7 +71,7 @@ var stylesSearch = {
                     });
                 
                 // Add layer to map
-                layerAdded = gdView.addWMS(model.attributes.id, model.attributes.url);
+                layerAdded = gdView.addWMS(model, model.attributes.id, model.attributes.url);
                 
                 gdView.layersArray.push(layerAdded);
                 gdView.layersNameArray.push(model.attributes.id);
@@ -90,7 +91,8 @@ var stylesSearch = {
             "id": "Unknown",
             "typeobj": "Unknown",
             "geom": "Unknown",
-            "center": "Unknown"
+            "center": "Unknown",
+            "active": false
         }
     });
 
@@ -159,6 +161,8 @@ var stylesSearch = {
         apiTreeView: '',
         root_fdp_tv: '',
         root_ref_tv: '',
+        viewResolution: '',
+        viewProjection: '',
 
         events: {
             'click #search_obj' : 'doSearchObjHandler',
@@ -385,9 +389,48 @@ this.map.addLayer(ignLayer);
             });        
             this.map.addLayer(this.vector);
             
+            this.viewResolution = (this.map.getView().getResolution());
+            this.viewProjection = (this.map.getView().getProjection());
+            
+            
+            // get feature infos
+            this.map.on('singleclick', function(evt) {
+                // get active layer
+                var foundLayer = layers.where({active:true});
+                if(foundLayer.length > 0) {
+                    var url = foundLayer[0].attributes.source.getGetFeatureInfoUrl(
+                        evt.coordinate, gdView.viewResolution, gdView.viewProjection,
+                        {'INFO_FORMAT': 'text/html'});
+                    if (url) {
+                        document.getElementById('feature-infos-content').innerHTML = '<iframe seamless src="' + url + '"></iframe>';
+                        $('#feature-infos').modal('show');
+                    }
+                }                
+                else
+                    alert("Il n'y a pas de couche active");
+            });
+            
+            
+            
         },
         
-        // Get infos on features
+        activeLayer: function(el, span) {
+            // set all layers not active
+            layers.each(function(model){
+                model.attributes.active = false;
+            });
+            // set clicked layer active
+            var foundLayer = layers.where({id:el});
+            if(foundLayer.length > 0) {
+                foundLayer[0].attributes.active = true;
+            }
+            
+            // Change class of legend active layer
+            $("#layers_list .layername").removeClass("layer-active");
+            $(span).addClass("layer-active");
+        },
+        
+        // Get infos on features (json)
         displayFeatureInfo: function (pixel) {
             var feature = this.map.forEachFeatureAtPixel(pixel, function(feature, layer) {
                 return feature;
@@ -417,12 +460,14 @@ this.map.addLayer(ignLayer);
             }
         },
         
-        addWMS: function (layer, url) {
+        addWMS: function (layerModel, layer, url) {
             var wmsSource = new ol.source.TileWMS({
                 url: url,
                 params: {'LAYERS': layer}
             });
 
+            layerModel.attributes.source = wmsSource;
+            
             var wms = new ol.layer.Tile({
                 source: wmsSource
             });    
@@ -483,7 +528,7 @@ this.map.addLayer(ignLayer);
             if(type == 'wms')
                 reloadBtn = '<input type="button" class="btn btn-default btn-load" value="Load JSON" id="'+this.num_layer+'" onclick="gdView.loadGeoJSON(this)"/>';
             
-            $('#layers_list').append('<li><div style="width:16px;height:18px;background:'+colorObj+';margin-top:2px; float: left;"></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+this.num_layer+'" onclick="gdView.displayLayer(this)" checked> '+id+' '+reloadBtn+'</li>');
+            $('#layers_list').append('<li><div style="width:16px;height:18px;background:'+colorObj+';margin-top:2px; float: left;"></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+this.num_layer+'" onclick="gdView.displayLayer(this)" checked> '+'<span class="layername">'+id+'</span>'+' '+reloadBtn+'</li>');
             
             this.layersArray.push(layer);
             this.layersNameArray.push(id);
