@@ -135,19 +135,11 @@
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Tapez votre adresse..." id="place-to-search">
                 </div>
-                <button id="search_place" class="btn btn-default">Localiser</button>
-                <div class="radio">
-                <label>
-                    <input type="radio" name="optionsLocalisationRadios" id="optionsLocalisationRadios1" value="nominatim" checked>
-                    Nominatim
-                </label>
-                </div>
-                <div class="radio">
-                <label>
-                    <input type="radio" name="optionsLocalisationRadios" id="optionsLocalisationRadios2" value="google">
-                    Google
-                </label>
-                </div>                
+                <select class="form-control" id="search_place">
+                    <option value="nominatim">Nominatim</option>
+                    <option value="google">Google</option>
+                </select>                
+                
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#" data-target="#pulldown-content" data-toggle="collapse">Widgets</a></li>

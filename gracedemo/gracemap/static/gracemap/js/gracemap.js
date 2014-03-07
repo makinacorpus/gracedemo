@@ -160,7 +160,7 @@ var stylesSearch = {
 
         events: {
             'click #search_obj' : 'doSearchObjHandler',
-            'click #search_place' : 'doSearchPlace',
+            'keypress #place-to-search' : 'doSearchPlace',
         },        
         
         initialize: function(){
@@ -377,8 +377,7 @@ var stylesSearch = {
                 }                
                 else
                     alert("Il n'y a pas de couche active");
-            });
-            
+            });            
         },
         
         activeLayer: function(el, span) {
@@ -513,9 +512,10 @@ var stylesSearch = {
         },
 
         // Geolocalisation
-        doSearchPlace: function () {
-            
-            geocoder_provider = $("input[name='optionsLocalisationRadios']:checked").val();
+        doSearchPlace: function (event) {
+            if(event.type == "keypress" && event.key != "Enter")
+                return;
+            geocoder_provider = $("#search_place").val();
             if(geocoder_provider == 'nominatim') {
                 var newURL = this.SAMPLE_POST + "&q=" + $('#place-to-search').val();
                 var script = document.createElement('script');
