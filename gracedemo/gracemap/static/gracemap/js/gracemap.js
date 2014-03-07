@@ -191,8 +191,12 @@ var stylesSearch = {
             });*/
             base_layers.push(osmLayer);
 
+            osmMapquest = new ol.layer.Tile({source: new ol.source.MapQuest({layer: 'osm'}), visible: false})
+            base_layers.push(osmMapquest);
+            
             var baseLayersList = [
                 'OSM',
+                'OSM_MapQuest',
                 'Aerial',
                 'AerialWithLabels',
                 'Road'
