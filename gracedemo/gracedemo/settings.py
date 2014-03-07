@@ -164,8 +164,9 @@ LOGGING = {
 TABLE_ARTERE = 'artere'
 TABLE_NOEUD = 'noeud'
 TABLE_FOURREAU = 'fourreau'
+TABLE_TRANCHEE = 'tranchee'
 
-GRACE_TABLES = [TABLE_ARTERE, TABLE_NOEUD, TABLE_FOURREAU]
+GRACE_TABLES = [TABLE_ARTERE, TABLE_NOEUD, TABLE_FOURREAU, TABLE_TRANCHEE]
 
 GRACE_TABLE_INFOS_GEOJSON =  {
     TABLE_ARTERE: {
@@ -188,6 +189,13 @@ GRACE_TABLE_INFOS_GEOJSON =  {
         'select_col': '\'fourreau\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, type_four as "Type", etat_four as "Etat"',
         'select_result_col': '\'fourreau\' as typeobj, id_four as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(geom, 4326)) as geom',
         'search_col': ['id_four', 'etat_four']        
+    },
+    TABLE_TRANCHEE: {
+        'id_col': 'id_tranchee',
+        'geom_col': 'geom',
+        'select_col': '\'tranchee\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, mod_pose_tranchee as "Pose", long_tranchee as "Longueur"',
+        'select_result_col': '\'tranchee\' as typeobj, id_tranchee as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(geom, 4326)) as geom',
+        'search_col': ['id_tranchee', 'mod_pose_tranchee']        
     }
     
     

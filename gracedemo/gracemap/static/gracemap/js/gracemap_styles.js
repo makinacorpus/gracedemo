@@ -47,6 +47,16 @@ var styles = {
       width: 5
     })
   })],
+  'tranchee': [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: '#ccb475',
+      width: 3
+    }),
+    highlight: new ol.style.Stroke({
+      color: '#FF0000',
+      width: 5
+    })
+  })],
   'MultiPoint': [new ol.style.Style({
     image: image
   })],
