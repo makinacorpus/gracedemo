@@ -280,14 +280,33 @@ var stylesSearch = {
                 switch (eventName){
                     case 'checked':
                         if (api.isItem(item)){
-                            var itemData = gdView.apiTreeView.itemData(item);
-                            gdView.layersArray[itemData.id].setVisible(true);
+                            // if root item
+                            if(gdView.apiTreeView.level(item) == 0) {
+                                children = gdView.apiTreeView.children(item, true, true);
+                                for(i = 0 ; i < children.length ; i++) {
+                                    var itemData = gdView.apiTreeView.itemData($(children[i]))
+                                    gdView.layersArray[itemData.id].setVisible(true);
+                                }
+                            }
+                            else {
+                                var itemData = gdView.apiTreeView.itemData(item);
+                                gdView.layersArray[itemData.id].setVisible(true);
+                            }
                         }
                         break;
                     case 'unchecked':
                         if (api.isItem(item)){
-                            var itemData = gdView.apiTreeView.itemData(item);
-                            gdView.layersArray[itemData.id].setVisible(false);
+                            if(gdView.apiTreeView.level(item) == 0) {
+                                children = gdView.apiTreeView.children(item, true, true);
+                                for(i = 0 ; i < children.length ; i++) {
+                                    var itemData = gdView.apiTreeView.itemData($(children[i]))
+                                    gdView.layersArray[itemData.id].setVisible(false);
+                                }
+                            }
+                            else {
+                                var itemData = gdView.apiTreeView.itemData(item);
+                                gdView.layersArray[itemData.id].setVisible(false);
+                            }
                         }
                         break;
                     default:
