@@ -52,11 +52,6 @@
                             <div class="panel-body ng-scope aciTree" id="tree-layers" ng-controller="">
                             </div>
                             <input type="button" class="btn btn-default btn-load" value="Load JSON" onclick="gdView.loadGeoJSON(this)"/>
-                            <ul id="layers_list">
-                                <!--<script id="layerTemplate" type="text/template">
-                                    <li><div class="layer-item"></div><input type="checkbox" name="check_<%= id %>" id="check_<%= id %>" value="<%= num_layer %>" onclick="gdView.displayLayer(this)" checked><span class="layername" onclick="gdView.activeLayer('<%= id %>', this);"><%= label %></span><%= reload_btn %></li>
-                                </script>-->
-                            </ul>
                         </div>
                     </div>
                 </div>
@@ -159,7 +154,19 @@
                 <h4 class="modal-title" id="myModalLabel">A propos</h4>
             </div>
             <div class="modal-body">
-                Gr@ce démo - en cours de développement.
+               <p>Gr@ce est le nom du SIG de la région Aquitaine. Le modèle de données dédié à l'aménagement numérique du territoire (ANT) a été mis sous licence libre et est en grande partie à l'origine du géostandard ANT validé par la Covadis. Toutefois Grace reste un nom d'usage pour désigner ce modèle de données.</p>
+
+                <p>Page officielle :
+                <a href="http://www.certu.fr/geostandard-amenagement-numerique-a350.html">http://www.certu.fr/geostandard-amenagement-numerique-a350.html</a>
+                </p>
+                
+                <p>Cette démo de portail, nommé grace demo, a été bâtie par Makina Corpus en collaboration avec CADaGEO et le SMOTHD (Oise-THD). Les sources sont disponibles sur :
+                <a href="https://github.com/makinacorpus/gracedemo">https://github.com/makinacorpus/gracedemo</a>
+                </p>
+
+                <p>Une liste a été inaugurée pour traiter des sujets liés.
+                <a href="mailto:geostandard-ant-users@googlegroups.com">geostandard-ant-users@googlegroups.com</a>
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
