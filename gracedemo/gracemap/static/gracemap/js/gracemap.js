@@ -29,8 +29,9 @@ var stylesSearch = {
             "type": "Unknown",
             "url": "Unknown",
             "num_layer": 0,
-            "reload_btn": '',
-            "source": ''
+            "source": '',
+            "json_layer": '',
+            "json_layer_num": ''
         }});
 
     LayersCollection = Backbone.Collection.extend({
@@ -40,7 +41,8 @@ var stylesSearch = {
     
     var LayersView = Backbone.View.extend({
         init: true,
-        template: _.template( $('#layerTemplate').html()),
+        //template: _.template( $('#layerTemplate').html()),
+        template: '',
         render: function(){
             this.$el.empty();
 
@@ -48,13 +50,8 @@ var stylesSearch = {
                 // Add layer to treeview
                 model.attributes.num_layer = gdView.num_layer;
                 
-                if(model.attributes.type == 'wms')
-                    reloadBtn = '<input type="button" class="btn btn-default btn-load" value="Load JSON" id="'+model.attributes.num_layer+'" onclick="gdView.loadGeoJSON(this)"/>';
+                labelContent = '<span class="layername" onclick="gdView.activeLayer(\''+model.attributes.id+'\', this);">'+model.attributes.id+'</span>';// + reloadBtn;
                 
-                model.attributes.reload_btn = reloadBtn;
-                
-                this.$el.append(this.template(model.toJSON()));
-
                 // Add to treeview
                 gdView.apiTreeView.append(gdView.root_ref_tv, {
                         uid: model.attributes.num_layer,
@@ -62,14 +59,13 @@ var stylesSearch = {
                         },
                         fail: function(item, options) {
                         },
-                        itemData: {"id": model.attributes.num_layer, "label": model.attributes.id, "inode": false, "checkbox": true, "radio": false, "layerName": model.attributes.id}
+                        itemData: {"id": model.attributes.num_layer, "label": labelContent, "inode": false, "checked": true, "checkbox": true, "radio": false, "layerName": model.attributes.id}
                     });
                 
                 // Add layer to map
                 layerAdded = gdView.addWMS(model, model.attributes.id, model.attributes.url);
                 
                 gdView.layersArray.push(layerAdded);
-                gdView.layersNameArray.push(model.attributes.id);
                 gdView.num_layer = gdView.num_layer + 1;
                 
             }, this);
@@ -143,7 +139,7 @@ var stylesSearch = {
         map: '',
         view: '',
         layersArray: [],
-        layersNameArray: [],
+        //layersNameArray: [],
         featureOverlay: '',
         num_layer: 0,
         highlight: '',
@@ -265,18 +261,19 @@ var stylesSearch = {
             });
             
             // Init treeview for layers
-            this.apiTreeView = $('#tree-layers').aciTree({checkbox: true, radio: true}).aciTree('api');
+            this.apiTreeView = $('#tree-layers').aciTree({checkbox: true, radio: true, checkboxClick: true}).aciTree('api');
             this.apiTreeView.append(null, {
                     uid: '0',
                     itemData: [
-                        {"id": "root_ref", "label": "Référentiel", "inode": true, "checkbox": true, "radio": false}
+                        {"id": "root_ref", "label": "Référentiel", "inode": true, "checkbox": true, "checked": true, "radio": false}
                               ]
                 });
             this.root_ref_tv = this.apiTreeView.first();
             //this.root_other = this.root_ref_tv.next();
 
             $('#tree-layers').on('acitree', function(event, api, item, eventName, options){
-                id_checked = api.getId(item);
+                //id_checked = api.getId(item);
+                //console.log(eventName);
                 switch (eventName){
                     case 'checked':
                         if (api.isItem(item)){
@@ -314,35 +311,6 @@ var stylesSearch = {
                 }
             });            
             
-            
-            /* Test geoportail
-            var my_key =  " qxys8s986meeu8r1euqfnihv"; // clé de développement du site api.ign.fr
-            var carteLayerConf= Geoportal.Catalogue.CONFIG["GEOGRAPHICALGRIDSYSTEMS.MAPS$GEOPORTAIL:OGC:WMTS"] ;
-                var projection = ol.proj.get('EPSG:3857');
-                var matrixIds = new Array(19);
-                for (var z = 0; z < 19; ++z) {
-                matrixIds[z] = ''+z ; //carteLayerConf.layerOptions.matrixIds[z].identifier;
-                }
-            var ignLayer = 
-                    new ol.layer.TileLayer({
-                        source: new ol.source.WMTS({
-                            url: gGEOPORTALRIGHTSMANAGEMENT[gGEOPORTALRIGHTSMANAGEMENT.apiKey].resources['GEOGRAPHICALGRIDSYSTEMS.MAPS:WMTS'].url,
-                            layer: 'GEOGRAPHICALGRIDSYSTEMS.MAPS',
-                            matrixSet: carteLayerConf.layerOptions.matrixSet,
-                            format: carteLayerConf.serviceParams["WMTS"].format,
-                            projection: carteLayerConf.layerOptions.projection,
-                            tileGrid: new ol.tilegrid.WMTS({
-                                // origin: carteLayerConf.layerOptions.matrixIds[0].topLeftCorner,
-                                origin: [-20037508, 20037508],
-                                resolutions: carteLayerConf.layerOptions.nativeResolutions,
-                                matrixIds: matrixIds,
-                            }),
-                            style: carteLayerConf.layerOptions.style
-                        })
-                    });
-            this.map.addLayer(ignLayer);
-            */
-
             // Get infos
             $(this.map.getViewport()).on('mousemove', function(evt) {
                 var pixel = gdView.map.getEventPixel(evt.originalEvent);
@@ -431,7 +399,8 @@ var stylesSearch = {
             }
             
             // Change class of legend active layer
-            $("#layers_list .layername").removeClass("layer-active");
+            $("#tree-layers .layername").removeClass("layer-active");
+            
             $(span).addClass("layer-active");
         },
         
@@ -482,15 +451,15 @@ var stylesSearch = {
             return wms;
         },
 
-        addGeoJSON: function (table_name, init, idLayer) {
+        addGeoJSON: function (layerModel) {
             var extent = this.map.getView().calculateExtent(this.map.getSize());
             var bottomLeft = ol.proj.transform(ol.extent.getBottomLeft(extent), 'EPSG:3857', 'EPSG:4326');
             var topRight = ol.proj.transform(ol.extent.getTopRight(extent), 'EPSG:3857', 'EPSG:4326');
             currentZoom = this.map.getView().getZoom();
             
-            if (!init) {
-                this.map.removeLayer(this.layersArray[idLayer]);
-            }
+            // if already loaded, delete it before reload it
+            if(layerModel.attributes.json_layer != '')
+                this.map.removeLayer(this.layersArray[layerModel.attributes.json_layer_num]);
             
             if(currentZoom > 13) {
                 bbox = bottomLeft[0] + ',' + bottomLeft[1] + ',' + topRight[0] + ',' + topRight[1]
@@ -501,41 +470,38 @@ var stylesSearch = {
             
             var objSource = new ol.source.GeoJSON({
                     projection: 'EPSG:3857',
-                    url: '/export/data_geojson/' + table_name + '?bbox=' + bbox
+                    url: '/export/data_geojson/' + layerModel.attributes.id + '?bbox=' + bbox
                 });
             var json_layer = new ol.layer.Vector({
                 source: objSource,
                 style: styleFunction
             }); 
-            //objSource.on('addfeature', function(event) {
-            //    window.console.log(event.feature.getGeometry().getCoordinates());
-            //});    
             this.map.addLayer(json_layer);
             
-            styleObj = legendStyleFunction(table_name);
+            styleObj = legendStyleFunction(layerModel.attributes.id);
             if(styleObj[0].getStroke())
                 colorObj = styleObj[0].getStroke().getColor();
             else
                 colorObj= styleObj[0].getImage().getStroke().getColor();
             
-            if (init) {
-                this.addLayerToLegend(json_layer, colorObj, table_name, 'json');
-            }
-            else {
-                this.layersArray[idLayer] = json_layer;
-            }
+            //if (init) {
+            if(layerModel.attributes.json_layer != '')                
+                this.layersArray[layerModel.attributes.json_layer_num] = json_layer;
+            else
+                num_layer = this.addLayerToLegend(json_layer, colorObj, layerModel.attributes.id, 'json');
+
+            layerModel.attributes.json_layer = json_layer;
+            layerModel.attributes.json_layer_num = num_layer;
         },
 
         addLayerToLegend: function (layer, colorObj, id, type) {
-            reloadBtn = '';
-            if(type == 'json')
-                reloadBtn = '<input type="button" class="btn btn-default btn-load" value="Reload" id="'+this.num_layer+'" onclick="gdView.reloadGeoJSON(this)"/>';
-            
-            $('#layers_list').append('<li><div style="width:16px;height:18px;background:'+colorObj+';margin-top:2px; float: left;"></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+this.num_layer+'" onclick="gdView.displayLayer(this)" checked> '+'<span class="layername">'+id+'</span>'+' '+reloadBtn+'</li>');
+            $('#layers_list').append('<li><div style="width:16px;height:18px;background:'+colorObj+';margin-top:2px; float: left;"></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+this.num_layer+'" onclick="gdView.displayLayer(this)" checked> '+'<span class="layername">'+id+'</span></li>');            
             
             this.layersArray.push(layer);
-            this.layersNameArray.push(id);
             this.num_layer = this.num_layer + 1;
+            
+            return (this.num_layer - 1);
+
         },
 
         displayLayer: function (evt) {    
@@ -543,13 +509,13 @@ var stylesSearch = {
         },
 
         loadGeoJSON: function (evt) {    
-            this.addGeoJSON(this.layersNameArray[evt.id],true)    
+            // Get active layer, and load json from view extent
+            var foundLayer = layers.where({active:true});
+            if(foundLayer.length > 0) {
+                this.addGeoJSON(foundLayer[0])    
+            }
         },
         
-        reloadGeoJSON: function (evt) {    
-            this.addGeoJSON(this.layersNameArray[evt.id],false, evt.id)    
-        },
-
         // Geolocalisation
         doSearchPlace: function (event) {
             if(event.type == "keypress" && event.key != "Enter")

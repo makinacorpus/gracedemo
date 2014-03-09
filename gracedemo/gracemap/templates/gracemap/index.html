@@ -49,14 +49,14 @@
                                 <option value="AerialWithLabels">Bing Aérien avec labels</option>
                                 <option value="Road">Bing routes</option>
                             </select>
+                            <div class="panel-body ng-scope aciTree" id="tree-layers" ng-controller="">
+                            </div>
+                            <input type="button" class="btn btn-default btn-load" value="Load JSON" onclick="gdView.loadGeoJSON(this)"/>
                             <ul id="layers_list">
-                                <script id="layerTemplate" type="text/template">
+                                <!--<script id="layerTemplate" type="text/template">
                                     <li><div class="layer-item"></div><input type="checkbox" name="check_<%= id %>" id="check_<%= id %>" value="<%= num_layer %>" onclick="gdView.displayLayer(this)" checked><span class="layername" onclick="gdView.activeLayer('<%= id %>', this);"><%= label %></span><%= reload_btn %></li>
-                                </script>
+                                </script>-->
                             </ul>
-                        </div>
-                        <div class="panel-body ng-scope aciTree" id="tree-layers" ng-controller="">
-                        
                         </div>
                     </div>
                 </div>
