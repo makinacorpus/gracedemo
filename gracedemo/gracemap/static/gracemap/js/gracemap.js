@@ -246,6 +246,8 @@ var stylesSearch = {
                 target: document.getElementById('mouse-position'),
                 undefinedHTML: '&nbsp;'
             });    
+
+            var scaleLineControl = new ol.control.ScaleLine();
             
             this.view = new ol.View2D({
                 center: ol.proj.transform([-0.2385, 44.9313], 'EPSG:4326', 'EPSG:3857'),
@@ -253,13 +255,16 @@ var stylesSearch = {
             });
             
             this.map = new ol.Map({
-                controls: ol.control.defaults().extend([mousePositionControl]),
+                controls: ol.control.defaults().extend([
+                    mousePositionControl,
+                    scaleLineControl
+                ]),
                 layers: base_layers,
                 renderer: 'canvas',
                 target: 'map',
                 view: this.view
             });
-
+            
             // Display layers
             Backbone.ajax({
                 dataType: "json",

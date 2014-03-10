@@ -10,6 +10,13 @@ html, body {
     height: 100%;
 }
 
+/* OL */
+
+.ol-scale-line {
+    left: 40px;
+}
+
+/* UI */
 .navbar-fixed-top {
     left: 0;
     margin-bottom: 0;
@@ -134,4 +141,8 @@ iframe {
 .modal-header {
     border-bottom: none;
     color: #428BCA;
+}
+
+.aciTreeText {
+    font-weight: normal;
 }
