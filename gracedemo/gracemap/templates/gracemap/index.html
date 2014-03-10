@@ -25,6 +25,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }}gracemap/js/aciTree/js/jquery.aciTree.selectable.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}gracemap/js/aciTree/js/jquery.aciTree.checkbox.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}gracemap/js/aciTree/js/jquery.aciTree.radio.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}gracemap/js/aciTree/js/jquery.aciTree.utils.js"></script>
     
     <title>Grace demo</title>
 
@@ -52,6 +53,8 @@
                             <div class="panel-body ng-scope aciTree" id="tree-layers" ng-controller="">
                             </div>
                             <input type="button" class="btn btn-default btn-load" value="Load JSON" onclick="gdView.loadGeoJSON(this)"/>
+                        </div>
+                        <div id="layers_list">
                         </div>
                     </div>
                 </div>

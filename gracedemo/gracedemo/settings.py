@@ -165,8 +165,12 @@ TABLE_ARTERE = 'artere'
 TABLE_NOEUD = 'noeud'
 TABLE_FOURREAU = 'fourreau'
 TABLE_TRANCHEE = 'tranchee'
+TABLE_SITE_TECHNIQUE = 'site_technique'
+TABLE_CABLE = 'cable'
+TABLE_CHAMBRE = 'chambre'
+TABLE_BPE= 'bpe'
 
-GRACE_TABLES = [TABLE_TRANCHEE, TABLE_ARTERE, TABLE_NOEUD, TABLE_FOURREAU]
+GRACE_TABLES = [TABLE_TRANCHEE, TABLE_ARTERE, TABLE_NOEUD, TABLE_FOURREAU, TABLE_SITE_TECHNIQUE, TABLE_CABLE, TABLE_CHAMBRE, TABLE_BPE]
 
 GRACE_TABLE_INFOS_GEOJSON =  {
     TABLE_ARTERE: {
@@ -176,12 +180,40 @@ GRACE_TABLE_INFOS_GEOJSON =  {
         'select_result_col': '\'artere\' as typeobj, id_artere as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(geom, 4326)) as geom',
         'search_col': ['id_artere', 'voie_artere']
     },
+    TABLE_CABLE: {
+        'id_col': 'id_cable',
+        'geom_col': 'geom',
+        'select_col': '\'cable\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom',
+        'select_result_col': '\'cable\' as typeobj, id_cable as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(geom, 4326)) as geom',
+        'search_col': ['id_cable']
+    },
     TABLE_NOEUD: {
         'id_col': 'id_noeud',
         'geom_col': 'geom',
         'select_col': '\'noeud\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, id_com_insee_noeud as "Insee"',
         'select_result_col': '\'noeud\' as typeobj, id_noeud as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(geom, 4326)) as geom',
         'search_col': ['id_noeud', 'voie_noeud']
+    },
+    TABLE_BPE: {
+        'id_col': 'id_noeud',
+        'geom_col': 'geom',
+        'select_col': '\'bpe\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, id_com_insee_noeud as "Insee" FROM noeud WHERE noeud.type_logiq_noeud = \'RACCORDEMENT\'',
+        'select_result_col': '\'bpe\' as typeobj, id_noeud as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(geom, 4326)) as geom FROM noeud WHERE noeud.type_logiq_noeud = \'RACCORDEMENT\'',
+        'search_col': ['id_noeud', 'voie_noeud']
+    },
+    TABLE_SITE_TECHNIQUE: {
+        'id_col': 'id_lt',
+        'geom_col': 'geom',
+        'select_col': '\'site_technique\' as typeobj, ST_AsText(ST_Transform(n.geom, 4326)) as geom, n.id_com_insee_noeud as "Insee" FROM noeud n, local_technique lt WHERE lt.id_noeud = n.id_noeud',
+        'select_result_col': '\'site_technique\' as typeobj, id_lt as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(n.geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(n.geom, 4326)) as geom FROM noeud n, local_technique lt WHERE lt.id_noeud = n.id_noeud',
+        'search_col': ['id_lt', 'hbgmt_lt']
+    },
+    TABLE_CHAMBRE: {
+        'id_col': 'id_chbre',
+        'geom_col': 'geom',
+        'select_col': '\'chambre\' as typeobj, ST_AsText(ST_Transform(n.geom, 4326)) as geom, n.id_com_insee_noeud as "Insee" FROM noeud n, chambre c WHERE c.id_noeud = n.id_noeud',
+        'select_result_col': '\'chambre\' as typeobj, id_chbre as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(n.geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(n.geom, 4326)) as geom FROM noeud n, chambre c WHERE c.id_noeud = n.id_noeud',
+        'search_col': ['id_chbre', 'type_chambre']
     },
     TABLE_FOURREAU: {
         'id_col': 'id_four',

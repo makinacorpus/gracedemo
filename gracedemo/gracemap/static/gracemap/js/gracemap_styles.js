@@ -11,6 +11,15 @@ var styles = {
   'noeud': [new ol.style.Style({
     image: image
   })],
+  'site_technique': [new ol.style.Style({
+    image: image
+  })],
+  'chambre': [new ol.style.Style({
+    image: image
+  })],
+  'bpe': [new ol.style.Style({
+    image: image
+  })],
   'LineString': [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'green',
@@ -48,6 +57,16 @@ var styles = {
     })
   })],
   'tranchee': [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: '#ccb475',
+      width: 3
+    }),
+    highlight: new ol.style.Stroke({
+      color: '#FF0000',
+      width: 5
+    })
+  })],
+  'cable': [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: '#ccb475',
       width: 3

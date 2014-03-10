@@ -88,11 +88,22 @@ def get_data_object_geojson(response_content, table_name, bbox):
     select_columns = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('select_col')
     geom_column = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('geom_col')
     
+    # Check if it is a request with JOIN or not
+    resFrom = select_columns.find('FROM')
+    
     if bbox :
-        select_string = "SELECT %s FROM %s WHERE ST_Intersects(ST_Transform(ST_SetSRID(ST_MakeBox2D(ST_Point(%s, %s), ST_Point(%s,%s)), 4326), 2154), geom)" % \
-                    (select_columns, table_name, bbox[0], bbox[1], bbox[2], bbox[3] )
+        if resFrom == -1:
+            select_string = "SELECT %s FROM %s WHERE ST_Intersects(ST_Transform(ST_SetSRID(ST_MakeBox2D(ST_Point(%s, %s), ST_Point(%s,%s)), 4326), 2154), geom)" % \
+                        (select_columns, table_name, bbox[0], bbox[1], bbox[2], bbox[3] )
+        else:
+            where_complement = "WHERE ST_Intersects(ST_Transform(ST_SetSRID(ST_MakeBox2D(ST_Point(%s, %s), ST_Point(%s,%s)), 4326), 2154), geom) AND " % ( bbox[0], bbox[1], bbox[2], bbox[3])
+            select_string = "SELECT %s " % (select_columns)
+            select_string = select_string.replace("WHERE", where_complement)
     else :
-        select_string = "SELECT %s FROM %s limit 500" % (select_columns, table_name)
+        if resFrom == -1:
+            select_string = "SELECT %s FROM %s limit 500" % (select_columns, table_name)
+        else:
+            select_string = "SELECT %s limit 500" % (select_columns)
 
     cursor = query_db(select_string)
     i = 0  # feature index
@@ -166,13 +177,23 @@ def get_result_object_json(response_content, criteria):
         search_columns = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('search_col')
         geom_column = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('geom_col')
         where_tab = []
-        
+        # Check if it is a request with JOIN or not
+        resFrom = select_columns.find('FROM')
+
         for search_col in search_columns:
             where_criteria = '%s ilike \'%%%%%s%%%%\'' % (search_col, criteria)
             where_tab.append(where_criteria)
         
-        select_string = "SELECT %s FROM %s WHERE %s" % (select_result_columns, table_name, ' OR '.join(where_tab))
-        
+        #select_string = "SELECT %s FROM %s WHERE %s" % (select_result_columns, table_name, ' OR '.join(where_tab))
+
+        if bbox :
+            if resFrom == -1:
+                select_string = "SELECT %s FROM %s WHERE %s" % (select_result_columns, table_name, ' OR '.join(where_tab))
+            else:
+                where_complement = "WHERE %s" % (' OR '.join(where_tab))
+                select_string = "SELECT %s" % (select_result_columns)
+                select_string = select_string.replace("WHERE", where_complement)
+                
         cursor = query_db(select_string)
         i = 0  # feature index
         for row in cursor.fetchall():
@@ -191,9 +212,6 @@ def get_result_object_json(response_content, criteria):
                     properties_dict[key] = val
                     feat_dict[key] = val
 
-            #feat_dict["properties"] = properties_dict
-            
-
             i = i + 1
             response_content.append(feat_dict)
 
@@ -201,11 +219,19 @@ def get_result_object_json(response_content, criteria):
 def get_layers_infos(request):
 
     response_content = []
-    feat_dict = SortedDict({"id": "tranchee", "label": "Tranchee", "type": "wms", "url": settings.QGIS_SERVER_URL})
+    
+    feat_dict = SortedDict({"id": "tranchee", "label": "Tranchee", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support"})
     response_content.append(feat_dict)
-    feat_dict = SortedDict({"id": "artere", "label": "Artere", "type": "wms", "url": settings.QGIS_SERVER_URL})
+    feat_dict = SortedDict({"id": "cable", "label": "Cables", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "cablage"})
     response_content.append(feat_dict)
-    feat_dict = SortedDict({"id": "noeud", "label": "Noeud", "type": "wms", "url": settings.QGIS_SERVER_URL})
+    feat_dict = SortedDict({"id": "fourreau", "label": "Fourreaux", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support"})
+    response_content.append(feat_dict)
+
+    feat_dict = SortedDict({"id": "chambre", "label": "Chambres", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support"})
+    response_content.append(feat_dict)
+    feat_dict = SortedDict({"id": "bpe", "label": "BPE", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "cablage"})
+    response_content.append(feat_dict)
+    feat_dict = SortedDict({"id": "site_technique", "label": "Sites techniques", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : ""})
     response_content.append(feat_dict)
 
     response = HttpResponse()

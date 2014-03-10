@@ -31,7 +31,8 @@ var stylesSearch = {
             "num_layer": 0,
             "source": '',
             "json_layer": '',
-            "json_layer_num": ''
+            "json_layer_num": '',
+            "tv_root": ''
         }});
 
     LayersCollection = Backbone.Collection.extend({
@@ -50,10 +51,21 @@ var stylesSearch = {
                 // Add layer to treeview
                 model.attributes.num_layer = gdView.num_layer;
                 
-                labelContent = '<span class="layername" onclick="gdView.activeLayer(\''+model.attributes.id+'\', this);">'+model.attributes.id+'</span>';// + reloadBtn;
+                labelContent = '<span class="layername" onclick="gdView.activeLayer(\''+model.attributes.id+'\', this);">'+model.attributes.label+'</span>';// + reloadBtn;
+                
+                // TODO make this process automatic !
+                var root_tv = null;
+                if(model.attributes.tv_root == "support") { 
+                    root_tv = gdView.root_support_tv;
+                }
+                if(model.attributes.tv_root == "cablage") { 
+                    root_tv = gdView.root_cablage_tv;
+                }
+                
+                //var sub_root = gdView.apiTreeView.searchId(true, true, {id: 'root_support'});
                 
                 // Add to treeview
-                gdView.apiTreeView.append(gdView.root_ref_tv, {
+                gdView.apiTreeView.append(root_tv, {
                         uid: model.attributes.num_layer,
                         success: function(item, options) {
                         },
@@ -151,6 +163,8 @@ var stylesSearch = {
         apiTreeView: '',
         root_fdp_tv: '',
         root_ref_tv: '',
+        root_cablage_tv: '',
+        root_support_tv: '',
         viewResolution: '',
         viewProjection: '',
 
@@ -262,14 +276,24 @@ var stylesSearch = {
             
             // Init treeview for layers
             this.apiTreeView = $('#tree-layers').aciTree({checkbox: true, radio: true, checkboxClick: true}).aciTree('api');
-            this.apiTreeView.append(null, {
+            /*this.apiTreeView.append(null, {
                     uid: '0',
                     itemData: [
                         {"id": "root_ref", "label": "Référentiel", "inode": true, "checkbox": true, "checked": true, "radio": false}
-                              ]
+                    ]
                 });
-            this.root_ref_tv = this.apiTreeView.first();
-            //this.root_other = this.root_ref_tv.next();
+            this.root_ref_tv = this.apiTreeView.first();*/
+            
+            this.apiTreeView.append(null, {
+                    uid: '11',
+                    itemData: {"id": "root_cablage", "label": "Câblage", "inode": true, "checked": true, "checkbox": true, "radio": false}
+                });
+            this.root_cablage_tv = this.apiTreeView.first();
+            this.root_support_tv = this.apiTreeView.append(null, {
+                    uid: '22',
+                    itemData: {"id": "root_support", "label": "Support", "inode": true, "checked": true, "checkbox": true, "radio": false}
+                });
+            this.root_support_tv = this.apiTreeView.last();
 
             $('#tree-layers').on('acitree', function(event, api, item, eventName, options){
                 //id_checked = api.getId(item);
@@ -284,6 +308,10 @@ var stylesSearch = {
                                     var itemData = gdView.apiTreeView.itemData($(children[i]))
                                     gdView.layersArray[itemData.id].setVisible(true);
                                 }
+                                // A root item maybe also a layer
+                                var itemData = gdView.apiTreeView.itemData(item)
+                                if(gdView.layersArray[itemData.id])
+                                    gdView.layersArray[itemData.id].setVisible(true);
                             }
                             else {
                                 var itemData = gdView.apiTreeView.itemData(item);
@@ -299,6 +327,10 @@ var stylesSearch = {
                                     var itemData = gdView.apiTreeView.itemData($(children[i]))
                                     gdView.layersArray[itemData.id].setVisible(false);
                                 }
+                                // A root item maybe also a layer
+                                var itemData = gdView.apiTreeView.itemData(item)
+                                if(gdView.layersArray[itemData.id])
+                                    gdView.layersArray[itemData.id].setVisible(false);
                             }
                             else {
                                 var itemData = gdView.apiTreeView.itemData(item);
