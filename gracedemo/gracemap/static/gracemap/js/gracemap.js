@@ -630,6 +630,25 @@ var stylesSearch = {
             this.map.beforeRender(pan);
             this.view.setCenter(new_center);            
             
+        },
+        
+        printMap: function(css) {
+            $("head").append(
+                $(document.createElement("link")).attr({rel:"stylesheet", type:"text/css", href:css, id: "css_print"})
+            );
+            var center = this.view.getCenter();
+            var zoom = this.view.getZoom();
+            this.view.setCenter(center);
+            this.view.setZoom(zoom);
+            this.map.updateSize();
+            
+            window.print();
+
+            $("#css_print").remove();
+            
+            this.view.setCenter(center);
+            this.view.setZoom(zoom);
+            this.map.updateSize();
         }
 
   });

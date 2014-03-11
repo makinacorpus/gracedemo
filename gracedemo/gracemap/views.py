@@ -37,7 +37,7 @@ def view_map(request):
     template = loader.get_template('gracemap/index.html')
     context = RequestContext(request, rdict)
     return HttpResponse(template.render(context))      
-
+    
 @csrf_exempt
 def export_data_geojson(request, table_name):
     """

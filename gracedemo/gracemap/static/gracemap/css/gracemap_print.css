@@ -1,0 +1,13 @@
+.map {
+    width: 700px;
+    height: 700px;
+}
+
+.ol-zoom,
+.ol-logo,
+.navbar {
+    display: none;
+}
+
+
+
