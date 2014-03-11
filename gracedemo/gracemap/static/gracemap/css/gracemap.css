@@ -15,6 +15,9 @@ html, body {
 .ol-scale-line {
     left: 40px;
 }
+.ol-zoom-extent{
+    top: 12em;
+}
 
 /* UI */
 .navbar-fixed-top {

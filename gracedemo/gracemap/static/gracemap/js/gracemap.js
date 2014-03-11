@@ -238,7 +238,7 @@ var stylesSearch = {
             });
             $('#layer-select').trigger('change');            
             
-            
+
             var mousePositionControl = new ol.control.MousePosition({
                 coordinateFormat: ol.coordinate.createStringXY(4),
                 projection: 'EPSG:4326',
@@ -248,6 +248,11 @@ var stylesSearch = {
             });    
 
             var scaleLineControl = new ol.control.ScaleLine();
+
+            extentMin = ol.proj.transform([-5.51, 42.5], 'EPSG:4326', 'EPSG:3857');
+            extentMax = ol.proj.transform([9, 51.2], 'EPSG:4326', 'EPSG:3857');
+            maxExtent = new ol.extent.boundingExtent([extentMin,extentMax]);
+            var zoomToExtentControl = new ol.control.ZoomToExtent({extent: maxExtent});
             
             this.view = new ol.View2D({
                 center: ol.proj.transform([-0.2385, 44.9313], 'EPSG:4326', 'EPSG:3857'),
@@ -257,7 +262,8 @@ var stylesSearch = {
             this.map = new ol.Map({
                 controls: ol.control.defaults().extend([
                     mousePositionControl,
-                    scaleLineControl
+                    scaleLineControl,
+                    zoomToExtentControl
                 ]),
                 layers: base_layers,
                 renderer: 'canvas',
@@ -281,14 +287,6 @@ var stylesSearch = {
             
             // Init treeview for layers
             this.apiTreeView = $('#tree-layers').aciTree({checkbox: true, radio: true, checkboxClick: true}).aciTree('api');
-            /*this.apiTreeView.append(null, {
-                    uid: '0',
-                    itemData: [
-                        {"id": "root_ref", "label": "Référentiel", "inode": true, "checkbox": true, "checked": true, "radio": false}
-                    ]
-                });
-            this.root_ref_tv = this.apiTreeView.first();*/
-            
             this.apiTreeView.append(null, {
                     uid: '11',
                     itemData: {"id": "root_cablage", "label": "Câblage", "inode": true, "checked": true, "checkbox": true, "radio": false}
@@ -301,8 +299,6 @@ var stylesSearch = {
             this.root_support_tv = this.apiTreeView.last();
 
             $('#tree-layers').on('acitree', function(event, api, item, eventName, options){
-                //id_checked = api.getId(item);
-                //console.log(eventName);
                 switch (eventName){
                     case 'checked':
                         if (api.isItem(item)){
