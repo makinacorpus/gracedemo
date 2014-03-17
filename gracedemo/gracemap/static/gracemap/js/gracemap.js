@@ -542,15 +542,15 @@ var stylesSearch = {
             //if (init) {
             if(layerModel.attributes.json_layer != '')                
                 this.layersArray[layerModel.attributes.json_layer_num] = json_layer;
-            //else
-            //    num_layer = this.addLayerToLegend(json_layer, colorObj, layerModel.attributes.id, 'json');
+            else
+                num_layer = this.addLayerToLegend(json_layer, colorObj, layerModel.attributes.id, 'json');
 
             layerModel.attributes.json_layer = json_layer;
             layerModel.attributes.json_layer_num = num_layer;
         },
 
         addLayerToLegend: function (layer, colorObj, id, type) {
-            $('#layers_list').append('<li><div style="width:16px;height:18px;background:'+colorObj+';margin-top:2px; float: left;"></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+this.num_layer+'" onclick="gdView.displayLayer(this)" checked> '+'<span class="layername">'+id+'</span></li>');            
+            //$('#layers_list').append('<li><div style="width:16px;height:18px;background:'+colorObj+';margin-top:2px; float: left;"></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+this.num_layer+'" onclick="gdView.displayLayer(this)" checked> '+'<span class="layername">'+id+'</span></li>');            
             
             this.layersArray.push(layer);
             this.num_layer = this.num_layer + 1;
