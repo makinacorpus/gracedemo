@@ -455,6 +455,8 @@ var stylesSearch = {
             // Load JSON
             this.loadGeoJSON();
             
+            // TODO load the features into a grid at the bottom of the map
+            
         },
         
         // Get infos on features (json)
