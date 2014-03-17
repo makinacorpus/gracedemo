@@ -432,7 +432,8 @@ var stylesSearch = {
                     $('#feature-infos').modal('show');
                 else
                     alert("Il n'y a pas de couche interrogeable");
-            });            
+            });  
+
         },
         
         activeLayer: function(el, span) {

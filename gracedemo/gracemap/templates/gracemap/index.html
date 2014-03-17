@@ -52,10 +52,25 @@
                                 <option value="AerialWithLabels">Bing Aérien avec labels</option>
                                 <option value="Road">Bing routes</option>
                             </select>
+                            
                             <div class="panel-body ng-scope aciTree" id="tree-layers" ng-controller="">
                             </div>
+                            <div id="layers_legend_btn">Légende</div>
                             <input type="button" class="btn btn-default btn-load" value="Load JSON" onclick="gdView.loadGeoJSON(this)"/>
                         </div>
+                        
+                        <script>
+                            // Enable legend
+                            $('#layers_legend_btn').popover(
+                            {
+                                title: 'Légende',
+                                trigger: 'hover',
+                                html: true,
+                                placement: 'left',
+                                content: '<img src="{{ STATIC_URL }}gracemap/img/layers_legend.png" alt="legende">'
+                            });            
+                        </script>
+                        
                         <div id="layers_list">
                         </div>
                     </div>
