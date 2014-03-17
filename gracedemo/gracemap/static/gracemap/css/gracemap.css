@@ -155,6 +155,14 @@ iframe {
     font-weight: normal;
 }
 
+.queryable {
+    width: 10px;
+    height: 20px;
+    background: url("../img/queryable.png") no-repeat scroll left 5px rgba(0, 0, 0, 0);
+    float: right;
+}
+
+
 /* Popup dialog */
 #feature-infos {
     padding: 5px;

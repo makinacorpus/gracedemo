@@ -52,7 +52,11 @@ var stylesSearch = {
                 // Add layer to treeview
                 model.attributes.num_layer = gdView.num_layer;
                 
-                labelContent = '<span class="layername" onclick="gdView.activeLayer(\''+model.attributes.id+'\', this);">'+model.attributes.label+'</span>';// + reloadBtn;
+                iconQueryable = "";
+                if(model.attributes.queryable)
+                     iconQueryable = "<div class='queryable' onclick='gdView.showInfosLayer();'></div>";
+                    
+                labelContent = iconQueryable + '<span class="layername" onclick="gdView.activeLayer(\''+model.attributes.id+'\', this);">'+model.attributes.label+'</span>';
                 
                 // TODO make this process automatic !
                 var root_tv = null;
@@ -691,6 +695,11 @@ var stylesSearch = {
             });
             
             //this.map.removeInteraction(draw);
+        },
+        
+        
+        showInfosLayer: function() {
+            alert("Cette couche est interrogeable");
         }
 
   });
