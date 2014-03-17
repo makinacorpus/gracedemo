@@ -132,6 +132,7 @@ input[type="checkbox"] {
 iframe {
     border: none;
     width: 100%;
+    border-top: 10px solid #eee;
 }
 
 .layername {
@@ -152,4 +153,15 @@ iframe {
 
 .aciTreeText {
     font-weight: normal;
+}
+
+/* Popup dialog */
+#feature-infos {
+    padding: 5px;
+}
+
+#feature-infos-content table {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 98%;
 }

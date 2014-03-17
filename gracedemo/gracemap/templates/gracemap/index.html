@@ -71,6 +71,7 @@
                                 Position :
                                 <div id="mouse-position"></div>
                             </div>
+<!--                             <input type="button" class="btn btn-default btn-load" value="Mesure linéaire" onclick="gdView.measureLine()"/> -->
                         </div>
                     </div>
                 </div>
@@ -134,11 +135,13 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Export<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="#" onclick="javascript:gdView.printMap('{{ STATIC_URL }}gracemap/css/gracemap_print.css');" >Imprimer la vue courante</a></li>
                         <li class="divider"></li>
-                        <li><a href="#"></a></li>
+                        <li><a href="#">Tableau de bord ingénierie</a></li>
+                        <li><a href="#">Tableau de bord financier</a></li>
+                        <li><a href="#">Calcul de redevance</a></li>
                     </ul>
                 </li>
                 <li><a href="#" data-target="#pulldown-content" data-toggle="collapse">Widgets</a></li>

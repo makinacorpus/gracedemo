@@ -4,7 +4,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-from gracemap.views import export_data_geojson, view_map, search_obj, get_layers_infos
+from gracemap.views import export_data_geojson, view_map, search_obj, get_layers_infos, get_feature_infos
 
 urlpatterns = patterns('',
     # Examples:
@@ -23,6 +23,8 @@ urlpatterns = patterns('',
     (r'^search/(?P<criteria>[\w-]+)$', search_obj),
     
     (r'^layersinfos/$', get_layers_infos),
+    
+    (r'^getfeatureinfos/$', get_feature_infos),
     
     (r'^$', view_map),
 

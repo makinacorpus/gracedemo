@@ -32,7 +32,8 @@ var stylesSearch = {
             "source": '',
             "json_layer": '',
             "json_layer_num": '',
-            "tv_root": ''
+            "tv_root": '',
+            "queryable": false
         }});
 
     LayersCollection = Backbone.Collection.extend({
@@ -404,19 +405,29 @@ var stylesSearch = {
             
             // Get feature infos
             this.map.on('singleclick', function(evt) {
-                // get active layer
-                var foundLayer = layers.where({active:true});
-                if(foundLayer.length > 0) {
-                    var url = foundLayer[0].attributes.source.getGetFeatureInfoUrl(
+                // for all queryable layers
+                document.getElementById('feature-infos-content').innerHTML = "";
+                var foundLayers = layers.where({queryable:true});
+                for(i = 0 ; i < foundLayers.length; i++) {
+                    var url = foundLayers[i].attributes.source.getGetFeatureInfoUrl(
                         evt.coordinate, gdView.viewResolution, gdView.viewProjection,
                         {'INFO_FORMAT': 'text/html'});
+                    
                     if (url) {
-                        document.getElementById('feature-infos-content').innerHTML = '<iframe seamless src="' + url + '"></iframe>';
-                        $('#feature-infos').modal('show');
+                        Backbone.ajax({
+                            url: '/getfeatureinfos?url=' + encodeURIComponent(url),
+                            success: function(val){
+                                document.getElementById('feature-infos-content').innerHTML += val;
+                            },
+                            error: function(val){
+                            }
+                        });
                     }
-                }                
+                }
+                if(foundLayers.length > 0)
+                    $('#feature-infos').modal('show');
                 else
-                    alert("Il n'y a pas de couche active");
+                    alert("Il n'y a pas de couche interrogeable");
             });            
         },
         
@@ -645,6 +656,41 @@ var stylesSearch = {
             this.view.setCenter(center);
             this.view.setZoom(zoom);
             this.map.updateSize();
+        },
+        
+        measureLine: function() {
+            var draw; // global so we can remove it later
+            var source = new ol.source.Vector();
+            var vector = new ol.layer.Vector({
+                source: source,
+                style: new ol.style.Style({
+                    fill: new ol.style.Fill({
+                    color: 'rgba(255, 255, 255, 0.2)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                    color: '#ffcc33',
+                    width: 2
+                    }),
+                    image: new ol.style.Circle({
+                    radius: 7,
+                    fill: new ol.style.Fill({
+                        color: '#ffcc33'
+                    })
+                    })
+                })
+            });
+            this.map.addLayer(vector);
+            draw = new ol.interaction.Draw({
+                source: source,
+                type: "LineString"
+            });
+            this.map.addInteraction(draw);
+            
+            vector.on('drawend', function(evt) {
+                alert("ici");
+            });
+            
+            //this.map.removeInteraction(draw);
         }
 
   });

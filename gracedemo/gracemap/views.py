@@ -24,6 +24,7 @@ import time
 import datetime
 import os
 import tempfile
+import urllib2 
 
 from gracemap.utils import sync_db, query_db, commit_transaction
 
@@ -220,18 +221,18 @@ def get_layers_infos(request):
 
     response_content = []
     
-    feat_dict = SortedDict({"id": "tranchee", "label": "Tranchee", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support"})
+    feat_dict = SortedDict({"id": "tranchee", "label": "Tranchee", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support", "queryable": True})
     response_content.append(feat_dict)
-    feat_dict = SortedDict({"id": "cable", "label": "Cables", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "cablage"})
+    feat_dict = SortedDict({"id": "cable", "label": "Cables", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "cablage", "queryable": True})
     response_content.append(feat_dict)
-    feat_dict = SortedDict({"id": "fourreau", "label": "Fourreaux", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support"})
+    feat_dict = SortedDict({"id": "fourreau", "label": "Fourreaux", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support", "queryable": True})
     response_content.append(feat_dict)
 
-    feat_dict = SortedDict({"id": "chambre", "label": "Chambres", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support"})
+    feat_dict = SortedDict({"id": "chambre", "label": "Chambres", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support", "queryable": True})
     response_content.append(feat_dict)
-    feat_dict = SortedDict({"id": "bpe", "label": "BPE", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "cablage"})
+    feat_dict = SortedDict({"id": "bpe", "label": "BPE", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "cablage", "queryable": True})
     response_content.append(feat_dict)
-    feat_dict = SortedDict({"id": "site_technique", "label": "Sites techniques", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : ""})
+    feat_dict = SortedDict({"id": "site_technique", "label": "Sites techniques", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "", "queryable": True})
     response_content.append(feat_dict)
 
     response = HttpResponse()
@@ -239,4 +240,19 @@ def get_layers_infos(request):
                 ensure_ascii=False, separators=(',', ':'))
 
     return response
+
+
+@csrf_exempt
+def get_feature_infos(request):
+    # proxy for getfeatureinfos requests
+
+    bbox = []
+    if request.GET.get('url'):
+        url = request.GET.get('url')
+    
+    f = urllib2.urlopen(urllib2.Request(url=url))
+    html = f.read()
+    return HttpResponse(html)
+    
+    
     
