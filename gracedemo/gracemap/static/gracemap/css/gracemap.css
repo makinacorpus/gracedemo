@@ -50,6 +50,10 @@ html, body {
     top: 108px;
 }
 
+.navbar #place-to-search {
+    width: 300px;
+}
+
 #pulldown-content {
     width: 250px;
     right: 0;
