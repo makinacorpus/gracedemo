@@ -178,8 +178,8 @@ def get_result_object_json(response_content, criteria):
         search_columns = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('search_col')
         geom_column = settings.GRACE_TABLE_INFOS_GEOJSON.get(table_name).get('geom_col')
         where_tab = []
-        # Check if it is a request with JOIN or not
-        resFrom = select_columns.find('FROM')
+        # Check if it is a request with join or not
+        resFrom = select_result_columns.find('FROM')
 
         for search_col in search_columns:
             where_criteria = '%s ilike \'%%%%%s%%%%\'' % (search_col, criteria)
@@ -187,14 +187,14 @@ def get_result_object_json(response_content, criteria):
         
         #select_string = "SELECT %s FROM %s WHERE %s" % (select_result_columns, table_name, ' OR '.join(where_tab))
 
-        if bbox :
-            if resFrom == -1:
-                select_string = "SELECT %s FROM %s WHERE %s" % (select_result_columns, table_name, ' OR '.join(where_tab))
-            else:
-                where_complement = "WHERE %s" % (' OR '.join(where_tab))
-                select_string = "SELECT %s" % (select_result_columns)
-                select_string = select_string.replace("WHERE", where_complement)
-                
+        #if bbox :
+        if resFrom == -1:
+            select_string = "SELECT %s FROM %s WHERE %s" % (select_result_columns, table_name, ' OR '.join(where_tab))
+        else:
+            where_complement = "WHERE (%s) AND " % (' OR '.join(where_tab))
+            select_string = "SELECT %s" % (select_result_columns)
+            select_string = select_string.replace("WHERE", where_complement)
+
         cursor = query_db(select_string)
         i = 0  # feature index
         for row in cursor.fetchall():
@@ -246,7 +246,6 @@ def get_layers_infos(request):
 def get_feature_infos(request):
     # proxy for getfeatureinfos requests
 
-    bbox = []
     if request.GET.get('url'):
         url = request.GET.get('url')
     
