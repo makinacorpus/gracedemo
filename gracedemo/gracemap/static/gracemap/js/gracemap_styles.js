@@ -1,7 +1,7 @@
 var image = new ol.style.Circle({
   radius: 5,
   fill: null,
-  stroke: new ol.style.Stroke({color: 'rgba(250, 133, 40, 0.7)', width: 3})
+  stroke: new ol.style.Stroke({color: 'rgba(255, 255, 0, 0.7)', width: 3})
 });
 
 var styles = {
@@ -28,51 +28,51 @@ var styles = {
   })],
   'MultiLineString': [new ol.style.Style({
     stroke: new ol.style.Stroke({
-      color: '#6092c4',
+      color: 'rgba(255, 255, 0, 0.5)',
       width: 5
     }),
     highlight: new ol.style.Stroke({
-      color: '#FF0000',
+      color: '#ffff00',
       width: 5
     })
   })],
   'artere': [new ol.style.Style({
     stroke: new ol.style.Stroke({
-      color: '#6092c4',
+      color: 'rgba(255, 255, 0, 0.5)',
       width: 5
     }),
     highlight: new ol.style.Stroke({
-      color: '#FF0000',
+      color: '#ffff00',
       width: 5
     })
   })],
   'fourreau': [new ol.style.Style({
     stroke: new ol.style.Stroke({
-      color: '#950195',
+      color: 'rgba(255, 255, 0, 0.5)',
       width: 2
     }),
     highlight: new ol.style.Stroke({
-      color: '#FF0000',
+      color: '#ffff00',
       width: 5
     })
   })],
   'tranchee': [new ol.style.Style({
     stroke: new ol.style.Stroke({
-      color: '#ccb475',
+      color: 'rgba(255, 255, 0, 0.5)',
       width: 3
     }),
     highlight: new ol.style.Stroke({
-      color: '#FF0000',
+      color: '#ffff00',
       width: 5
     })
   })],
   'cable': [new ol.style.Style({
     stroke: new ol.style.Stroke({
-      color: '#ccb475',
+      color: 'rgba(255, 255, 0, 0.5)',
       width: 3
     }),
     highlight: new ol.style.Stroke({
-      color: '#FF0000',
+      color: '#ffff00',
       width: 5
     })
   })],

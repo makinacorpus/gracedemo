@@ -370,11 +370,11 @@ var stylesSearch = {
                     if (!highlightStyleCache[text]) {
                         highlightStyleCache[text] = [new ol.style.Style({
                             stroke: new ol.style.Stroke({
-                                color: '#d26105',
+                                color: '#ffff00',
                                 width: 5
                             }),
                             fill: new ol.style.Fill({
-                                color: 'rgba(255,0,0,0.1)'
+                                color: 'rgba(255,255,0,0.1)'
                             }),
                             text: new ol.style.Text({
                                 font: '20px Arial,sans-serif',
@@ -383,7 +383,7 @@ var stylesSearch = {
                                     color: '#FFF'
                                 }),
                                 stroke: new ol.style.Stroke({
-                                    color: '#d26105',
+                                    color: '#444400',
                                     width: 3
                                 })
                             })
@@ -451,6 +451,10 @@ var stylesSearch = {
             $("#tree-layers .layername").removeClass("layer-active");
             
             $(span).addClass("layer-active");
+            
+            // Load JSON
+            this.loadGeoJSON();
+            
         },
         
         // Get infos on features (json)
@@ -536,8 +540,8 @@ var stylesSearch = {
             //if (init) {
             if(layerModel.attributes.json_layer != '')                
                 this.layersArray[layerModel.attributes.json_layer_num] = json_layer;
-            else
-                num_layer = this.addLayerToLegend(json_layer, colorObj, layerModel.attributes.id, 'json');
+            //else
+            //    num_layer = this.addLayerToLegend(json_layer, colorObj, layerModel.attributes.id, 'json');
 
             layerModel.attributes.json_layer = json_layer;
             layerModel.attributes.json_layer_num = num_layer;
