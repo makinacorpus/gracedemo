@@ -134,3 +134,11 @@ var legendStyleFunction = function(typeObj) {
   return styles[typeObj]
 };
 
+var kmlStyleFunction = function(feature, resolution) {
+  var featureStyleFunction = feature.getStyleFunction();
+  if (featureStyleFunction) {
+    return featureStyleFunction.call(feature, resolution);
+  } else {
+    return styles[feature.getGeometry().getType()];
+  }
+};

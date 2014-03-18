@@ -275,7 +275,19 @@ var stylesSearch = {
                 zoom: 14
             });
             
+            // Drag n drop vector files
+            var dragAndDropInteraction = new ol.interaction.DragAndDrop({
+                formatConstructors: [
+                    ol.format.GPX,
+                    ol.format.GeoJSON,
+                    ol.format.IGC,
+                    ol.format.KML,
+                    ol.format.TopoJSON
+                ]
+            });
+            
             this.map = new ol.Map({
+                interactions: ol.interaction.defaults().extend([dragAndDropInteraction]),
                 controls: ol.control.defaults().extend([
                     this.mousePositionControl,
                     scaleLineControl,
@@ -444,6 +456,25 @@ var stylesSearch = {
                 else
                     alert("Il n'y a pas de couche interrogeable");
             });  
+            
+            
+            // KML & other format drag n drop
+            dragAndDropInteraction.on('addfeatures', function(event) {
+                var vectorSource = new ol.source.Vector({
+                    features: event.features,
+                    projection: event.projection
+                });
+                var vectLayer = new ol.layer.Image({
+                    source: new ol.source.ImageVector({
+                        source: vectorSource,
+                        style: kmlStyleFunction
+                    })
+                })
+                gdView.map.getLayers().push(vectLayer);
+                gdView.addKmlLayerToLegend(vectLayer, "Fichier externe");
+                var view2D = gdView.map.getView().getView2D();
+                view2D.fitExtent(vectorSource.getExtent(), gdView.map.getSize());
+            });            
 
             // Intial zoom and center
             if(init_center != '' && init_zoom !='') {
@@ -577,6 +608,16 @@ var stylesSearch = {
 
         },
 
+        addKmlLayerToLegend: function (layer, id) {
+            $('#layers_list').append('<li><div></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+this.num_layer+'" onclick="gdView.displayLayer(this)" checked> '+'<span class="layername">'+id+'</span></li>');            
+            
+            this.layersArray.push(layer);
+            this.num_layer = this.num_layer + 1;
+            
+            return (this.num_layer - 1);
+
+        },
+        
         displayLayer: function (evt) {    
             this.layersArray[evt.value].setVisible(evt.checked);
         },

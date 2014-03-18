@@ -96,6 +96,11 @@ html, body {
 #layers_list {
     list-style: none;
     padding-left: 0px;
+    margin-left: 35px;
+}
+
+#layers_tv_block {
+    border-bottom: 1px dotted #eee;
 }
 
 #tree-layers {

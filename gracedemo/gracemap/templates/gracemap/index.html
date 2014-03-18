@@ -42,7 +42,7 @@
                         <span class="ng-scope" translate="">Couches</span>
                     </a>
                     <div id="layers" class="panel-collapse in" style="height: auto;">
-                        <div class="panel-body ng-scope" ng-controller="">
+                        <div id="layers_tv_block" class="panel-body ng-scope" ng-controller="">
                             <select class="form-control" id="layer-select">
                                 <option value="OSM" selected>OSM</option>
                                 <option value="OSM_MapQuest">OSM MapQuest</option>
@@ -168,6 +168,8 @@
                     <ul class="dropdown-menu">
                         <li><a href="#" onclick="javascript:gdView.printMap('{{ STATIC_URL }}gracemap/css/gracemap_print.css');" >Imprimer la vue courante</a></li>
                         <li class="divider"></li>
+                        <li><a href="#" data-target="#kml-infos" data-toggle="modal">Ajout de KML</a></li>
+                        <li class="divider"></li>
                         <li><a href="#">Ingénierie</a></li>
                         <li><a href="#">Capa réseau</a></li>
                         <li class="divider"></li>
@@ -218,6 +220,25 @@
         </div>
     </div>
 
+    <!-- Kml infos -->
+    <div class="modal fade" id="kml-infos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">A propos</h4>
+            </div>
+            <div class="modal-body">
+               <p>Ajoutez vos KML, GeoJSON, GPX en faisant un drag'n'drop de votre fichier directement sur la carte.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    
     <!-- GetFeatureInfos Dialog -->
     <div class="modal fade" id="feature-infos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
