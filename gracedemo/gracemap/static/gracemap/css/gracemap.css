@@ -194,7 +194,8 @@ iframe {
 
 
 /* Popup dialog */
-#feature-infos {
+#feature-infos,
+#permalink-dialog {
     padding: 5px;
 }
 

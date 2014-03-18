@@ -10,6 +10,7 @@ from django.utils.datastructures import SortedDict
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.core.servers.basehttp import FileWrapper
+from django.contrib.sites.models import get_current_site
 
 #from easydict import EasyDict
 from shapely.wkt import loads
@@ -19,6 +20,7 @@ import json
 import sqlite3 as lite
 from shutil import copyfile
 from tempfile import NamedTemporaryFile
+
 
 import time
 import datetime
@@ -34,10 +36,20 @@ def view_map(request):
     """
     View map
     """
-    rdict = {'x': 45, 'y': 5, 'qgis_server_url' : settings.QGIS_SERVER_URL}
+    center = ''
+    if request.GET.get('center'):
+        center = request.GET.get('center')
+    zoom = ''
+    if request.GET.get('zoom'):
+        zoom = request.GET.get('zoom')
+    
+    #base_url = request.build_absolute_uri()
+    base_url = ''.join(['http://', get_current_site(request).domain])
+    rdict = {'qgis_server_url' : settings.QGIS_SERVER_URL, 'base_url': base_url, 'center': center, 'zoom': zoom}
     template = loader.get_template('gracemap/index.html')
     context = RequestContext(request, rdict)
     return HttpResponse(template.render(context))      
+
     
 @csrf_exempt
 def export_data_geojson(request, table_name):

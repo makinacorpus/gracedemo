@@ -445,6 +445,13 @@ var stylesSearch = {
                     alert("Il n'y a pas de couche interrogeable");
             });  
 
+            // Intial zoom and center
+            if(init_center != '' && init_zoom !='') {
+                //coords_center = init_center.split(',');
+                this.map.getView().setCenter(init_center);
+                this.map.getView().setZoom(init_zoom);
+            }
+            
         },
         
         activeLayer: function(el, span) {
@@ -718,6 +725,14 @@ var stylesSearch = {
         
         showInfosLayer: function() {
             alert("Cette couche est interrogeable");
+        },
+        
+        getPermalink: function() {
+            //var extent = this.map.getView().calculateExtent(this.map.getSize());
+            var zoom = this.map.getView().getZoom();
+            var center = this.map.getView().getCenter();
+            document.getElementById('permalink-content').innerHTML = base_url + "?center=" + center + "&zoom=" + zoom;
+            $('#permalink-dialog').modal('show');            
         }
 
   });
