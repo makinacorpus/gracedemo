@@ -166,6 +166,37 @@ input[type="checkbox"] {
     list-style-image: url('../img/tranchee.png');
 }
 
+#json-objects {
+    width: 500px;
+    position: absolute;
+    bottom: 5px;
+    left: 130px;
+    z-index: 999;
+    max-height: 300px;
+    overflow: auto;
+    margin-bottom: 0px;
+}
+
+#json-objects .panel-group {
+    margin-bottom: 0px;
+}
+
+#json-objects table,
+#json-objects table tr {
+    border: 1px solid #ccc;
+}
+
+#json-objects table {
+    width: 100%;
+}
+
+#json-objects table th,
+#json-objects table tr:hover {
+    background: #eee;
+}
+
+
+
 .mCSB_dragger {
     background: #ccc;
 }

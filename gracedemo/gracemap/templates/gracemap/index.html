@@ -54,7 +54,7 @@
                             <div class="panel-body ng-scope aciTree" id="tree-layers" ng-controller="">
                             </div>
                             <div id="layers_legend_btn">Légende</div>
-<!--                             <input id="load_json" type="button" class="btn btn-default btn-load" value="Load JSON" onclick="gdView.loadGeoJSON(this)"/> -->
+<!--                             <input id="load_json" type="button" class="btn btn-default btn-load" value="Load JSON" onclick="gd.mapView.loadGeoJSON(this)"/> -->
                         </div>
                         
                         <script>
@@ -95,7 +95,7 @@
                                 <div id="mouse-position"></div>
                             </div>
                             
-                            <input id="measure-dist-btn" type="button" class="btn btn-default btn-load" value="Mesure linéaire" onclick="gdView.measureLine()"/>
+                            <input id="measure-dist-btn" type="button" class="btn btn-default btn-load" value="Mesure linéaire" onclick="gd.mapView.measureLine()"/>
                             <div id="measure-result"></div>
                         </div>
                     </div>
@@ -168,7 +168,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#" onclick="javascript:gdView.printMap('{{ STATIC_URL }}gracemap/css/gracemap_print.css');" >Imprimer la vue courante</a></li>
+                        <li><a href="#" onclick="javascript:gd.mapView.printMap('{{ STATIC_URL }}gracemap/css/gracemap_print.css');" >Imprimer la vue courante</a></li>
                         <li class="divider"></li>
                         <li><a href="#" data-target="#kml-infos" data-toggle="modal">Ajout de KML</a></li>
                         <li class="divider"></li>
@@ -180,7 +180,7 @@
                     </ul>
                 </li>
 <!--                 <li><a href="#" data-target="#pulldown-content" data-toggle="collapse">Widgets</a></li> -->
-                <li><a href="#" onclick="javascript:gdView.getPermalink()">Permalink</a></li>
+                <li><a href="#" onclick="javascript:gd.mapView.getPermalink()">Permalink</a></li>
                 <li><a href="#" data-target="#map-infos" data-toggle="modal">A propos</a></li>
             </ul>
             </div>
@@ -188,9 +188,29 @@
         </nav>
     </div>
 
-    <!--<div class="bs-example">
-    test
-    </div>-->
+    <!-- Bottom bar for results     -->
+    <div id="json-objects" class="panel">
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading ">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Objets</a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                <div id="json-objects-contents" class="panel-body">
+                    <table class="table">
+                        
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+
+
     
     <!-- A propos -->
     <div class="modal fade" id="map-infos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -268,7 +288,6 @@
                 <h4 class="modal-title" id="myModalLabel">Permalink</h4>
             </div>
             <div id="permalink-content">
-                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
@@ -281,19 +300,19 @@
     <!-- Map -->
     <div id="map" class="map"></div>
 
-    <!-- These scripts must be loaded here -->
     <script>
         var base_url = "{{ base_url }}";
         var init_center = [{{ center }}];
         var init_zoom = "{{ zoom }}";
     </script>
-
-     <script src="{{ STATIC_URL }}gracemap/js/ol3/ol.js" type="text/javascript"></script>
-<!--     <script src="{{ STATIC_URL }}gracemap/js/ol3/ol-whitespace.js" type="text/javascript"></script> -->
+    <!-- These scripts must be loaded here -->
+    <script src="{{ STATIC_URL }}gracemap/js/ol3/ol-whitespace.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}gracemap/js/main.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}gracemap/js/gracemap_styles.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}gracemap/js/gracemap.js" type="text/javascript"></script>
     
-
+    <script src="{{ STATIC_URL }}gracemap/js/gd_results_view.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}gracemap/js/gd_layers_view.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}gracemap/js/gd_map_view.js" type="text/javascript"></script>
     
   </body>
 </html>

@@ -1,12 +1,10 @@
 
 (function($){
-    // Map view
     var MapView = Backbone.View.extend({
         el: $('body'),
         map: '',
         view: '',
         layersArray: [],
-        //layersNameArray: [],
         featureOverlay: '',
         num_layer: 0,
         highlight: '',

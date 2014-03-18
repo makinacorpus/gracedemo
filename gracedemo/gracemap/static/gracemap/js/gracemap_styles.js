@@ -1,3 +1,21 @@
+var stylesSearch = {
+    'point': [new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 10,
+            fill: new ol.style.Fill({
+                    color: 'rgba(255,0,0,0.7)',
+            }),
+            stroke: new ol.style.Stroke({color: '#FF0000', width: 1})
+        })
+    })],
+    'line': [new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'rgba(255,0,0,0.7)',
+            width: 10
+        })
+    })]
+};
+
 var image = new ol.style.Circle({
   radius: 5,
   fill: null,
