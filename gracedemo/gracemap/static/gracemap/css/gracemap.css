@@ -199,6 +199,10 @@ iframe {
     padding: 5px;
 }
 
+#permalink-content {
+    padding: 10px;
+}
+
 #feature-infos-content table {
     margin-left: 5px;
     margin-right: 5px;
