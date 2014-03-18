@@ -398,6 +398,9 @@ var stylesSearch = {
             this.map.on('dragend', function(evt) {
                 gdView.prev_center = gdView.next_center;
                 gdView.next_center = gdView.view.getCenter();
+                
+                gdView.prev_zoom = gdView.next_zoom;
+                gdView.next_zoom = gdView.view.getZoom();
             });
 
             // Highlight
@@ -817,14 +820,11 @@ var stylesSearch = {
         },
         
         prevStateControl: function() {
-            //$('.ol-overlaycontainer-stopevent').append('<div class="ol-zoom-previous ol-zoom-extent ol-unselectable"><button class="ol-has-tooltip" id="btn-zoom-previous"><span role="tooltip">Vue précédente</span></button></div>');
-            
             $('.ol-overlaycontainer-stopevent').append('<div class="ol-zoom-previous ol-zoom-extent ol-unselectable" id="btn-zoom-previous"><a href="#zoomPrevious"></a></div>');            
             
-            
-            
             $('#btn-zoom-previous').click(function() {
-                gdView.view.setCenter(gdView.prev_center);
+                if(gdView.prev_center)
+                    gdView.view.setCenter(gdView.prev_center);
                 if(gdView.prev_zoom)
                     gdView.view.setZoom(gdView.prev_zoom);                
             });            
