@@ -1,4 +1,6 @@
 var gdView;
+Proj4js.defs["EPSG:2154"] = "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
+Proj4js.defs["EPSG:3857"]= "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs"; 
 
 var stylesSearch = {
     'point': [new ol.style.Style({
@@ -172,6 +174,7 @@ var stylesSearch = {
         root_support_tv: '',
         viewResolution: '',
         viewProjection: '',
+        mousePositionControl: '',
 
         events: {
             'click #search_obj' : 'doSearchObjHandler',
@@ -244,14 +247,22 @@ var stylesSearch = {
             $('#layer-select').trigger('change');            
             
 
-            var mousePositionControl = new ol.control.MousePosition({
+            this.mousePositionControl = new ol.control.MousePosition({
                 coordinateFormat: ol.coordinate.createStringXY(4),
                 projection: 'EPSG:4326',
                 className: 'custom-mouse-position',
                 target: document.getElementById('mouse-position'),
                 undefinedHTML: '&nbsp;'
             });    
-
+            $('#mouse-position-epsg').change(function() {
+                var epsg = $(this).find(':selected').val();
+                //proj = new Proj4js.Proj(epsg);
+                gdView.mousePositionControl.setProjection(ol.proj.get(epsg));
+                //gdView.mousePositionControl.setProjection(proj);
+                gdView.map.removeControl(gdView.mousePositionControl);
+                gdView.map.addControl(gdView.mousePositionControl);
+            });
+            
             var scaleLineControl = new ol.control.ScaleLine();
 
             extentMin = ol.proj.transform([-5.51, 42.5], 'EPSG:4326', 'EPSG:3857');
@@ -266,7 +277,7 @@ var stylesSearch = {
             
             this.map = new ol.Map({
                 controls: ol.control.defaults().extend([
-                    mousePositionControl,
+                    this.mousePositionControl,
                     scaleLineControl,
                     zoomToExtentControl
                 ]),
