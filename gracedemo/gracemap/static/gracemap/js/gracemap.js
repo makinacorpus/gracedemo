@@ -178,6 +178,10 @@ var stylesSearch = {
         featureinfos_disable: false,
         draw: '',
         vectorDraw: '',
+        prev_center: '',
+        prev_zoom: '',
+        next_center: '',
+        next_zoom: '',
 
         events: {
             'click #search_obj' : 'doSearchObjHandler',
@@ -379,12 +383,22 @@ var stylesSearch = {
             $(this.map.getViewport()).on('mousemove', function(evt) {
                 var pixel = gdView.map.getEventPixel(evt.originalEvent);
                 gdView.displayFeatureInfo(pixel);
+                
             });
 
             this.map.on('singleclick', function(evt) {
                 gdView.displayFeatureInfo(evt.pixel);
             });
-            
+
+            // Save state
+            this.map.on('zoomend', function(evt) {
+                gdView.prev_zoom = gdView.next_zoom;
+                gdView.next_zoom = gdView.view.getZoom();
+            });
+            this.map.on('dragend', function(evt) {
+                gdView.prev_center = gdView.next_center;
+                gdView.next_center = gdView.view.getCenter();
+            });
 
             // Highlight
             var highlightStyleCache = {};
@@ -411,16 +425,12 @@ var stylesSearch = {
                             fill: new ol.style.Fill({
                                 color: 'rgba(255,255,0,0.1)'
                             }),
+                            
                             text: new ol.style.Text({
-                                font: '20px Arial,sans-serif',
-                                text: text,
-                                fill: new ol.style.Fill({
-                                    color: '#FFF'
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: '#444400',
-                                    width: 3
-                                })
+                                    fill: new ol.style.Fill({color: '#FFF'}),
+                                    stroke: new ol.style.Stroke({color: '#666', width: 5, lineDash: [1, 1]}),
+                                    text: text,
+                                    font: '44px Verdana'
                             })
                         })];
                     }
@@ -496,6 +506,9 @@ var stylesSearch = {
                 this.map.getView().setCenter(init_center);
                 this.map.getView().setZoom(init_zoom);
             }
+            
+            // Add save state control
+            this.prevStateControl();
             
         },
         
@@ -747,11 +760,11 @@ var stylesSearch = {
                     style: new ol.style.Style({
                         fill: new ol.style.Fill({
                             color: 'rgba(255, 255, 255, 0.2)'
-                        }),
+                        })/*,
                         stroke: new ol.style.Stroke({
                             color: '#ffcc33',
                             width: 2
-                        })
+                        })*/
                     })
                 });
                 this.map.addLayer(this.vectorDraw);
@@ -774,7 +787,7 @@ var stylesSearch = {
                         }
                         document.getElementById('measure-result').innerHTML = length.toFixed(3) + " m";
                         // And delete the feature
-                        gdView.vectorDraw.getSource().removeFeature(feature);
+                        //gdView.vectorDraw.getSource().removeFeature(feature);
                     });
                 });
                 
@@ -801,7 +814,22 @@ var stylesSearch = {
             var center = this.map.getView().getCenter();
             document.getElementById('permalink-content').innerHTML = base_url + "?center=" + center + "&zoom=" + zoom;
             $('#permalink-dialog').modal('show');            
+        },
+        
+        prevStateControl: function() {
+            //$('.ol-overlaycontainer-stopevent').append('<div class="ol-zoom-previous ol-zoom-extent ol-unselectable"><button class="ol-has-tooltip" id="btn-zoom-previous"><span role="tooltip">Vue précédente</span></button></div>');
+            
+            $('.ol-overlaycontainer-stopevent').append('<div class="ol-zoom-previous ol-zoom-extent ol-unselectable" id="btn-zoom-previous"><a href="#zoomPrevious"></a></div>');            
+            
+            
+            
+            $('#btn-zoom-previous').click(function() {
+                gdView.view.setCenter(gdView.prev_center);
+                if(gdView.prev_zoom)
+                    gdView.view.setZoom(gdView.prev_zoom);                
+            });            
         }
+        
 
   });
   gdView = new GraceDemoView();

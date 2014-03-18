@@ -12,12 +12,25 @@ html, body {
 
 /* OL */
 
+.ol-zoom {
+    top: 108px;
+}
+
 .ol-scale-line {
     left: 40px;
 }
 .ol-zoom-extent{
     top: 12em;
 }
+
+.ol-zoom-previous a:after {
+    content: "P";
+}    
+
+.ol-zoom-previous {
+    top: 14em;
+}    
+
 
 /* UI */
 .navbar-fixed-top {
@@ -46,9 +59,7 @@ html, body {
     padding-top: 0px;
 }
 
-.ol-zoom {
-    top: 108px;
-}
+
 
 .navbar #place-to-search {
     width: 300px;
