@@ -254,3 +254,17 @@ iframe {
     margin-left: 0;
     margin-right: 0;
 }
+
+#mouse-position-control {
+    border-bottom: 1px dotted #eee;
+    margin-bottom: 5px;
+}
+
+#measure-dist-btn {
+    float: left;
+}
+
+#measure-result {
+    float: left;
+    margin-left: 5px;
+}

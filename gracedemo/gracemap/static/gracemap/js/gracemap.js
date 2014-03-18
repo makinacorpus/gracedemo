@@ -175,6 +175,9 @@ var stylesSearch = {
         viewResolution: '',
         viewProjection: '',
         mousePositionControl: '',
+        featureinfos_disable: false,
+        draw: '',
+        vectorDraw: '',
 
         events: {
             'click #search_obj' : 'doSearchObjHandler',
@@ -441,29 +444,31 @@ var stylesSearch = {
             
             // Get feature infos (WMS)
             this.map.on('singleclick', function(evt) {
-                // for all queryable layers
-                document.getElementById('feature-infos-content').innerHTML = "";
-                var foundLayers = layers.where({queryable:true});
-                for(i = 0 ; i < foundLayers.length; i++) {
-                    var url = foundLayers[i].attributes.source.getGetFeatureInfoUrl(
-                        evt.coordinate, gdView.viewResolution, gdView.viewProjection,
-                        {'INFO_FORMAT': 'text/html'});
-                    
-                    if (url) {
-                        Backbone.ajax({
-                            url: '/getfeatureinfos?url=' + encodeURIComponent(url),
-                            success: function(val){
-                                document.getElementById('feature-infos-content').innerHTML += val;
-                            },
-                            error: function(val){
-                            }
-                        });
+                if(!gdView.featureinfos_disable) {
+                    // for all queryable layers
+                    document.getElementById('feature-infos-content').innerHTML = "";
+                    var foundLayers = layers.where({queryable:true});
+                    for(i = 0 ; i < foundLayers.length; i++) {
+                        var url = foundLayers[i].attributes.source.getGetFeatureInfoUrl(
+                            evt.coordinate, gdView.viewResolution, gdView.viewProjection,
+                            {'INFO_FORMAT': 'text/html'});
+                        
+                        if (url) {
+                            Backbone.ajax({
+                                url: '/getfeatureinfos?url=' + encodeURIComponent(url),
+                                success: function(val){
+                                    document.getElementById('feature-infos-content').innerHTML += val;
+                                },
+                                error: function(val){
+                                }
+                            });
+                        }
                     }
+                    if(foundLayers.length > 0)
+                        $('#feature-infos').modal('show');
+                    else
+                        alert("Il n'y a pas de couche interrogeable");
                 }
-                if(foundLayers.length > 0)
-                    $('#feature-infos').modal('show');
-                else
-                    alert("Il n'y a pas de couche interrogeable");
             });  
             
             
@@ -595,30 +600,16 @@ var stylesSearch = {
             }); 
             this.map.addLayer(json_layer);
             
-            styleObj = legendStyleFunction(layerModel.attributes.id);
-            if(styleObj[0].getStroke())
-                colorObj = styleObj[0].getStroke().getColor();
-            else
-                colorObj= styleObj[0].getImage().getStroke().getColor();
-            
-            //if (init) {
             if(layerModel.attributes.json_layer != '')                
                 this.layersArray[layerModel.attributes.json_layer_num] = json_layer;
-            else
-                num_layer = this.addLayerToLegend(json_layer, colorObj, layerModel.attributes.id, 'json');
-
+            else {
+                this.layersArray.push(json_layer);
+                this.num_layer = this.num_layer + 1;
+                num_layer = this.num_layer;
+            }
+            
             layerModel.attributes.json_layer = json_layer;
             layerModel.attributes.json_layer_num = num_layer;
-        },
-
-        addLayerToLegend: function (layer, colorObj, id, type) {
-            //$('#layers_list').append('<li><div style="width:16px;height:18px;background:'+colorObj+';margin-top:2px; float: left;"></div><input type="checkbox" name="check_'+id+'" id="check_'+id+'" value="'+this.num_layer+'" onclick="gdView.displayLayer(this)" checked> '+'<span class="layername">'+id+'</span></li>');            
-            
-            this.layersArray.push(layer);
-            this.num_layer = this.num_layer + 1;
-            
-            return (this.num_layer - 1);
-
         },
 
         addKmlLayerToLegend: function (layer, id) {
@@ -742,40 +733,63 @@ var stylesSearch = {
         },
         
         measureLine: function() {
-            var draw; // global so we can remove it later
-            var source = new ol.source.Vector();
-            var vector = new ol.layer.Vector({
-                source: source,
-                style: new ol.style.Style({
-                    fill: new ol.style.Fill({
-                    color: 'rgba(255, 255, 255, 0.2)'
-                    }),
-                    stroke: new ol.style.Stroke({
-                    color: '#ffcc33',
-                    width: 2
-                    }),
-                    image: new ol.style.Circle({
-                    radius: 7,
-                    fill: new ol.style.Fill({
-                        color: '#ffcc33'
+            className = $('#measure-dist-btn').attr('class');
+            if(className.indexOf('btn-warning') == -1) {
+                $('#measure-dist-btn').prop('value', 'Stop mesure');    
+                $('#measure-dist-btn').addClass("btn-warning");
+                // Stop listening to WMS request on map
+                this.featureinfos_disable = true;
+                
+                var draw; // global so we can remove it later
+                var source = new ol.source.Vector();
+                this.vectorDraw = new ol.layer.Vector({
+                    source: source,
+                    style: new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#ffcc33',
+                            width: 2
+                        })
                     })
-                    })
-                })
-            });
-            this.map.addLayer(vector);
-            draw = new ol.interaction.Draw({
-                source: source,
-                type: "LineString"
-            });
-            this.map.addInteraction(draw);
-            
-            vector.on('drawend', function(evt) {
-                alert("ici");
-            });
-            
-            //this.map.removeInteraction(draw);
+                });
+                this.map.addLayer(this.vectorDraw);
+                this.draw = new ol.interaction.Draw({
+                    source: source,
+                    type: "LineString"
+                });
+                this.map.addInteraction(this.draw);
+                
+                this.draw.on('drawend', function(evt) {
+                    // Calculate distance
+                    gdView.vectorDraw.getSource().forEachFeature(function(feature) {
+                        var coord3857 = feature.getGeometry().getCoordinates();
+                        length = 0;
+                        for(i = 1 ; i < coord3857.length ; i++) {
+                            
+                            var trans = ol.proj.getTransform('EPSG:3857', 'EPSG:4326');
+                            var coord4326 = [trans(coord3857[i-1]),trans(coord3857[i])];
+                            length += ol.sphere.NORMAL.haversineDistance(coord4326[0], coord4326[1]);
+                        }
+                        document.getElementById('measure-result').innerHTML = length.toFixed(3) + " m";
+                        // And delete the feature
+                        gdView.vectorDraw.getSource().removeFeature(feature);
+                    });
+                });
+                
+            } else {
+                $('#measure-dist-btn').prop('value', 'Mesure linéaire');    
+                $('#measure-dist-btn').removeClass("btn-warning");
+                // Restore listening to WMS request on map
+                this.featureinfos_disable = false;
+                
+                this.map.removeInteraction(this.draw);
+                this.map.removeLayer(this.vectorDraw);
+                
+                document.getElementById('measure-result').innerHTML = '';
+            }
         },
-        
         
         showInfosLayer: function() {
             alert("Cette couche est interrogeable");
