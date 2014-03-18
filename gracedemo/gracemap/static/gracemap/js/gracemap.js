@@ -389,7 +389,16 @@ var stylesSearch = {
                 map: this.map,
                 style: function(feature, resolution) {
                     //var text = resolution < 5000 ? feature.get('id_com_insee') : '';
-                    var text = feature.get('typeobj') + " : " +  feature.getId();
+                    //var text = feature.get('typeobj') + " : " +  feature.getId();
+                    //
+                    infoStr = [];
+                    for (prop in feature.getProperties()) {
+                        if(prop != 'geometry' && prop != 'typeobj') {
+                            infoStr.push('\n' + prop + ': ' + feature.get(prop));
+                        }
+                    }                    
+                    text = infoStr.join(', ') || '&nbsp';
+                    
                     if (!highlightStyleCache[text]) {
                         highlightStyleCache[text] = [new ol.style.Style({
                             stroke: new ol.style.Stroke({
@@ -430,7 +439,7 @@ var stylesSearch = {
             this.viewProjection = (this.map.getView().getProjection());
             
             
-            // Get feature infos
+            // Get feature infos (WMS)
             this.map.on('singleclick', function(evt) {
                 // for all queryable layers
                 document.getElementById('feature-infos-content').innerHTML = "";
@@ -510,32 +519,35 @@ var stylesSearch = {
         
         // Get infos on features (json)
         displayFeatureInfo: function (pixel) {
-            var feature = this.map.forEachFeatureAtPixel(pixel, function(feature, layer) {
-                return feature;
-            });
-
+            var features = [];
             var info = document.getElementById('infos-content');
-            if (feature) {
-                info.innerHTML = feature.get('typeobj') + '<br/>ID: ' + feature.getId();
-                for (prop in feature.getProperties()) {
-                    if(prop != 'geometry' && prop != 'typeobj') {
-                        info.innerHTML = info.innerHTML + '<br/>' + prop + ': ' + feature.get(prop);
+            this.map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+                features.push(feature);
+                if (feature !== gdView.highlight) {
+                    if (gdView.highlight) {
+                        gdView.featureOverlay.removeFeature(gdView.highlight);
                     }
+                    if (feature) {
+                        gdView.featureOverlay.addFeature(feature);
+                    }
+                    gdView.highlight = feature;
+                }                
+            });
+            if (features.length > 0) {
+                var infoStr = [];
+                var i, ii;
+                for (i = 0, ii = features.length; i < ii; ++i) {
+                    //infoStr.push(features[i].get('name'));
+                    for (prop in features[i].getProperties()) {
+                        if(prop != 'geometry' && prop != 'typeobj') {
+                            infoStr.push('<br/>' + prop + ': ' + features[i].get(prop));
+                        }
+                    }                    
                 }
-                
+                info.innerHTML = infoStr.join(', ') || '&nbsp';
             } else {
                 info.innerHTML = '&nbsp;';
-            }
-
-            if (feature !== this.highlight) {
-                if (this.highlight) {
-                    this.featureOverlay.removeFeature(this.highlight);
-                }
-                if (feature) {
-                    this.featureOverlay.addFeature(feature);
-                }
-                this.highlight = feature;
-            }
+            }            
         },
         
         addWMS: function (layerModel, layer, url) {
