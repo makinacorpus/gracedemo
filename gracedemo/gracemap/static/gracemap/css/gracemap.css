@@ -116,6 +116,10 @@ html, body {
     color: #d26105;
 }
 
+.infos-sep {
+    border-bottom: 1px dotted #ccc;
+}
+
 input[type="checkbox"] {
     margin-top: 0px;
 }

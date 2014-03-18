@@ -542,9 +542,10 @@ var stylesSearch = {
                         if(prop != 'geometry' && prop != 'typeobj') {
                             infoStr.push('<br/>' + prop + ': ' + features[i].get(prop));
                         }
-                    }                    
+                    }
+                    infoStr.push('<div class="infos-sep"></div>');
                 }
-                info.innerHTML = infoStr.join(', ') || '&nbsp';
+                info.innerHTML = infoStr.join(' ') || '&nbsp';
             } else {
                 info.innerHTML = '&nbsp;';
             }            
