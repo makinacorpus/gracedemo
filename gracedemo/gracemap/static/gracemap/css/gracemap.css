@@ -23,7 +23,7 @@ html, body {
     top: 12em;
 }
 
-.ol-zoom-previous a:after {
+.ol-zoom-previous button:after {
     content: "P";
 }    
 

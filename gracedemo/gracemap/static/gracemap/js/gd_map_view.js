@@ -238,11 +238,7 @@
             });
 
             // Save state
-            this.map.on('zoomend', function(evt) {
-                gd.mapView.prev_zoom = gd.mapView.next_zoom;
-                gd.mapView.next_zoom = gd.mapView.view.getZoom();
-            });
-            this.map.on('dragend', function(evt) {
+            this.map.on('moveend', function(evt) {
                 gd.mapView.prev_center = gd.mapView.next_center;
                 gd.mapView.next_center = gd.mapView.view.getCenter();
                 
@@ -260,7 +256,7 @@
                     //
                     infoStr = [];
                     for (prop in feature.getProperties()) {
-                        if(prop != 'geometry' && prop != 'typeobj') {
+                        if(prop != 'geometry' && prop != 'typeobj' && prop != 'center') {
                             infoStr.push('\n' + prop + ': ' + feature.get(prop));
                         }
                     }                    
@@ -278,9 +274,10 @@
                             
                             text: new ol.style.Text({
                                     fill: new ol.style.Fill({color: '#FFF'}),
-                                    stroke: new ol.style.Stroke({color: '#666', width: 5, lineDash: [1, 1]}),
+                                    //stroke: new ol.style.Stroke({color: '#666', width: 5, lineDash: [1, 1]}),
+                                    stroke: new ol.style.Stroke({color: '#444', width: 3}),
                                     text: text,
-                                    font: '44px Verdana'
+                                    font: '12px Verdana'
                             })
                         })];
                     }
@@ -709,7 +706,7 @@
         },
         
         prevStateControl: function() {
-            $('.ol-overlaycontainer-stopevent').append('<div class="ol-zoom-previous ol-zoom-extent ol-unselectable" id="btn-zoom-previous"><a href="#zoomPrevious"></a></div>');            
+            $('.ol-overlaycontainer-stopevent').append('<div class="ol-zoom-previous ol-zoom-extent ol-unselectable"><button id="btn-zoom-previous" class="ol-has-tooltip"><span role="tooltip">Zoom précédent</span></button></div>');            
             
             $('#btn-zoom-previous').click(function() {
                 if(gd.mapView.prev_center)
