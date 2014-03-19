@@ -238,12 +238,13 @@
             });
 
             // Save state
-            this.map.on('moveend', function(evt) {
-                gd.mapView.prev_center = gd.mapView.next_center;
-                gd.mapView.next_center = gd.mapView.view.getCenter();
-                
-                gd.mapView.prev_zoom = gd.mapView.next_zoom;
-                gd.mapView.next_zoom = gd.mapView.view.getZoom();
+            this.view.on('propertychange', function(evt) {
+                if(evt.key == 'center') {
+                    gd.mapView.prev_center = gd.mapView.next_center;
+                    gd.mapView.next_center = gd.mapView.view.getCenter();
+                    gd.mapView.prev_zoom = gd.mapView.next_zoom;
+                    gd.mapView.next_zoom = gd.mapView.view.getZoom();
+                }
             });
 
             // Highlight
