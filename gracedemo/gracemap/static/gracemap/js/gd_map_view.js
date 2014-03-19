@@ -488,17 +488,24 @@
                 cols = [];
                 table_headers = [];
                 table_name = '';
+                center= '';
                 for (prop in feature.getProperties()) {
                     if(prop == 'typeobj') {
                         table_name = feature.get(prop);
                     }
-                    if(prop != 'geometry' && prop != 'typeobj') {
+                    if(prop == 'center') {
+                        center = feature.get(prop);
+                        center = center.replace('POINT(','');
+                        center = center.replace(')','');
+                        center = center.replace(' ',',');
+                    }
+                    if(prop != 'geometry'  && prop != 'center' && prop != 'typeobj') {
                         table_headers.push('<th>' + prop + '</th>');
                         cols.push('<td>' + feature.get(prop) + '</td>');
                     }
                 }                    
                 table_header = '<tr>' + table_headers.join('') + '<tr/>';
-                table_row = '<tr onclick="javascript:gd.mapView.focusOnObj()">' + cols.join('') + '<tr/>';
+                table_row = '<tr onclick="javascript:gd.mapView.focusOnObj('+center+')">' + cols.join('') + '<tr/>';
                 
                 var tbody = $('#json-objects-contents-'+table_name+' tbody');
                 if (tbody.html() == '')
@@ -708,11 +715,15 @@
             });            
         },
         
-        focusOnObj: function() {
-            // TODO
+        focusOnObj: function(x,y) {
+            var new_center = ol.proj.transform([x*1.0, y*1.0], 'EPSG:4326', 'EPSG:3857');
+            var pan = ol.animation.pan({
+                duration: 2000,
+                source: (gd.mapView.view.getCenter())
+            });
+            gd.mapView.map.beforeRender(pan);
+            gd.mapView.view.setCenter(new_center);            
         }
-        
-
   });
   gd.mapView = new MapView();
 })(jQuery);
