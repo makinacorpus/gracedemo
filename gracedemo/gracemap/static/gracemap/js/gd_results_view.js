@@ -25,6 +25,7 @@ var ResultsView = Backbone.View.extend({
             this.$el.append(this.template(model.toJSON()));
             
             // Highlight on map
+            /*
             if(model.attributes.geom.type == 'Point') {
                 gd.mapView.vectorSource.addFeature(new ol.Feature({
                     'geometry': new ol.geom.Point(new ol.proj.transform(model.attributes.geom.coordinates, 'EPSG:4326', 'EPSG:3857')),
@@ -40,6 +41,7 @@ var ResultsView = Backbone.View.extend({
                     'type': 'line'
                 }));
             }
+            */
         }, this);
         
         if(this.init) {
