@@ -204,7 +204,7 @@ GRACE_TABLE_INFOS_GEOJSON =  {
     TABLE_SITE_TECHNIQUE: {
         'id_col': 'id_lt',
         'geom_col': 'geom',
-        'select_col': '\'site_technique\' as typeobj, ST_AsText(ST_Transform(n.geom, 4326)) as geom, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(n.geom, 4326)),0.00001)) as center, n.id_com_insee_noeud as "Insee" FROM noeud n, local_technique lt WHERE lt.id_noeud = n.id_noeud',
+        'select_col': '\'site_technique\' as typeobj, type_lt as "Type", ST_AsText(ST_Transform(n.geom, 4326)) as geom, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(n.geom, 4326)),0.00001)) as center, n.id_com_insee_noeud as "Insee" FROM noeud n, local_technique lt WHERE lt.id_noeud = n.id_noeud',
         'select_result_col': '\'site_technique\' as typeobj, id_lt as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(n.geom, 4326)),0.00001)) as center, ST_AsText(ST_Transform(n.geom, 4326)) as geom FROM noeud n, local_technique lt WHERE lt.id_noeud = n.id_noeud',
         'search_col': ['id_lt', 'hbgmt_lt']
     },
