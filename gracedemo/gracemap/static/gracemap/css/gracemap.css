@@ -195,6 +195,11 @@ input[type="checkbox"] {
     background: #eee;
 }
 
+#json-objects-contents h4 {
+    color: #666;
+    font-size: 14px;
+}
+
 
 
 .mCSB_dragger {

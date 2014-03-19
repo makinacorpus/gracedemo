@@ -59,6 +59,10 @@ var LayersView = Backbone.View.extend({
             // Add layer to map
             layerAdded = gd.mapView.addWMS(model, model.attributes.id, model.attributes.url);
             
+            
+            // Add table in object result view
+            document.getElementById('json-objects-contents').innerHTML += "<h4>"+model.attributes.label+"</h4><table id='json-objects-contents-"+model.attributes.id+"'><thead></thead><tbody></tbody></table>";
+            
             gd.mapView.layersArray.push(layerAdded);
             gd.mapView.num_layer = gd.mapView.num_layer + 1;
             

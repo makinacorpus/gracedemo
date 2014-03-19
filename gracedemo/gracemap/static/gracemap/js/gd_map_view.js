@@ -474,23 +474,38 @@
             layerModel.attributes.json_layer_num = num_layer;
             
             // Add infos to json-objects-contents panel
-            // TODO
+            // Empty the json table result
+            $('#json-objects-contents-'+layerModel.attributes.id+' > tbody tr').remove();
+            $('#json-objects-contents-'+layerModel.attributes.id+' > thead tr').remove();
+            
+            // Open the table
+            $('#json-objects-collapse').collapse('show');
+            
+            // For each feature, add to table list
             objSource.on('addfeature', function(event) {
                 var feature = event.feature;
                 
                 cols = [];
                 table_headers = [];
-                
+                table_name = '';
                 for (prop in feature.getProperties()) {
-                    if(prop != 'geometry') {
+                    if(prop == 'typeobj') {
+                        table_name = feature.get(prop);
+                    }
+                    if(prop != 'geometry' && prop != 'typeobj') {
                         table_headers.push('<th>' + prop + '</th>');
                         cols.push('<td>' + feature.get(prop) + '</td>');
                     }
                 }                    
                 table_header = '<tr>' + table_headers.join('') + '<tr/>';
-                table_row = '<tr>' + cols.join('') + '<tr/>';
-                text = '<table>' + table_header + table_row + '</table>';
-                document.getElementById('json-objects-contents').innerHTML += text;
+                table_row = '<tr onclick="javascript:gd.mapView.focusOnObj()">' + cols.join('') + '<tr/>';
+                
+                var tbody = $('#json-objects-contents-'+table_name+' tbody');
+                if (tbody.html() == '')
+                    $('#json-objects-contents-'+table_name+' > thead').append(table_header);
+                
+                $('#json-objects-contents-'+table_name+' > tbody:last').append(table_row);
+                
                 
             });
             
@@ -691,6 +706,10 @@
                 if(gd.mapView.prev_zoom)
                     gd.mapView.view.setZoom(gd.mapView.prev_zoom);                
             });            
+        },
+        
+        focusOnObj: function() {
+            // TODO
         }
         
 
