@@ -153,6 +153,10 @@ input[type="checkbox"] {
     padding-left: 30px; 
 }
 
+#search #search-results ul li {
+    width: 1000px;
+}
+
 #search #search-results ul li.artere {
     list-style-image: url('../img/artere.png');
 }
@@ -165,6 +169,19 @@ input[type="checkbox"] {
 #search #search-results ul li.tranchee {
     list-style-image: url('../img/tranchee.png');
 }
+#search #search-results ul li.chambre {
+    list-style-image: url('../img/chambre.png');
+}
+#search #search-results ul li.cable {
+    list-style-image: url('../img/cable.png');
+}
+#search #search-results ul li.bpe {
+    list-style-image: url('../img/bpe.png');
+}
+#search #search-results ul li.site_technique {
+    list-style-image: url('../img/site_technique.png');
+}
+
 
 #json-objects {
     width: 500px;
