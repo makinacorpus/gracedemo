@@ -32,6 +32,7 @@
         events: {
             'click #search_obj' : 'doSearchObjHandler',
             'keypress #place-to-search' : 'doSearchPlace',
+            'keypress #obj-to-search' : 'doSearchObjHandler',
         },        
         
         initialize: function(){
@@ -591,6 +592,9 @@
         },
         
         doSearchObjHandler: function (e) {
+            if(e.type == "keypress" && e.key != "Enter")
+                return;
+            
             if($('#obj-to-search').val() != '') {
                 Backbone.ajax({
                     dataType: "json",
