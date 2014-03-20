@@ -81,17 +81,17 @@ html, body {
     background-color:rgba(255,255,255,0.8);
 }
 
-#pulldown-content1 {
+#pulldown-layers {
     right: 0;
 }
-#pulldown-content2 {
+#pulldown-tools {
+    left: 100px;
+}
+#pulldown-search {
+    left: 350px;
+}
+#pulldown-infos {
     right: 250px;
-}
-#pulldown-content3 {
-    right: 500px;
-}
-#pulldown-content4 {
-    right: 750px;
 }
 
 #layers_legend_btn {
