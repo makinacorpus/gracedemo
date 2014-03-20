@@ -19,7 +19,7 @@ var stylesSearch = {
 var image = new ol.style.Circle({
   radius: 5,
   fill: null,
-  stroke: new ol.style.Stroke({color: 'rgba(255, 255, 0, 0.7)', width: 3})
+  stroke: new ol.style.Stroke({color: 'rgba(255, 255, 0, 0.01)', width: 3})  // make color almost invisible
 });
 
 var styles = {
@@ -66,7 +66,7 @@ var styles = {
   })],
   'fourreau': [new ol.style.Style({
     stroke: new ol.style.Stroke({
-      color: 'rgba(255, 255, 0, 0.5)',
+      color: 'rgba(255, 255, 0, 0.01)', // make color almost invisible
       width: 2
     }),
     highlight: new ol.style.Stroke({
@@ -76,7 +76,7 @@ var styles = {
   })],
   'tranchee': [new ol.style.Style({
     stroke: new ol.style.Stroke({
-      color: 'rgba(255, 255, 0, 0.5)',
+      color: 'rgba(255, 255, 0, 0.01)',  // make color almost invisible
       width: 3
     }),
     highlight: new ol.style.Stroke({
@@ -86,7 +86,7 @@ var styles = {
   })],
   'cable': [new ol.style.Style({
     stroke: new ol.style.Stroke({
-      color: 'rgba(255, 255, 0, 0.5)',
+      color: 'rgba(255, 255, 0, 0.01)', // make color almost invisible
       width: 3
     }),
     highlight: new ol.style.Stroke({

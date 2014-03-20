@@ -275,7 +275,6 @@
                             
                             text: new ol.style.Text({
                                     fill: new ol.style.Fill({color: '#FFF'}),
-                                    //stroke: new ol.style.Stroke({color: '#666', width: 5, lineDash: [1, 1]}),
                                     stroke: new ol.style.Stroke({color: '#444', width: 3}),
                                     text: text,
                                     font: '12px Verdana'
