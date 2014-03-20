@@ -61,7 +61,8 @@ var LayersView = Backbone.View.extend({
             
             
             // Add table in object result view
-            document.getElementById('json-objects-contents').innerHTML += "<h4>"+model.attributes.label+"</h4><table id='json-objects-contents-"+model.attributes.id+"'><thead></thead><tbody></tbody></table>";
+            reloadBtn = '<span class="layername reloadspan" onclick="gd.mapView.activeLayer(\''+model.attributes.id+'\');">'+'<div class="reload-btn"></div>'+'</span>';
+            document.getElementById('json-objects-contents').innerHTML += "<h4>"+model.attributes.label+reloadBtn+"</h4><table id='json-objects-contents-"+model.attributes.id+"'><thead></thead><tbody></tbody></table>";
             
             gd.mapView.layersArray.push(layerAdded);
             gd.mapView.num_layer = gd.mapView.num_layer + 1;

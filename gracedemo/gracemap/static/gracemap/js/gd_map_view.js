@@ -373,12 +373,11 @@
             // Change class of legend active layer
             $("#tree-layers .layername").removeClass("layer-active");
             
-            $(span).addClass("layer-active");
+            if(span)
+                $(span).addClass("layer-active");
             
             // Load JSON
             this.loadGeoJSON();
-            
-            // TODO load the features into a grid at the bottom of the map
             
         },
         
