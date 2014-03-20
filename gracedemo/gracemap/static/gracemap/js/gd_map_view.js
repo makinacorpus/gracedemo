@@ -502,7 +502,7 @@
                     }
                 }                    
                 table_header = '<tr>' + table_headers.join('') + '<tr/>';
-                table_row = '<tr onclick="javascript:gd.mapView.focusOnObj('+center+')">' + cols.join('') + '<tr/>';
+                table_row = '<tr onclick="javascript:gd.mapView.focusOnObj('+center+', '+feature.getId()+')">' + cols.join('') + '<tr/>';
                 
                 var tbody = $('#json-objects-contents-'+table_name+' tbody');
                 if (tbody.html() == '')
@@ -715,7 +715,7 @@
             });            
         },
         
-        focusOnObj: function(x,y) {
+        focusOnObj: function(x,y, featureId) {
             var new_center = ol.proj.transform([x*1.0, y*1.0], 'EPSG:4326', 'EPSG:3857');
             var pan = ol.animation.pan({
                 duration: 2000,
@@ -723,6 +723,21 @@
             });
             gd.mapView.map.beforeRender(pan);
             gd.mapView.view.setCenter(new_center);            
+            
+            // Empty featureoverlay
+            features = gd.mapView.featureOverlay.getFeatures();
+            features.forEach(function(feature) {
+                gd.mapView.featureOverlay.removeFeature(feature);
+            });
+            // Highlight selected object
+            var features = [];
+            pixel = gd.mapView.map.getPixelFromCoordinate(new_center);
+            var features = [];
+            gd.mapView.map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+                if(feature.getId() == featureId)
+                    gd.mapView.featureOverlay.addFeature(feature);
+            });
+            
         }
   });
   gd.mapView = new MapView();
