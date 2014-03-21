@@ -1,5 +1,10 @@
-gracedemo
+GraceDemo
 =========
+
+GraceDemo est un prototype de portail de démonstration 100% open source. L'objectif est de proposer un outil permettant d'exploiter une base de données conforme au geostandard ANT.
+Gr@ce est le nom du portail de géoréférencement et de recensement des infrastructures de communications électroniques de la région Aquitaine.
+http://grace.aquitaine.fr/accueil/
+
 
 Install
 =======
@@ -9,76 +14,49 @@ System dependencies
 
 list of system dependencies:
 
-  - make
   - python-virtualenv
   - python-dev
   - postgresql-9.1
   - postgresql-server-dev-9.1
   - postgresql-9.1-postgis
-  - libmysqlclient-dev
-  - redis-server
   - git
-  - mercurial
 
-with apt::
+with apt:
 
-    apt-get install make python-virtualenv python-dev postgresql-9.1 postgresql-server-dev-9.1 postgresql-9.1-postgis libmysqlclient-dev redis-server git mercurial
+    apt-get install python-virtualenv python-dev postgresql-9.1 postgresql-server-dev-9.1 postgresql-9.1-postgis git
 
 Database
 --------
 
-Configure postgres to allow utf-8.
-In /etc/postgresql/9.1/main/pg_hba.conf, replace::
+You must have a Gr@ce compatible base installed on your server
 
-    local   all             all                                     ident
 
-by::
+Install QGis server
+-------------------
 
-    local   all             all                                     peer
+QGis server must be installed on your server. Please refer to the official Qgis site to find install procedure.
 
-Then restart postgresql.
-
-In commands::
-
-    $ sudo sed -i 's/^local *all *all *peer$/local   all             all                                     ident/' /etc/postgresql/9.1/main/pg_hba.conf
-    $ sudo service postgresql restart
-
-Create a user::
-
-    $ sudo -u postgres psql -c "CREATE USER ${DB_USER} PASSWORD '${DB_PASS}';"
-
-Create a database::
-
-    $ sudo -u postgres psql -c "CREATE DATABASE ${DB_NAME} OWNER ${DB_USER} ENCODING 'UTF8' LC_COLLATE 'C' LC_CTYPE 'C' TEMPLATE template0;"
-
-Install Postgis in the database::
-
-    $ sudo -u postgres psql -d ${DB_NAME} -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
-    $ sudo -u postgres psql -d ${DB_NAME} -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
-    $ sudo -u postgres psql -d ${DB_NAME} -c "ALTER TABLE geometry_columns OWNER TO ${DB_USER};"
-    $ sudo -u postgres psql -d ${DB_NAME} -c "ALTER TABLE spatial_ref_sys OWNER TO ${DB_USER};"
 
 Install application
 -------------------
 
-Go in the projet directory::
+Clone this directory, and go in the projet directory:
 
     $ cd gracedemo/
 
+Create virtual env and install dependencies :
 
-Install::
-
-    $ make install
-
-Say yes to the admin user creation and name it "admin".
+    $ virtualenv --no-site-packages .
+    $ pip install -r requirements.txt
 
 
-Set the domain::
-    $ sudo -u postgres psql -d ${DB_NAME} -c "UPDATE django_site SET name='localhost', domain='localhost:8000' WHERE id=1;"
-    $ sudo -u postgres psql -d ${DB_NAME} -c "UPDATE multisite_alias SET domain='localhost:8000' WHERE id=1;"
+Launch    
+------
 
-Run::
-    $ ./venv/bin/python manage.py runserver
+    $ export DJANGO_GRACEDEMO_PROJECT=`pwd`
+    $ source $DJANGO_GRACEDEMO_PROJECT/bin/activate    
+    $ cd gracedemo
+    $ ./manage.py runserver
 
-Go to http://localhost:8000/ to finish the install.
+Of course, you may launch django in various ways. Please refer to the official Django site.
 

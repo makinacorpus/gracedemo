@@ -1,9 +1,0 @@
-git clone git@github.com:makinacorpus/gracedemo.git
-
-
-1/ creer bae gracedemo (avec un schema public et un schema gracedemo
-2/ remonter le dump grace dans le schema grace
-
-Fichier gracedemo.sql
-
-psql -d gracedemo -a -f gracedemo.sql
