@@ -245,7 +245,7 @@ def get_layers_infos(request):
     response_content.append(feat_dict)
     feat_dict = SortedDict({"id": "bpe", "label": "BPE", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "cablage", "queryable": True, "active": True})
     response_content.append(feat_dict)
-    feat_dict = SortedDict({"id": "site technique", "label": "Sites techniques", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "", "queryable": True, "active": True})
+    feat_dict = SortedDict({"id": "site_technique", "label": "Sites techniques", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "", "queryable": True, "active": True})
     response_content.append(feat_dict)
 
     response = HttpResponse()
