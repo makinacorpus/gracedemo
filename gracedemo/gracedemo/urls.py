@@ -29,6 +29,9 @@ urlpatterns = patterns('',
     (r'^addannotation/$', add_annotation),
     
     (r'^$', view_map),
+    
+    #url(r'^capture/$',  include('screamshot.urls', namespace='screamshot', app_name='screamshot')),
+    #(r'^print/$', print_map),
 
 )
 

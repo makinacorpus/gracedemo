@@ -51,6 +51,20 @@ def view_map(request):
     return HttpResponse(template.render(context))      
 
     
+#@csrf_exempt
+#def print_map(request):
+    #"""
+    #Print map
+    #"""
+    
+    ##base_url = request.build_absolute_uri()
+    #base_url = ''.join(['http://', get_current_site(request).domain])
+    #rdict = {'qgis_server_url' : settings.QGIS_SERVER_URL, 'base_url': base_url}
+    #template = loader.get_template('gracemap/print.html')
+    #context = RequestContext(request, rdict)
+    #return HttpResponse(template.render(context))      
+    
+    
 @csrf_exempt
 def export_data_geojson(request, table_name):
     """

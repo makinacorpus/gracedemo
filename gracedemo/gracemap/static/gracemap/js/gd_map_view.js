@@ -36,7 +36,6 @@
             'keypress #place-to-search' : 'doSearchPlace',
             'keypress #obj-to-search' : 'doSearchObjHandler',
             'click #annotate' : 'annotate',
-            'click #annotate-check' : 'displayAnnotations',
         },        
         
         initialize: function(){
@@ -173,23 +172,33 @@
             
             // Init treeview layers
             this.apiTreeView = $('#tree-layers').aciTree({checkbox: true, radio: true, checkboxClick: true}).aciTree('api');
+            // annotations
+            this.apiTreeView.append(null, {
+                    uid: '33',
+                    itemData: {"id": "annotate", "label": "Annotations", "inode": false, "checked": false, "checkbox": true, "radio": false}
+                });
+            // network
             this.apiTreeView.append(null, {
                     uid: '11',
                     itemData: {"id": "root_cablage", "label": "Câblage", "inode": true, "checked": true, "checkbox": true, "radio": false}
                 });
-            this.root_cablage_tv = this.apiTreeView.first();
+            this.root_cablage_tv = this.apiTreeView.last();
             this.root_support_tv = this.apiTreeView.append(null, {
                     uid: '22',
                     itemData: {"id": "root_support", "label": "Support", "inode": true, "checked": true, "checkbox": true, "radio": false}
                 });
             this.root_support_tv = this.apiTreeView.last();
-
+            
             // Events on treeview layers
             $('#tree-layers').on('acitree', function(event, api, item, eventName, options){
                 switch (eventName){
                     case 'checked':
                         if (api.isItem(item)){
                             // if root item
+                            if(gd.mapView.apiTreeView.itemData(item).id == "annotate") {
+                                gd.mapView.annotateLayer.setVisible(true);
+                            }
+                            
                             if(gd.mapView.apiTreeView.level(item) == 0) {
                                 children = gd.mapView.apiTreeView.children(item, true, true);
                                 for(i = 0 ; i < children.length ; i++) {
@@ -220,6 +229,9 @@
                     case 'unchecked':
                         if (api.isItem(item)){
                             if(gd.mapView.apiTreeView.level(item) == 0) {
+                                if(gd.mapView.apiTreeView.itemData(item).id == "annotate") {
+                                    gd.mapView.annotateLayer.setVisible(false);
+                                }
                                 children = gd.mapView.apiTreeView.children(item, true, true);
                                 for(i = 0 ; i < children.length ; i++) {
                                     var itemData = gd.mapView.apiTreeView.itemData($(children[i]))
@@ -448,6 +460,7 @@
                 }                
             });
             if (features.length > 0) {
+                // features found
                 var infoStr = [];
                 var i, ii;
                 for (i = 0, ii = features.length; i < ii; ++i) {
@@ -461,6 +474,8 @@
                 }
                 info.innerHTML = infoStr.join(' ') || '&nbsp';
             } else {
+                gd.mapView.featureOverlay.removeFeature(gd.mapView.highlight);
+                gd.mapView.highlight = '';
                 info.innerHTML = '&nbsp;';
             }            
         },
@@ -823,15 +838,6 @@
                 gd.mapView.featureinfos_disable = false;
             });
             
-        },
-        
-        displayAnnotations: function() {    
-            if($('#annotate-check').is(':checked')) {
-                this.annotateLayer.setVisible(true);
-            }
-            else {
-                this.annotateLayer.setVisible(false);
-            }
         }
         
   });
