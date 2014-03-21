@@ -10,7 +10,8 @@ LayersModel = Backbone.Model.extend({
         "json_layer": '',
         "json_layer_num": '',
         "tv_root": '',
-        "queryable": false
+        "queryable": false,
+        "active": true
     }});
 
 gd.LayersCollection = Backbone.Collection.extend({
@@ -46,6 +47,10 @@ var LayersView = Backbone.View.extend({
             
             //var sub_root = gd.mapView.apiTreeView.searchId(true, true, {id: 'root_support'});
             
+            checked = true;
+            if(!model.attributes.active)
+                checked = false;
+                
             // Add to treeview
             gd.mapView.apiTreeView.append(root_tv, {
                     uid: model.attributes.num_layer,
@@ -53,20 +58,24 @@ var LayersView = Backbone.View.extend({
                     },
                     fail: function(item, options) {
                     },
-                    itemData: {"id": model.attributes.num_layer, "label": labelContent, "inode": false, "checked": true, "checkbox": true, "radio": false, "layerName": model.attributes.id}
+                    itemData: {"id": model.attributes.num_layer, "label": labelContent, "inode": false, "checked": checked, "checkbox": true, "radio": false, "layerName": model.attributes.id}
                 });
             
             // Add layer to map
             layerAdded = gd.mapView.addWMS(model, model.attributes.id, model.attributes.url);
-            
             
             // Add table in object result view
             reloadBtn = '<span class="layername reloadspan" onclick="gd.mapView.activeLayer(\''+model.attributes.id+'\');">'+'<div class="reload-btn"></div>'+'</span>';
             document.getElementById('json-objects-contents').innerHTML += "<h4>"+model.attributes.label+reloadBtn+"</h4><table id='json-objects-contents-"+model.attributes.id+"'><thead></thead><tbody></tbody></table>";
             
             gd.mapView.layersArray.push(layerAdded);
+
+            // Active by default ?
+            if(!model.attributes.active)
+                gd.mapView.layersArray[gd.mapView.num_layer].setVisible(false);
+
             gd.mapView.num_layer = gd.mapView.num_layer + 1;
-            
+
         }, this);
         
     }
