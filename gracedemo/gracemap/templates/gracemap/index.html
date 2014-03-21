@@ -171,8 +171,7 @@
                         <li><a href="#" data-target="#kml-infos" data-toggle="modal">Ajout de fichier</a></li>
                         <li><a href="#" onclick="javascript:gd.mapView.printMap('{{ STATIC_URL }}gracemap/css/gracemap_print.css');" >Imprimer la vue courante</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">Explorateur d'objets</a></li>
-                        <li><a href="#">Projets</a></li>
+                        <li><a href="#" data-target="#project-dialog" data-toggle="modal">Projets</a></li>
                         <li><a href="#">Capa réseau</a></li>
                         <li><a href="#">Routage</a></li>
                         <li><a href="#">Tableau de bord ingénierie</a></li>
@@ -285,7 +284,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Permalink</h4>
             </div>
-            <div id="permalink-content">
+            <div id="permalink-content" class="dialog-content">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
@@ -294,6 +293,25 @@
         </div>
     </div>
     
+    
+    <!-- Projet dialog -->
+    <div class="modal fade" id="project-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Projets</h4>
+            </div>
+            <div id="project-content" class="dialog-content">
+                <p>En cours de réalisation.</p>
+                <p>Interface de suivi de projet. Chaque utilisateur, interne ou partenaire, peut visualiser et mettre à jour son avancement.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Map -->
     <div id="map" class="map"></div>
