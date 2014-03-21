@@ -174,10 +174,10 @@
                         <li><a href="#" data-target="#project-dialog" data-toggle="modal">Projets</a></li>
                         <li><a href="#" data-target="#capa-dialog" data-toggle="modal">Capa réseau</a></li>
                         <li><a href="#" data-target="#routage-dialog" data-toggle="modal">Routage</a></li>
-                        <li><a href="#">Tableau de bord ingénierie</a></li>
+                        <li><a href="#" data-target="#ing-dashboard-dialog" data-toggle="modal">Tableau de bord ingénierie</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">Tableau de bord financier</a></li>
-                        <li><a href="#">Redevances</a></li>
+                        <li><a href="#" data-target="#fin-dashboard-dialog" data-toggle="modal">Tableau de bord financier</a></li>
+                        <li><a href="#" data-target="#redevance-dialog" data-toggle="modal">Redevances</a></li>
                         <li><a href="#">Biens de retour</a></li>
                     </ul>
                 </li>
@@ -293,13 +293,77 @@
     </div>
     
 
+    <!-- Redevance dialog -->
+    <div class="modal fade" id="redevance-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Redevances</h4>
+            </div>
+            <div id="redevance-content" class="dialog-content">
+                <p>La propriété d'un réseau de communications électroniques implique des coûts de location d'infrastructures tierses, et des coûts de redevances pour emprunter certains domaines. C'est la cas des RODP par exemple redevables aux communes.</p>
+                <p>La base de données possède les informations nécessaires pour calculer automatiquement des montants de redevances. Toutefois les spécificités de calculs, de contrats et d'infrastructures nécessitent un peu d'intégration.</p>
+                <p>Le rendu des synthèses peut être intégré ou simplement pointer vers un outil externe (bureautique par exemple) exploitant les vues dédiées de la base de données.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+            </div>
+        </div>
+    </div>    
+    
+    
+    <!-- Financial dashboard dialog -->
+    <div class="modal fade" id="fin-dashboard-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Tableau de bord financier</h4>
+            </div>
+            <div id="fin-dashboard-content" class="dialog-content">
+                <p>La base de données permet de produire des vues (calculs) d'une multiplicité d'indicateurs. Une multitude d'outils peuvent se connecter sur ces vues de sorte à réaliser un tableau de bord d'analyse et de suivi de l'ingénierie du réseau.</p>
+                <p>Chaque organisme, en fonction de ses contraintes spécifiques et du savoir-faire de ses utilisateurs peut choisir différents outils. Du plus simple et communément maîtrisé, en lançant un simple fichier tableur (Excel, LibreOffice, etc.) partagé lui-même connecté sur les vues de la base de données et présentant les indicateurs sous forme de graphiques. Aux plus puissants des outils de Business Intelligence (Business Objects, Jasper, etc.).</p>
+                <p>Si les indicateurs sont clairement identifiés, il est tout à fait possible de réaliser un rendu directement depuis le serveur. Une solution efficace, choisir une ERP (OpenERP par exemple) qui stocke également ses données dans PostgreSQL. L'architecture s'en trouve fortement simplifiée.</p>
+
+                <p>La cartographie dynamique peut également intégrer l'ERP. Voir par exemple OpenERP GeoEngine.<br/>
+                <a target="_blank" href="http://www.camptocamp.com/solution/openerp_geoengine/">http://www.camptocamp.com/solution/openerp_geoengine</a></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+            </div>
+        </div>
+    </div>    
+    
+    <!-- Ing dashboard dialog -->
+    <div class="modal fade" id="ing-dashboard-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Tableau de bord ingénierie</h4>
+            </div>
+            <div id="ing-dashboard-content" class="dialog-content">
+                <p>La base de données permet de produire des vues (calculs) d'une multiplicité d'indicateurs. Il est ainsi possible de connecter une multitude d'outils sur ces vues de sorte à réaliser un tableau de bord d'analyse et de suivi de l'ingénierie du réseau.</p>
+                <p>Chaque organisme, en fonction de ses contraintes spécifiques et du savoir-faire de ses utilisateurs peut choisir différents outils. Du plus simple et communément maîtrisé, en lançant un simple fichier tableur (Excel, LibreOffice, etc.) partagé lui-même connecté sur les vues de la base de données et présentant les indicateurs sous forme de graphiques. Aux plus puissants des outils de Business Intelligence (Business Objects, Jasper, etc.).</p>
+                <p>Si les indicateurs sont clairement identifiés, il est tout à fait possible de réaliser un rendu directement depuis le serveur.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Routage dialog -->
     <div class="modal fade" id="routage-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Projets</h4>
+                <h4 class="modal-title" id="myModalLabel">Routage</h4>
             </div>
             <div id="routage-content" class="dialog-content">
                 <p>A réaliser.</p>
@@ -318,7 +382,7 @@
             <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Projets</h4>
+                <h4 class="modal-title" id="myModalLabel">Capa réseau</h4>
             </div>
             <div id="capa-content" class="dialog-content">
                 <p>A réaliser.</p>
