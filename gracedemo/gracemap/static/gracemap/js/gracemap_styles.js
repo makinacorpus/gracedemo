@@ -54,6 +54,13 @@ var styles = {
       width: 5
     })
   })],
+  'annotation': [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: 'rgba(0, 255, 0, 0.5)',
+      width: 3,
+      dashLine: [1,3]
+    })
+  })],
   'artere': [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'rgba(255, 255, 0, 0.5)',

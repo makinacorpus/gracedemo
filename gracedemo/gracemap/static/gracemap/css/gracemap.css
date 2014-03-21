@@ -287,6 +287,11 @@ iframe {
     padding: 10px;
 }
 
+.building {
+    color: #aaa;
+    margin-left: 25px;
+}
+
 #feature-infos-content table {
     margin-left: 5px;
     margin-right: 5px;
@@ -342,4 +347,11 @@ iframe {
 #measure-result {
     float: left;
     margin-left: 5px;
+}
+
+/* Annotations */
+#annotate-text {
+    width: 150px;
+    float: left;
+    margin-right: 5px;
 }

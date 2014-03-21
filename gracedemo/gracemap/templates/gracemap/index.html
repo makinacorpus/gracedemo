@@ -129,10 +129,17 @@
             <div class="panel panel-container">        
                 <div class="panel widget">
                     <a class="panel-heading accordion-toggle collapsed" href="#infos" data-parent="#pulldown-infos" data-toggle="collapse">
-                        <span class="glyphicon glyphicon-question-sign"></span>
-                        <span class="ng-scope" translate="">Infos</span>
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        <span class="ng-scope" translate="">Edition</span>
                     </a>
+                    
                     <div id="infos" class="panel-collapse collapse" style="height: auto;">
+                        <div class="building">En cours d'intégration...</div>
+                        <div id="annot-content" class="panel-body ng-scope" ng-controller="">
+                            <input type="text" class="form-control" placeholder="Annotation..." id="annotate-text">
+                            <button id="annotate" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></button>   
+                            <input type="checkbox" class="" placeholder="Annotation" id="annotate-check"> Afficher les annotations
+                        </div>
                         <div id="infos-content" class="panel-body ng-scope" ng-controller="">
                             
                         </div>

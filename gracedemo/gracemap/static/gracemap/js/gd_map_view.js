@@ -23,6 +23,8 @@
         mousePositionControl: '',
         featureinfos_disable: false,
         draw: '',
+        annotateLayer: '',
+        drawAnnotation: '',
         vectorDraw: '',
         prev_center: '',
         prev_zoom: '',
@@ -33,6 +35,8 @@
             'click #search_obj' : 'doSearchObjHandler',
             'keypress #place-to-search' : 'doSearchPlace',
             'keypress #obj-to-search' : 'doSearchObjHandler',
+            'click #annotate' : 'annotate',
+            'click #annotate-check' : 'displayAnnotations',
         },        
         
         initialize: function(){
@@ -377,7 +381,25 @@
             
             // Add save state control
             this.prevStateControl();
+
+            // Annotations
+            var objSource = new ol.source.GeoJSON({
+                    projection: 'EPSG:3857',
+                    url: '/export/data_geojson/annotate'
+                });
+            this.annotateLayer = new ol.layer.Vector({
+                source: objSource,
+                style: styleFunction
+            }); 
+            this.map.addLayer(this.annotateLayer);
             
+            //this.map.addLayer(this.annotateLayer);
+            this.drawAnnotation = new ol.interaction.Draw({
+                source: objSource,
+                type: "LineString"
+            });            
+            this.annotateLayer.setVisible(false);
+        
         },
         
         activeLayer: function(el, span) {
@@ -759,7 +781,50 @@
                     gd.mapView.featureOverlay.addFeature(feature);
             });
             
+        },
+        
+        annotate: function() {
+            
+            $('#annotate').addClass("btn-warning");
+            
+            if(this.annotateLayer == '') {
+                this.map.addInteraction(this.drawAnnotation);
+                this.featureinfos_disable = true;
+            } else {
+                this.map.addInteraction(this.drawAnnotation);
+                this.featureinfos_disable = true;
+            }
+            
+            this.drawAnnotation.on('drawend', function(evt) {
+                comment = $('#annotate-text').val();
+                $('#annotate').removeClass("btn-warning");
+                var coord3857 = evt.feature.getGeometry().getCoordinates();
+                data = {'geom': coord3857.join(" "), 'comment': comment};
+                // Record annotation to DB
+                $.ajax({
+                    type: "POST",
+                    url: '/addannotation/',
+                    data: data,
+                    success: function(val){
+                    }
+                });                
+                
+                // Remove interaction
+                gd.mapView.map.removeInteraction(gd.mapView.drawAnnotation);
+                gd.mapView.featureinfos_disable = false;
+            });
+            
+        },
+        
+        displayAnnotations: function() {    
+            if($('#annotate-check').is(':checked')) {
+                this.annotateLayer.setVisible(true);
+            }
+            else {
+                this.annotateLayer.setVisible(false);
+            }
         }
+        
   });
   gd.mapView = new MapView();
 })(jQuery);

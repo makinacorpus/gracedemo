@@ -170,6 +170,9 @@ TABLE_CABLE = 'cable'
 TABLE_CHAMBRE = 'chambre'
 TABLE_BPE= 'bpe'
 
+TABLE_ANNOTATE= 'annotate'
+
+
 #GRACE_TABLES = [TABLE_TRANCHEE, TABLE_ARTERE, TABLE_NOEUD, TABLE_FOURREAU, TABLE_SITE_TECHNIQUE, TABLE_CABLE, TABLE_CHAMBRE, TABLE_BPE]
 GRACE_TABLES = [TABLE_TRANCHEE, TABLE_FOURREAU, TABLE_SITE_TECHNIQUE, TABLE_CABLE, TABLE_CHAMBRE, TABLE_BPE]
 
@@ -229,6 +232,13 @@ GRACE_TABLE_INFOS_GEOJSON =  {
         'select_col': '\'tranchee\' as typeobj, ST_AsText(ST_Transform(geom, 4326)) as geom, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as center, mod_pose_tranchee as "Pose", long_tranchee as "Longueur"',
         'select_result_col': '\'tranchee\' as typeobj, id_tranchee as id, ST_AsText(ST_SnapToGrid(ST_Centroid(ST_Transform(geom, 4326)),0.00001)) as center',
         'search_col': ['id_tranchee', 'mod_pose_tranchee']        
+    },
+    TABLE_ANNOTATE: {
+        'id_col': 'id',
+        'geom_col': 'geom',
+        'select_col': '\'annotation\' as typeobj, id, ST_AsText(ST_Transform(geom, 4326)) as geom, comment as "Commentaire"',
+        'select_result_col': 'id, comment',
+        'search_col': ['id']        
     }
     
     

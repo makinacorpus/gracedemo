@@ -266,5 +266,23 @@ def get_feature_infos(request):
     html = f.read()
     return HttpResponse(html)
     
+
+@csrf_exempt
+def add_annotation(request):
     
+    comment = ''
+    if request.POST.get('comment'):
+        comment = request.POST.get('comment')
+    if request.POST.get('geom'):
+        geom = request.POST.get('geom')
+    
+    if geom:
+        coords = geom.replace(",", "|")
+        coords = coords.replace(" ", ",")
+        coords = coords.replace("|", " ")
+        insert_string = "INSERT INTO %s (comment, geom) values ('%s',ST_GeomFromText('LINESTRING(%s)',3857))" % (settings.TABLE_ANNOTATE, comment, coords)
+        query_db(insert_string)
+        commit_transaction();
+    
+    return HttpResponse()
     
