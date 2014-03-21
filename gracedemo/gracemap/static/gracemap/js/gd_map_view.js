@@ -383,6 +383,13 @@
             this.prevStateControl();
 
             // Annotations
+            this.addAnnotationLayer(false, true);
+        },
+        
+        addAnnotationLayer: function(visible, init) {
+            if(this.annotateLayer)
+                this.map.removeLayer(this.annotateLayer);
+            
             var objSource = new ol.source.GeoJSON({
                     projection: 'EPSG:3857',
                     url: '/export/data_geojson/annotate'
@@ -392,14 +399,14 @@
                 style: styleFunction
             }); 
             this.map.addLayer(this.annotateLayer);
+            if(init) {
+                this.drawAnnotation = new ol.interaction.Draw({
+                    source: objSource,
+                    type: "LineString"
+                });            
+            }
             
-            //this.map.addLayer(this.annotateLayer);
-            this.drawAnnotation = new ol.interaction.Draw({
-                source: objSource,
-                type: "LineString"
-            });            
-            this.annotateLayer.setVisible(false);
-        
+            this.annotateLayer.setVisible(visible);
         },
         
         activeLayer: function(el, span) {
@@ -806,6 +813,8 @@
                     url: '/addannotation/',
                     data: data,
                     success: function(val){
+                        // reload layer
+                        gd.mapView.addAnnotationLayer(true, false);
                     }
                 });                
                 
