@@ -250,9 +250,9 @@ def get_layers_infos(request):
     
     feat_dict = SortedDict({"id": "tranchee", "label": "Tranchee", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support", "queryable": True, "active": True})
     response_content.append(feat_dict)
-    feat_dict = SortedDict({"id": "cable", "label": "Cables", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "cablage", "queryable": True, "active": True})
-    response_content.append(feat_dict)
     feat_dict = SortedDict({"id": "fourreau", "label": "Fourreaux", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support", "queryable": True, "active": False})
+    response_content.append(feat_dict)
+    feat_dict = SortedDict({"id": "cable", "label": "Cables", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "cablage", "queryable": True, "active": True})
     response_content.append(feat_dict)
 
     feat_dict = SortedDict({"id": "chambre", "label": "Chambres", "type": "wms", "url": settings.QGIS_SERVER_URL, "tv_root" : "support", "queryable": True, "active": True})
