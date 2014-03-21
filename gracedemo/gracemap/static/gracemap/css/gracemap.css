@@ -89,6 +89,7 @@ html, body {
 }
 #pulldown-search {
     left: 350px;
+    width: 320px;
 }
 #pulldown-infos {
     right: 250px;

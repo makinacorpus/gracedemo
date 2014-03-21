@@ -200,11 +200,12 @@ def get_result_object_json(response_content, criteria):
         #select_string = "SELECT %s FROM %s WHERE %s" % (select_result_columns, table_name, ' OR '.join(where_tab))
 
         #if bbox :
+        limit = "limit 500"
         if resFrom == -1:
-            select_string = "SELECT %s FROM %s WHERE %s" % (select_result_columns, table_name, ' OR '.join(where_tab))
+            select_string = "SELECT %s FROM %s WHERE %s %s" % (select_result_columns, table_name, ' OR '.join(where_tab), limit)
         else:
             where_complement = "WHERE (%s) AND " % (' OR '.join(where_tab))
-            select_string = "SELECT %s" % (select_result_columns)
+            select_string = "SELECT %s %s" % (select_result_columns, limit)
             select_string = select_string.replace("WHERE", where_complement)
 
         cursor = query_db(select_string)
