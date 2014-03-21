@@ -36,6 +36,7 @@
             'keypress #place-to-search' : 'doSearchPlace',
             'keypress #obj-to-search' : 'doSearchObjHandler',
             'click #annotate' : 'annotate',
+            'click #annotate-purge' : 'annotatePurge',
         },        
         
         initialize: function(){
@@ -838,8 +839,21 @@
                 gd.mapView.featureinfos_disable = false;
             });
             
+        },
+
+        annotatePurge: function() {
+            if (confirm('Purger toutes les annotations ?')) { 
+                $.ajax({
+                    type: "GET",
+                    url: '/purgeannotation/',
+                    success: function(val){
+                        // reload layer
+                        gd.mapView.addAnnotationLayer(true, false);
+                    }
+                });
+            }
         }
-        
+
   });
   gd.mapView = new MapView();
 })(jQuery);

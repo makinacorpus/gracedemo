@@ -47,3 +47,6 @@ django-multisite
 
 # registration
 django-registration
+
+# print
+#django-screamshot

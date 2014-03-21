@@ -299,4 +299,13 @@ def add_annotation(request):
         commit_transaction();
     
     return HttpResponse()
+
+@csrf_exempt
+def purge_annotation(request):
     
+    delete_string = "TRUNCATE %s" % (settings.TABLE_ANNOTATE)
+    query_db(delete_string)
+    commit_transaction();
+    
+    return HttpResponse()
+        

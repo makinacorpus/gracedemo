@@ -355,3 +355,8 @@ iframe {
     float: left;
     margin-right: 5px;
 }
+#annotate-purge {
+    font-size: 12px;
+    height: 20px;
+    line-height: 10px;
+}
