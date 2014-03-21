@@ -178,7 +178,7 @@
                         <li class="divider"></li>
                         <li><a href="#" data-target="#fin-dashboard-dialog" data-toggle="modal">Tableau de bord financier</a></li>
                         <li><a href="#" data-target="#redevance-dialog" data-toggle="modal">Redevances</a></li>
-                        <li><a href="#">Biens de retour</a></li>
+                        <li><a href="#" data-target="#biens-dialog" data-toggle="modal">Biens de retour</a></li>
                     </ul>
                 </li>
                 <li><a href="#" onclick="javascript:gd.mapView.getPermalink()">Permalink</a></li>
@@ -293,6 +293,26 @@
     </div>
     
 
+    <!-- Biens de retour dialog -->
+    <div class="modal fade" id="biens-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Biens de retour</h4>
+            </div>
+            <div id="biens-content" class="dialog-content">
+                <p>Dans le cadre d'une délégation de service public, les équipements de télécommunications déployés sont exploitées un certain nombre d'années. Il est possible de proposer un état annuel des équipements.</p>
+                <p>La base de données possède les données nécessaires. Cette synthèse peut être réalisée par un outil externe exploitant les vues dédiées dans la base de données, ou un rendu proposé par le serveur.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+            </div>
+        </div>
+    </div>    
+ 
+    
     <!-- Redevance dialog -->
     <div class="modal fade" id="redevance-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -376,6 +396,7 @@
         </div>
     </div>
 
+    
     <!-- Capa dialog -->
     <div class="modal fade" id="capa-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
