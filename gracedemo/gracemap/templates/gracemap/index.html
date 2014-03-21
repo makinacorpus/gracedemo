@@ -172,7 +172,7 @@
                         <li><a href="#" onclick="javascript:gd.mapView.printMap('{{ STATIC_URL }}gracemap/css/gracemap_print.css');" >Imprimer la vue courante</a></li>
                         <li class="divider"></li>
                         <li><a href="#" data-target="#project-dialog" data-toggle="modal">Projets</a></li>
-                        <li><a href="#">Capa réseau</a></li>
+                        <li><a href="#" data-target="#capa-dialog" data-toggle="modal">Capa réseau</a></li>
                         <li><a href="#">Routage</a></li>
                         <li><a href="#">Tableau de bord ingénierie</a></li>
                         <li class="divider"></li>
@@ -293,8 +293,27 @@
         </div>
     </div>
     
-    
-    <!-- Projet dialog -->
+
+    <!-- Capa dialog -->
+    <div class="modal fade" id="capa-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Projets</h4>
+            </div>
+            <div id="capa-content" class="dialog-content">
+                <p>A réaliser.</p>
+                <p>Interface d'analyse des sous-capacités réseau.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project dialog -->
     <div class="modal fade" id="project-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
