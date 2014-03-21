@@ -385,13 +385,6 @@
                 view2D.fitExtent(vectorSource.getExtent(), gd.mapView.map.getSize());
             });            
 
-            // Intial zoom and center
-            if(init_center != '' && init_zoom !='') {
-                //coords_center = init_center.split(',');
-                this.map.getView().setCenter(init_center);
-                this.map.getView().setZoom(init_zoom);
-            }
-            
             // Add save state control
             this.prevStateControl();
 
@@ -856,6 +849,14 @@
 
   });
   gd.mapView = new MapView();
+  // Intial zoom and center
+  if(init_center != '' && init_zoom !='') {
+      //coords_center = init_center.split(',');
+      gd.mapView.map.getView().setCenter(init_center);
+      gd.mapView.map.getView().setZoom(init_zoom);
+  }
+    
+  
 })(jQuery);
 
 
