@@ -3,7 +3,7 @@ gd.Result = Backbone.Model.extend({
     defaults: {
         "id": "Unknown",
         "typeobj": "Unknown",
-        "geom": "Unknown",
+        //"geom": "Unknown",
         "center": "Unknown",
         "active": false
     }
