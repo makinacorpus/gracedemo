@@ -167,7 +167,7 @@
                 }
             });
             
-            // Init treeview for layers
+            // Init treeview layers
             this.apiTreeView = $('#tree-layers').aciTree({checkbox: true, radio: true, checkboxClick: true}).aciTree('api');
             this.apiTreeView.append(null, {
                     uid: '11',
@@ -180,6 +180,7 @@
                 });
             this.root_support_tv = this.apiTreeView.last();
 
+            // Events on treeview layers
             $('#tree-layers').on('acitree', function(event, api, item, eventName, options){
                 switch (eventName){
                     case 'checked':
@@ -190,15 +191,25 @@
                                 for(i = 0 ; i < children.length ; i++) {
                                     var itemData = gd.mapView.apiTreeView.itemData($(children[i]))
                                     gd.mapView.layersArray[itemData.id].setVisible(true);
+                                    // Maj collection
+                                    var foundLayers = layers.where({num_layer:itemData.id});
+                                    foundLayers[0].attributes.active = true;
                                 }
                                 // A root item maybe also a layer
                                 var itemData = gd.mapView.apiTreeView.itemData(item)
-                                if(gd.mapView.layersArray[itemData.id])
+                                if(gd.mapView.layersArray[itemData.id]) {
                                     gd.mapView.layersArray[itemData.id].setVisible(true);
+                                    // Maj collection
+                                    var foundLayers = layers.where({num_layer:itemData.id});
+                                    foundLayers[0].attributes.active = true;
+                                }
                             }
                             else {
                                 var itemData = gd.mapView.apiTreeView.itemData(item);
                                 gd.mapView.layersArray[itemData.id].setVisible(true);
+                                // Maj collection
+                                var foundLayers = layers.where({num_layer:itemData.id});
+                                foundLayers[0].attributes.active = true;
                             }
                         }
                         break;
@@ -209,15 +220,25 @@
                                 for(i = 0 ; i < children.length ; i++) {
                                     var itemData = gd.mapView.apiTreeView.itemData($(children[i]))
                                     gd.mapView.layersArray[itemData.id].setVisible(false);
+                                    // Maj collection
+                                    var foundLayers = layers.where({num_layer:itemData.id});
+                                    foundLayers[0].attributes.active = false;
                                 }
                                 // A root item maybe also a layer
                                 var itemData = gd.mapView.apiTreeView.itemData(item)
-                                if(gd.mapView.layersArray[itemData.id])
+                                if(gd.mapView.layersArray[itemData.id]) {
                                     gd.mapView.layersArray[itemData.id].setVisible(false);
+                                    // Maj collection
+                                    var foundLayers = layers.where({num_layer:itemData.id});
+                                    foundLayers[0].attributes.active = false;
+                                }
                             }
                             else {
                                 var itemData = gd.mapView.apiTreeView.itemData(item);
                                 gd.mapView.layersArray[itemData.id].setVisible(false);
+                                // Maj collection
+                                var foundLayers = layers.where({num_layer:itemData.id});
+                                foundLayers[0].attributes.active = false;
                             }
                         }
                         break;
@@ -304,11 +325,11 @@
                 if(!gd.mapView.featureinfos_disable) {
                     // for all queryable layers
                     document.getElementById('feature-infos-content').innerHTML = "";
-                    var foundLayers = layers.where({queryable:true});
+                    var foundLayers = layers.where({queryable:true, active: true});
                     for(i = 0 ; i < foundLayers.length; i++) {
                         var url = foundLayers[i].attributes.source.getGetFeatureInfoUrl(
                             evt.coordinate, gd.mapView.viewResolution, gd.mapView.viewProjection,
-                            {'INFO_FORMAT': 'text/html'});
+                            {'INFO_FORMAT': 'text/html'});var foundLayers = layers.where({queryable:true});
                         
                         if (url) {
                             Backbone.ajax({
