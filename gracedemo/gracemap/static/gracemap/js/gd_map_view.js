@@ -845,7 +845,58 @@
                     }
                 });
             }
+        },
+        
+        
+        geolocalise: function() {
+            var options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+            };        
+            if(navigator.geolocation) {
+                var userPosition = navigator.geolocation.getCurrentPosition(this.geolocalise_success, this.geolocalise_error, options);
+            } else {
+                alert('Votre navigateur ne supporte pas la géolocalisation HTML5');
+            }
+        },
+
+        geolocalise_success: function(position) {
+            // Get lat/lon
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            
+            var new_center = ol.proj.transform([longitude*1.0, latitude*1.0], 'EPSG:4326', 'EPSG:3857');
+            var pan = ol.animation.pan({
+                duration: 2000,
+                source: (gd.mapView.view.getCenter())
+            });
+            gd.mapView.map.beforeRender(pan);
+            gd.mapView.view.setCenter(new_center);
+        },
+        
+        geolocalise_error: function(error) {
+            switch(error.code) {
+                    case error.UNKNOWN_ERROR:
+                        alert("La géolocalisation a rencontré une erreur.");
+                    break;
+                    case error.PERMISSION_DENIED:
+                        alert("L'utilisateur n'a pas voulu donner sa position.");
+                    break;
+                    case error.POSITION_UNAVAILABLE:
+                        alert("Les coordonnées de l'utilisateur n'ont pas pu être trouvées.");
+                    break;
+                    case error.TIMEOUT:
+                        alert("La géolocalisation prend trop de temps.");
+                    break;
+            }                        
         }
+        
+        /*        
+        function stopGeolocalisation(){
+                navigator.geolocation.clearWatch(userPosition);
+        }        */
+                
 
   });
   gd.mapView = new MapView();

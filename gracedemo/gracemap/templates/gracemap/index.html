@@ -149,50 +149,51 @@
         </div>
 
         <nav class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><img src="{{ STATIC_URL }}gracemap/img/logo.png" alt="Grace demo"></a>
-            </div>
-
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <div class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Tapez votre adresse..." id="place-to-search">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><img src="{{ STATIC_URL }}gracemap/img/logo.png" alt="Grace demo"></a>
                 </div>
-                <select class="form-control" id="search_place">
-                    <option value="nominatim">Nominatim</option>
-                    <option value="google">Google</option>
-                </select>                
-                
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" data-target="#kml-infos" data-toggle="modal">Ajout de fichier</a></li>
-                        <li><a href="#" onclick="javascript:gd.mapView.printMap('{{ STATIC_URL }}gracemap/css/gracemap_print.css');" >Imprimer la vue courante</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#" data-target="#project-dialog" data-toggle="modal">Projets</a></li>
-                        <li><a href="#" data-target="#capa-dialog" data-toggle="modal">Capa réseau</a></li>
-                        <li><a href="#" data-target="#routage-dialog" data-toggle="modal">Routage</a></li>
-                        <li><a href="#" data-target="#ing-dashboard-dialog" data-toggle="modal">Tableau de bord ingénierie</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#" data-target="#fin-dashboard-dialog" data-toggle="modal">Tableau de bord financier</a></li>
-                        <li><a href="#" data-target="#redevance-dialog" data-toggle="modal">Redevances</a></li>
-                        <li><a href="#" data-target="#biens-dialog" data-toggle="modal">Biens de retour</a></li>
+
+                <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                    <div class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Tapez votre adresse..." id="place-to-search">
+                        </div>
+                        <select class="form-control" id="search_place">
+                            <option value="nominatim">Nominatim</option>
+                            <option value="google">Google</option>
+                        </select>                
+                        
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" data-target="#kml-infos" data-toggle="modal">Ajout de fichier</a></li>
+                                <li><a href="#" onclick="javascript:gd.mapView.printMap('{{ STATIC_URL }}gracemap/css/gracemap_print.css');" >Imprimer la vue courante</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#" data-target="#project-dialog" data-toggle="modal">Projets</a></li>
+                                <li><a href="#" data-target="#capa-dialog" data-toggle="modal">Capa réseau</a></li>
+                                <li><a href="#" data-target="#routage-dialog" data-toggle="modal">Routage</a></li>
+                                <li><a href="#" data-target="#ing-dashboard-dialog" data-toggle="modal">Tableau de bord ingénierie</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#" data-target="#fin-dashboard-dialog" data-toggle="modal">Tableau de bord financier</a></li>
+                                <li><a href="#" data-target="#redevance-dialog" data-toggle="modal">Redevances</a></li>
+                                <li><a href="#" data-target="#biens-dialog" data-toggle="modal">Biens de retour</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" onclick="javascript:gd.mapView.geolocalise()">Se géolocaliser</a></li>
+                        <li><a href="#" onclick="javascript:gd.mapView.getPermalink()">Permalink</a></li>
+                        <li><a href="#" data-target="#map-infos" data-toggle="modal">A propos</a></li>
                     </ul>
-                </li>
-                <li><a href="#" onclick="javascript:gd.mapView.getPermalink()">Permalink</a></li>
-                <li><a href="#" data-target="#map-infos" data-toggle="modal">A propos</a></li>
-            </ul>
+                </div>
             </div>
-        </div>
         </nav>
     </div>
 
