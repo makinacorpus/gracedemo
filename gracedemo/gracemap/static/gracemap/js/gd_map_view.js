@@ -388,6 +388,9 @@
             // Add save state control
             this.prevStateControl();
 
+            // Add geoloc control
+            this.geolocaliseControl();
+            
             // Annotations
             this.addAnnotationLayer(false, true);
         },
@@ -847,6 +850,14 @@
             }
         },
         
+        
+        geolocaliseControl: function() {
+            $('.ol-overlaycontainer-stopevent').append('<div class="ol-geolocalise ol-zoom-extent ol-unselectable"><button id="btn-geolocalise" class="ol-has-tooltip"><span role="tooltip">Se géolocaliser</span></button></div>');            
+            
+            $('#btn-geolocalise').click(function() {
+                gd.mapView.geolocalise();
+            });            
+        },
         
         geolocalise: function() {
             var options = {

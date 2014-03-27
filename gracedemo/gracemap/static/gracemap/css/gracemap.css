@@ -31,6 +31,14 @@ html, body {
     top: 14em;
 }    
 
+.ol-geolocalise button:after {
+    content: "G";
+}    
+
+.ol-geolocalise {
+    top: 16em;
+}    
+
 
 /* UI */
 .navbar-fixed-top {
