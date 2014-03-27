@@ -195,12 +195,27 @@ input[type="checkbox"] {
 #json-objects {
     width: 500px;
     position: absolute;
-    bottom: 5px;
+    bottom: 0px;
     left: 130px;
     z-index: 999;
     max-height: 300px;
     overflow: auto;
     margin-bottom: 0px;
+    border-radius: 4px 4px 0px 0px;
+}
+
+#json-objects .panel {
+    border: none;
+}
+
+#json-objects .panel .panel-heading {
+    background: #fff;
+    height: 30px;
+}
+
+#json-objects .panel .panel-heading .panel-title a {
+    text-decoration: none;
+    color: #428BCA;
 }
 
 #json-objects .panel-group {
