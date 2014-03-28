@@ -37,6 +37,7 @@
             'keypress #obj-to-search' : 'doSearchObjHandler',
             'click #annotate' : 'annotate',
             'click #annotate-purge' : 'annotatePurge',
+            //'click #copy-permalink' : 'copyPermalink'
         },        
         
         initialize: function(){
@@ -866,13 +867,13 @@
             maximumAge: 0
             };        
             if(navigator.geolocation) {
-                var userPosition = navigator.geolocation.getCurrentPosition(this.geolocalise_success, this.geolocalise_error, options);
+                var userPosition = navigator.geolocation.getCurrentPosition(this.geolocaliseSuccess, this.geolocaliseError, options);
             } else {
                 alert('Votre navigateur ne supporte pas la géolocalisation HTML5');
             }
         },
 
-        geolocalise_success: function(position) {
+        geolocaliseSuccess: function(position) {
             // Get lat/lon
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
@@ -886,7 +887,7 @@
             gd.mapView.view.setCenter(new_center);
         },
         
-        geolocalise_error: function(error) {
+        geolocaliseError: function(error) {
             switch(error.code) {
                     case error.UNKNOWN_ERROR:
                         alert("La géolocalisation a rencontré une erreur.");
@@ -903,10 +904,11 @@
             }                        
         }
         
-        /*        
-        function stopGeolocalisation(){
-                navigator.geolocation.clearWatch(userPosition);
-        }        */
+
+        /*copyPermalink: function(){
+            window.clipboardData.setData('Text', $('#permalink-content').html()); 
+            $('#permalink-dialog').modal('hide');
+        } */       
                 
 
   });
