@@ -44,16 +44,18 @@ makina-projects.projectname:
           password: {{salt['mc_utils.generate_stored_password'](
                            'corpus-django_web_admin')}}
     db:
-      ENGINE: 'django.db.backends.sqlite3'
-      NAME: "{data_root}/{PROJECT}.sqlite"
+      default:
+        ENGINE: 'django.db.backends.sqlite3'
+        NAME: "{data_root}/{PROJECT}.sqlite"
     ### 
     #db:
-    #  ENGINE: 'django.db.backends.postgresql_psycopg2'
-    #  USER: '{name}'
-    #  PORT: '5432'
-    #  HOST: '127.0.0.1'
-    #  NAME: 'db'
-    #  PASSWORD: '{name}secret'
+    #  default:
+    #    ENGINE: 'django.db.backends.postgresql_psycopg2'
+    #    USER: '{name}'
+    #    PORT: '5432'
+    #    HOST: '127.0.0.1'
+    #    NAME: 'db'
+    #    PASSWORD: '{name}secret'
     static: "{data_root}/static"
     qgis: 'http://localhost/cgi-bin/gracedemo/qgis_mapserv.fcgi'
     media: "{data_root}/media"
@@ -61,6 +63,7 @@ makina-projects.projectname:
     host: localhost
     port: 8180
     workers: 1
+    db_id: default
     DEBUG: False
     py: "{py_root}/bin/python"
     USE_X_FORWARDED_HOST: True
