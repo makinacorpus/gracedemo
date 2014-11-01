@@ -4,6 +4,7 @@
 /develop_eggs/
 
 makina-states*-deploy.log
+*_sbe*
 settings_local.py
 src/
 salt*password*py
