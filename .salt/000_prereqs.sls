@@ -88,6 +88,7 @@ prepreqs-{{cfg.name}}:
       - python-numpy
       - zlib1g-dev
       # geodjango
+      - postgresql-client
       - gdal-bin
       - libgdal1-dev
       - libgeos-dev
