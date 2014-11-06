@@ -12,7 +12,6 @@ window.gd = {
     
     init: function () {
         $('.panel-widget').on('click.bs.collapse.data-api', '[data-toggle=collapse]', function (e) {
-            //alert("ici");
         })        
     }
 }
