@@ -919,7 +919,9 @@
       gd.mapView.map.getView().setCenter(init_center);
       gd.mapView.map.getView().setZoom(init_zoom);
   }
-    
+  
+  // TODO: temporary for demo
+  gd.mapView.map.setCenter(new L.LatLng(-4.0825, 5.3703));
   
 })(jQuery);
 
