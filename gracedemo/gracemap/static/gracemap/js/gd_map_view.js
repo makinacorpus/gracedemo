@@ -921,7 +921,7 @@
   }
   
   // TODO: temporary for demo
-  gd.mapView.map.setCenter(new L.LatLng(-4.0825, 5.3703));
+  gd.mapView.map.setCenter([-4.0825, 5.3703]);
   
 })(jQuery);
 
