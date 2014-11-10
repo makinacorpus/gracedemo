@@ -321,6 +321,15 @@ iframe {
     width: 98%;
 }
 
+#feature-infos-content table td {
+    padding: 3px;
+}
+
+#feature-infos-content table th {
+    text-transform: capitalize;
+}
+
+
 /* Bottom panel */
 
 .bs-example:after {
