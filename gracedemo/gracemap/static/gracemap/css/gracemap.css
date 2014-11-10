@@ -321,8 +321,14 @@ iframe {
     width: 98%;
 }
 
-#feature-infos-content table td {
+#feature-infos-content table td,
+#feature-infos-content table th {
     padding: 3px;
+    border: 1px solid #aaa;
+}
+
+#feature-infos-content table th {
+    color: #444;
 }
 
 #feature-infos-content table th {
