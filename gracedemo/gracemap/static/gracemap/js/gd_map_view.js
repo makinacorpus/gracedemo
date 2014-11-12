@@ -358,14 +358,24 @@
                                     // TODO for quick demo only, to be removed after !
                                     inner = document.getElementById('feature-infos-content').innerHTML;
                                     var n = inner.search("TRANCHEE_1000160");
-                                    if(n > 0)
-                                        document.getElementById('external_infos_link').innerHTML = "<a target='_parent' href='http://demo-job.makina-corpus.net/projects/project/1/information/'>Plus d'informations</a>";
+                                    if(n > 0) {
+                                        //document.getElementById('external_infos_link').innerHTML = "<a target='_parent' href='http://demo-job.makina-corpus.net/projects/project/1/information/'>Plus d'informations</a>";
+                                        
+                                        document.getElementById('feature-infos-content').innerHTML = "<strong>Zone industrielle Sud-Est 1</strong><table>  <tr>    <th>Date de début</th>    <td>01 octobre 2014</td>  </tr>  <tr>    <th>Date de fin</th>    <td>31 décembre 2014</td>  </tr>  <tr>    <th>Statut</th>    <td>En cours</td>  </tr>  <tr>    <th>Phases en cours</th>    <td>Génie civil</td>  </tr></table><a href='http://demo-job.makina-corpus.net/projects/project/1/information/' target='_parent'>Plus d'information</a>";
+
+                                    }
                                     var n = inner.search("TRANCHEE_1003216");
-                                    if(n > 0)
-                                        document.getElementById('external_infos_link').innerHTML = "<a  target='_parent' href='http://demo-job.makina-corpus.net/projects/project/2/information/'>Plus d'informations</a>";
+                                    if(n > 0) {
+                                        //document.getElementById('external_infos_link').innerHTML = "<a  target='_parent' href='http://demo-job.makina-corpus.net/projects/project/2/information/'>Plus d'informations</a>";
+                                        
+                                        document.getElementById('feature-infos-content').innerHTML = "<strong>Andokoi Ouest 1</strong><table>  <tr>    <th>Date de début</th>    <td>01 novembre 2014 </td>  </tr>  <tr>    <th>Date de fin</th>    <td>01 février 2015</td>  </tr>  <tr>    <th>Statut</th>    <td>En préparation</td>  </tr>  <tr>    <th>Phases en cours</th>    <td>Pré-inscriptions</td>  </tr></table><a href='http://demo-job.makina-corpus.net/projects/project/2/information/' target='_parent'>Plus d'information</a>";
+                                    }
                                     var n = inner.search("TRANCHEE_1003215");
-                                    if(n > 0)
-                                        document.getElementById('external_infos_link').innerHTML = "<a  target='_parent' href='http://demo-job.makina-corpus.net/projects/project/3/information/'>Plus d'informations</a>";
+                                    if(n > 0) {
+                                        //document.getElementById('external_infos_link').innerHTML = "<a  target='_parent' href='http://demo-job.makina-corpus.net/projects/project/3/information/'>Plus d'informations</a>";
+                                        
+                                        document.getElementById('feature-infos-content').innerHTML = "<strong>Andokoi Ouest 2</strong><table>  <tr>    <th>Date de début</th>    <td>01 octobre 2014 </td>  </tr>  <tr>    <th>Date de fin</th>    <td>01 février 2015</td>  </tr>  <tr>    <th>Statut</th>    <td>En cours</td>  </tr>  <tr>    <th>Phases en cours</th>    <td>Fibre optique rue 1, Tranchées rue 2</td>  </tr>  <tr>    <th>Alertes</th>    <td style='color:red;font-weight:bold'>La phase 'Fibre optique rue 1' devrait être terminée</td>  </tr></table><a href='http://demo-job.makina-corpus.net/projects/project/3/information/' target='_parent'>Plus d'information</a>";
+                                    }
                                     //
 
                                 },
