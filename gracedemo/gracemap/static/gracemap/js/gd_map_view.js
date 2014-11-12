@@ -357,19 +357,17 @@
                                     
                                     // TODO for quick demo only, to be removed after !
                                     inner = document.getElementById('feature-infos-content').innerHTML;
-                                    var n = inner.search("TRANCHEE_1003215");
-                                    if(n > 0)
-                                        document.getElementById('external_infos_link').innerHTML = "<a href='http://demo-job.makina-corpus.net/projects/project/1/information/'>Plus d'informations</a>";
-                                    var n = inner.search("TRANCHEE_1003216");
-                                    if(n > 0)
-                                        document.getElementById('external_infos_link').innerHTML = "<a href='http://demo-job.makina-corpus.net/projects/project/2/information/'>Plus d'informations</a>";
                                     var n = inner.search("TRANCHEE_1000160");
                                     if(n > 0)
-                                        document.getElementById('external_infos_link').innerHTML = "<a href='http://demo-job.makina-corpus.net/projects/project/3/information/'>Plus d'informations</a>";
+                                        document.getElementById('external_infos_link').innerHTML = "<a target='_parent' href='http://demo-job.makina-corpus.net/projects/project/1/information/'>Plus d'informations</a>";
+                                    var n = inner.search("TRANCHEE_1003216");
+                                    if(n > 0)
+                                        document.getElementById('external_infos_link').innerHTML = "<a  target='_parent' href='http://demo-job.makina-corpus.net/projects/project/2/information/'>Plus d'informations</a>";
+                                    var n = inner.search("TRANCHEE_1003215");
+                                    if(n > 0)
+                                        document.getElementById('external_infos_link').innerHTML = "<a  target='_parent' href='http://demo-job.makina-corpus.net/projects/project/3/information/'>Plus d'informations</a>";
                                     //
 
-
-                                    
                                 },
                                 error: function(val){
                                 }
