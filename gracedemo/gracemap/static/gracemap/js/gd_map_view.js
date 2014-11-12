@@ -353,7 +353,7 @@
                             Backbone.ajax({
                                 url: '/getfeatureinfos?url=' + encodeURIComponent(url),
                                 success: function(val){
-                                    document.getElementById('feature-infos-content').innerHTML += val;
+                                    //document.getElementById('feature-infos-content').innerHTML += val;
                                     
                                     // TODO for quick demo only, to be removed after !
                                     inner = document.getElementById('feature-infos-content').innerHTML;

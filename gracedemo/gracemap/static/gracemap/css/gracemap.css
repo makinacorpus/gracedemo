@@ -65,6 +65,7 @@ html, body {
 .navbar-brand {
     padding-left: 0px;
     padding-top: 0px;
+    display: none: /* TODO  temporary */
 }
 
 
@@ -316,8 +317,7 @@ iframe {
 }
 
 #feature-infos-content table {
-    margin-left: 5px;
-    margin-right: 5px;
+    margin: 15px 0;
     width: 98%;
 }
 
@@ -333,6 +333,10 @@ iframe {
 
 #feature-infos-content table th {
     text-transform: capitalize;
+}
+
+#feature-infos-content {
+    padding: 20px;
 }
 
 
