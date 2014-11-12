@@ -357,7 +357,7 @@
                                     
                                     // TODO for quick demo only, to be removed after !
                                     inner = document.getElementById('feature-infos-content').innerHTML;
-                                    var n = inner.search("TRANCHEE_1000160");
+                                    var n = val.search("TRANCHEE_1000160");
                                     if(n > 0) {
                                         //document.getElementById('external_infos_link').innerHTML = "<a target='_parent' href='http://demo-job.makina-corpus.net/projects/project/1/information/'>Plus d'informations</a>";
                                         
