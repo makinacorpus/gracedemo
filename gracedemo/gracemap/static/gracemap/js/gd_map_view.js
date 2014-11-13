@@ -378,6 +378,14 @@
                                         
                                         document.getElementById('feature-infos-content').innerHTML = "<strong>Andokoi Ouest 2</strong><table>  <tr>    <th>Date de début</th>    <td>01 octobre 2014 </td>  </tr>  <tr>    <th>Date de fin</th>    <td>01 février 2015</td>  </tr>  <tr>    <th>Statut</th>    <td>En cours</td>  </tr>  <tr>    <th>Phases en cours</th>    <td>Fibre optique rue 1, Tranchées rue 2</td>  </tr>  <tr>    <th>Alertes</th>    <td style='color:red;font-weight:bold'>La phase 'Fibre optique rue 1' devrait être terminée</td>  </tr></table><a href='http://demo-job.makina-corpus.net/projects/project/3/information/' target='_parent'>Plus d'information</a>";
                                     }
+                                    
+                                    var n = content_result.search("NOEUD_1000034");
+                                    if(n > 0) {
+                                        //document.getElementById('external_infos_link').innerHTML = "<a  target='_parent' href='http://demo-job.makina-corpus.net/projects/project/3/information/'>Plus d'informations</a>";
+                                        
+                                        document.getElementById('feature-infos-content').innerHTML = "<strong>NRO</strong><table>  <tr>    <th>Date d'installation</th>    <td>27 mars 2014 </td>  </tr>  <tr>    <th>Dernier incident</th>    <td>28 aout 2014</td>  </tr> </table><a href='http://demo-job.makina-corpus.net/trucks/truck/706/information/' target='_parent'>Plus d'information</a>";
+                                    }                                    
+                                    
                                     //
 
                                 },
